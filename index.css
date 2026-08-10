@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Mona Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  @apply bg-neutral-50 text-neutral-900 selection:bg-neutral-900 selection:text-white dark:bg-neutral-950 dark:text-neutral-100 dark:selection:bg-white dark:selection:text-black font-sans;
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .liquid-glass {
+    @apply bg-white/30 dark:bg-[#1d1d1f]/40 backdrop-blur-2xl saturate-[1.8] border border-white/20 dark:border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)];
+  }
+}
+
+@keyframes ambient-shift {
+  0% { transform: scale(1) translate(0, 0); }
+  33% { transform: scale(1.1) translate(30px, -50px); }
+  66% { transform: scale(0.9) translate(-20px, 20px); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.animate-ambient {
+  animation: ambient-shift 15s ease-in-out infinite;
+}
+
+h1, h2, h3 {
+  letter-spacing: -0.05em;
+}
+
+/* Custom Scrollbar for a sleeker look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #e5e5e5;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d4d4d4;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #262626;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
+/* Firefox Support */
+* {
+  scrollbar-width: thin;
+}
