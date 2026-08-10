@@ -166,10 +166,10 @@ const stagger: any = {
               </p>
             </motion.div>
 
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
-              <motion.div variants={fadeUp} className="flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
-                  <Layers className="w-6 h-6" />
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500">
+                <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
+                  <Layers className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">Product + Frontend</h3>
                 <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
@@ -177,9 +177,9 @@ const stagger: any = {
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeUp} className="flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
-                  <Cpu className="w-6 h-6" />
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500">
+                <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
+                  <Cpu className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">Aesthetic Sensibility</h3>
                 <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
@@ -187,9 +187,9 @@ const stagger: any = {
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 sm:col-span-2">
-                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
-                  <Code2 className="w-6 h-6" />
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 sm:col-span-2">
+                <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
+                  <Code2 className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">The Engineering Bridge</h3>
                 <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm max-w-xl">
