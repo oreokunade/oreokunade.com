@@ -28,8 +28,8 @@ const fadeUp = {
   }
 };
 
-type Category = 'All' | 'Prompt templates' | 'Books' | 'Writing';
-const CATEGORIES: Category[] = ['All', 'Prompt templates', 'Books', 'Writing'];
+type Category = 'Prompt templates' | 'Books' | 'Writing';
+const CATEGORIES: Category[] = ['Prompt templates', 'Books', 'Writing'];
 
 const CopyButton = ({ text }: { text: string }) => {
   const [copied, setCopied] = useState(false);
@@ -70,7 +70,7 @@ const getProductIcon = (type: string) => {
 
 const Store = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<Category>('All');
+  const [activeCategory, setActiveCategory] = useState<Category>('Prompt templates');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<DigitalProduct | null>(null);
   const location = useLocation();
@@ -136,7 +136,7 @@ const Store = () => {
                         : 'text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-[#111111]'
                     }`}
                   >
-                    {cat === 'All' && <FaBagShopping className="w-4 h-4 opacity-70" />}
+
                     {cat === 'Prompt templates' && <FaCode className="w-4 h-4 opacity-70" />}
                     {cat === 'Books' && <FaBook className="w-4 h-4 opacity-70" />}
                     {cat === 'Writing' && <FaPenNib className="w-4 h-4 opacity-70" />}
@@ -156,14 +156,14 @@ const Store = () => {
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
               className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-4 tracking-tight"
             >
-              {activeCategory === 'All' ? 'Marketplace' : activeCategory}
+              {activeCategory}
             </motion.h1>
             <motion.p 
               key={`desc-${activeCategory}`}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               className="text-lg text-neutral-500 dark:text-neutral-400 max-w-2xl"
             >
-              {activeCategory === 'All' && 'The best templates, books, and writing from my personal catalog.'}
+
               {activeCategory === 'Prompt templates' && 'Micro-interactions and animation kits to elevate your workflow.'}
               {activeCategory === 'Books' && 'Comprehensive guides and roadmaps to level up your career.'}
               {activeCategory === 'Writing' && 'My latest essays on design, engineering, and product philosophy.'}
