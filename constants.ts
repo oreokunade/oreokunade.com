@@ -90,7 +90,7 @@ const RAW_WORKS: Project[] = [
     details: {
       subtitle: "Architecting a High Concurrency Real Time Sports Betting Platform",
       heroImage: "/casestudies/betpanta-hero.png",
-      mainParagraph: "BetPanta is a full featured sports betting platform engineered for extreme reliability in the Nigerian market. The architectural demands were massive: handling real time data ingestion, performing complex odds calculations on the fly, and maintaining a robust, swipe friendly mobile interface capable of sustaining thousands of concurrent users during peak live matches.",
+      mainParagraph: "BetPanta is a next generation sports betting application demanding extreme performance and zero latency reliability in the Nigerian market. From day one, the entire platform was architected with a strict mobile-first approach, recognizing that the vast majority of the target demographic engages exclusively via smartphones. The architectural demands were massive: handling real time data ingestion, performing complex odds calculations on the fly, and maintaining a robust, swipe friendly mobile interface capable of sustaining thousands of concurrent users during peak live matches.",
       highlights: [
         { title: "Real Time Odds Engine", description: "Architected a highly resilient socket powered feed that pushes live match scores and fluctuating betting lines to the client instantly with zero page refresh delay." },
         { title: "Mobile First UX Engineering", description: "Designed and implemented a gesture driven, bottom navigation interface specifically optimized for one handed use, addressing the primary access pattern for the target demographic." },
@@ -101,7 +101,7 @@ const RAW_WORKS: Project[] = [
         { title: "Complex Bet Slip Algorithms", description: "Developed the core logic handling complex math for single and multiple bets. Implemented a shareable Bet Code system allowing users to instantly reconstruct complex bets." },
         { title: "Integrated Casino Infrastructure", description: "Seamlessly integrated third party game providers, like crash games and virtual sports, within the same application framework without compromising the core sportsbook performance." }
       ],
-      conclusion: "BetPanta's real-time odds engine and gesture-driven mobile UX established a highly resilient, high-concurrency platform. It successfully scaled to handle peak live matches without compromising on speed or reliability."
+      conclusion: "By rigorously adhering to a mobile-first philosophy, BetPanta's real-time odds engine and gesture-driven UX established a highly resilient, high-concurrency platform. It successfully scaled to handle peak live matches, delivering a seamless, app-like experience directly in the mobile browser without compromising on speed or reliability."
     }
   },
   {
