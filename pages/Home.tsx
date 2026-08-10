@@ -147,6 +147,59 @@ const stagger: any = {
           </div>
         </motion.section>
 
+        {/* The Philosophy / When to Hire Me */}
+        <motion.section 
+          id="services"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={stagger}
+          className="w-full snap-start border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
+            <motion.div variants={fadeUp} className="lg:col-span-5">
+              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white mb-6">
+                When is it ideal to partner with me?
+              </h2>
+              <p className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
+                The traditional handoff from design to engineering is broken. A lot gets lost in translation. As a Product Design Engineer, I operate precisely at this intersection.
+              </p>
+            </motion.div>
+
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4">
+                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
+                  <Layers className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">Product + Frontend</h3>
+                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
+                  Hire me when you need someone who understands deep product logic and can immediately construct those ideas into high-performance frontend code.
+                </p>
+              </motion.div>
+              
+              <motion.div variants={fadeUp} className="flex flex-col gap-4">
+                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
+                  <Cpu className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">Aesthetic Sensibility</h3>
+                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
+                  When you need an interface that doesn't just work, but feels premium. I bring high-end aesthetic intuition and translate it directly into fluid interactions.
+                </p>
+              </motion.div>
+              
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 sm:col-span-2">
+                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
+                  <Code2 className="w-6 h-6" />
+                </div>
+                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">The Engineering Bridge</h3>
+                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm max-w-xl">
+                  I speak the language of software engineering. I collaborate seamlessly with backend and full-stack developers, architecting the UI layer so they can focus on core infrastructure.
+                </p>
+              </motion.div>
+            </div>
+          </div>
+        </motion.section>
+
         {/* 2. Philosophy / Manifesto Section */}
         <section 
           id="about" 
@@ -212,58 +265,7 @@ const stagger: any = {
           </div>
         </motion.section>
 
-        {/* The Philosophy / When to Hire Me */}
-        <motion.section 
-          id="services"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={stagger}
-          className="w-full snap-start border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-            <motion.div variants={fadeUp} className="lg:col-span-5">
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white mb-6">
-                When is it ideal to partner with me?
-              </h2>
-              <p className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
-                The traditional handoff from design to engineering is broken. A lot gets lost in translation. As a Product Design Engineer, I operate precisely at this intersection.
-              </p>
-            </motion.div>
 
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8">
-              <motion.div variants={fadeUp} className="flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
-                  <Layers className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">Product + Frontend</h3>
-                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
-                  Hire me when you need someone who understands deep product logic and can immediately construct those ideas into high-performance frontend code.
-                </p>
-              </motion.div>
-              
-              <motion.div variants={fadeUp} className="flex flex-col gap-4">
-                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
-                  <Cpu className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">Aesthetic Sensibility</h3>
-                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
-                  When you need an interface that doesn't just work, but feels premium. I bring high-end aesthetic intuition and translate it directly into fluid interactions.
-                </p>
-              </motion.div>
-              
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 sm:col-span-2">
-                <div className="w-12 h-12 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center text-neutral-900 dark:text-white">
-                  <Code2 className="w-6 h-6" />
-                </div>
-                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">The Engineering Bridge</h3>
-                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm max-w-xl">
-                  I speak the language of software engineering. I collaborate seamlessly with backend and full-stack developers, architecting the UI layer so they can focus on core infrastructure.
-                </p>
-              </motion.div>
-            </div>
-          </div>
-        </motion.section>
 
         {/* Services */}
         <motion.section 
