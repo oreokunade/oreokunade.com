@@ -50,36 +50,37 @@ const EscapeAISlop = () => {
         >
           <div className="flex-1 flex flex-col gap-6">
             <motion.div variants={fadeUp}>
-              <span className="inline-block px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-full text-xs font-bold tracking-widest uppercase mb-4">
-                Escape AI Slop
-              </span>
-              <h1 style={{ fontFamily: "'Saira Condensed', sans-serif", lineHeight: "1.05" }} className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6 uppercase">
-                Build Websites With AI That Actually Look <span style={{ fontFamily: "'Cormorant Garamond', serif" }} className="italic font-medium text-pink-500 lowercase text-[1.1em]">Designed.</span>
+              <h1 style={{ fontFamily: "'Saira Condensed', sans-serif", lineHeight: "1.05" }} className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 uppercase">
+                Your Website Looks <span style={{ fontFamily: "'Cormorant Garamond', serif" }} className="italic font-medium text-pink-500 lowercase text-[1.1em]">AI-Generated.</span>
               </h1>
+              <h2 className="text-2xl md:text-4xl text-neutral-500 dark:text-neutral-400 font-semibold tracking-tight">
+                Here's How to Fix It.
+              </h2>
             </motion.div>
             
-            <motion.div variants={fadeUp} className="text-lg md:text-xl text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-4">
-              <p>AI can build a website in minutes.</p>
-              <p>So why do so many AI-generated websites look exactly the same?</p>
-              <p className="text-neutral-900 dark:text-neutral-200">
-                Same layouts. Same typography. Same gradients. Same rounded cards. Same generic copy. Same "premium" aesthetic.
-              </p>
-              <p className="font-semibold text-neutral-900 dark:text-white mt-4">AI isn't the problem.</p>
-              <p>
-                The problem is knowing what to tell it, what to keep, what to reject, and how to turn its output into something that actually feels intentional.
+            <motion.div variants={fadeUp} className="text-lg md:text-xl text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-4 mt-2">
+              <p>AI has made it ridiculously easy to build a website.</p>
+              <p>Give it a prompt. Wait a few seconds. You have a website.</p>
+              <p>Then you look at it again.</p>
+              <p>Something feels off. The layout is fine. The colours are fine. The animations work. Technically, everything is there.</p>
+              <p className="font-semibold text-neutral-900 dark:text-white text-xl">But it doesn't feel designed.</p>
+              <p>It feels like AI made it. And once you've seen enough AI-generated websites, you start noticing the pattern everywhere.</p>
+              <p className="mt-2 text-neutral-900 dark:text-neutral-300">
+                <strong className="text-neutral-900 dark:text-white font-bold">Escape AI Slop</strong> is a practical guide to using AI to build websites with intention, taste and a point of view.
               </p>
             </motion.div>
 
             <motion.div variants={fadeUp} className="mt-8">
               <a href="#pricing" className="inline-flex items-center gap-2 px-8 py-4 bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-semibold rounded-[14px] hover:scale-105 transition-transform w-full sm:w-auto justify-center">
-                GET THE BOOK + ALL BONUSES — ₦20,000
+                GET THE BOOK + THE COMPLETE TOOLKIT FOR ₦20,000
                 <ArrowUpRight className="w-4 h-4" />
               </a>
+              <p className="text-sm text-neutral-400 mt-3 text-center sm:text-left ml-2">Instant access.</p>
             </motion.div>
           </div>
 
           <motion.div variants={fadeUp} className="flex-1 w-full max-w-md lg:max-w-none perspective-1000">
-             <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl rotate-y-[-10deg] rotate-x-[5deg] border border-neutral-200 dark:border-neutral-800">
+             <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl rotate-y-[-10deg] rotate-x-[5deg] border border-neutral-200 dark:border-neutral-800 group hover:rotate-y-0 hover:rotate-x-0 transition-transform duration-700 ease-out">
                 <img 
                   src="/products/escape-ai-slop.png" 
                   alt="Escape AI Slop Cover" 
@@ -97,25 +98,25 @@ const EscapeAISlop = () => {
           variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto border-t border-neutral-200 dark:border-neutral-800 pt-20"
         >
-          <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-semibold tracking-tight text-neutral-900 dark:text-white mb-8">
-            You don't need another AI tool. <br/><span className="text-neutral-400">You need better taste.</span>
+          <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-8 uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+            AI didn't kill good design.
           </motion.h2>
           
           <motion.div variants={fadeUp} className="text-lg text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-6 text-left w-full">
-            <p>You need better taste, better direction, and a better process.</p>
-            <p>AI has made building websites dramatically easier. But it has also created a new problem: <strong className="text-neutral-900 dark:text-white font-medium">Everyone now has access to the same tools.</strong></p>
-            <p>Which means simply knowing how to prompt an AI coding tool isn't enough anymore.</p>
+            <p>It just made mediocre design much easier to produce.</p>
+            <p>And that's the interesting part. The advantage used to be knowing how to build. Now AI can handle a huge part of the building.</p>
             
             <div className="bg-neutral-100/50 dark:bg-neutral-900/30 p-8 rounded-3xl border border-neutral-200/50 dark:border-neutral-800/50 mt-4">
-              <p className="font-semibold text-neutral-900 dark:text-white mb-6">If you want your websites to stand out, you need to understand:</p>
+              <p className="text-xl text-neutral-900 dark:text-white mb-6">
+                The advantage is increasingly becoming <strong className="font-bold">knowing what good looks like.</strong>
+              </p>
               <ul className="flex flex-col gap-4">
                 {[
-                  "How to give AI the right direction before it starts building",
-                  "How to create a strong visual system instead of accepting generic defaults",
-                  "How to recognise the patterns that make websites feel AI-generated",
-                  "How to use AI as a creative partner instead of blindly accepting its decisions",
-                  "How to refine AI-generated websites until they actually feel designed",
-                  "How to build a repeatable process you can use on your next project"
+                  "Knowing when the typography is wrong.",
+                  "Knowing when the spacing feels lazy.",
+                  "Knowing why the hero section isn't working.",
+                  "Knowing when the AI has made the obvious choice.",
+                  "And, more importantly, knowing what to tell it to do next."
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <CheckCircle2 className="w-5 h-5 text-neutral-900 dark:text-white shrink-0 mt-0.5" />
@@ -123,6 +124,7 @@ const EscapeAISlop = () => {
                   </li>
                 ))}
               </ul>
+              <p className="mt-6 text-neutral-900 dark:text-white font-medium">That's the skill <strong className="font-bold">Escape AI Slop</strong> is built around.</p>
             </div>
           </motion.div>
         </motion.section>
@@ -137,45 +139,58 @@ const EscapeAISlop = () => {
         >
           <motion.div variants={fadeUp} className="text-center max-w-2xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6 uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
-              Stop accepting the first thing AI gives you.
+              You've probably seen it.
             </h2>
             <p className="text-lg text-neutral-500 dark:text-neutral-400 font-light">
-              The first version is rarely the best version. AI will happily give you generic layouts and call it "modern." You don't have to accept it.
+              It looks impressive for about five seconds. Then you realise you've seen the exact same website twenty times this month.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <motion.div variants={fadeUp} className="flex flex-col gap-4">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 relative group">
-                <div className="absolute inset-0 bg-red-500/20 mix-blend-overlay z-10"></div>
+                <div className="absolute inset-0 bg-red-500/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-colors"></div>
                 <img src="/products/ai-slop-gradient.jpg" alt="Generic AI Gradient Hero" className="w-full h-full object-cover" />
                 <div className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-lg z-20">SLOP</div>
               </div>
-              <h3 className="font-bold text-neutral-900 dark:text-white uppercase text-sm tracking-widest">A gradient hero</h3>
+              <div className="text-sm text-neutral-500 dark:text-neutral-400 flex flex-col gap-1">
+                <p>A huge headline.</p>
+                <p>A dark background.</p>
+                <p>A glowing gradient.</p>
+              </div>
             </motion.div>
             
             <motion.div variants={fadeUp} className="flex flex-col gap-4">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 relative group">
-                 <div className="absolute inset-0 bg-red-500/20 mix-blend-overlay z-10"></div>
+                 <div className="absolute inset-0 bg-red-500/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-colors"></div>
                 <img src="/products/ai-slop-cards.jpg" alt="Generic AI Rounded Cards" className="w-full h-full object-cover" />
                 <div className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-lg z-20">SLOP</div>
               </div>
-              <h3 className="font-bold text-neutral-900 dark:text-white uppercase text-sm tracking-widest">Three rounded cards</h3>
+              <div className="text-sm text-neutral-500 dark:text-neutral-400 flex flex-col gap-1">
+                <p>Three cards underneath.</p>
+                <p>“Empowering the future of…”</p>
+              </div>
             </motion.div>
 
             <motion.div variants={fadeUp} className="flex flex-col gap-4">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 relative group">
-                 <div className="absolute inset-0 bg-red-500/20 mix-blend-overlay z-10"></div>
+                 <div className="absolute inset-0 bg-red-500/10 mix-blend-overlay z-10 group-hover:bg-transparent transition-colors"></div>
                 <img src="/products/ai-slop-dashboard.jpg" alt="Generic AI Dashboard" className="w-full h-full object-cover" />
                 <div className="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded shadow-lg z-20">SLOP</div>
               </div>
-              <h3 className="font-bold text-neutral-900 dark:text-white uppercase text-sm tracking-widest">A floating dashboard mockup</h3>
+              <div className="text-sm text-neutral-500 dark:text-neutral-400 flex flex-col gap-1">
+                <p>A floating dashboard.</p>
+                <p>Some smooth animations.</p>
+              </div>
             </motion.div>
           </div>
 
-          <motion.div variants={fadeUp} className="text-center mt-8">
+          <motion.div variants={fadeUp} className="text-center mt-8 max-w-3xl mx-auto flex flex-col gap-4 text-lg text-neutral-500 dark:text-neutral-400">
+             <p>
+               That's what happens when you give AI the responsibility of making the creative decisions. <strong className="text-neutral-900 dark:text-white">It gives you what it has learned works.</strong>
+             </p>
              <p className="text-xl font-medium text-neutral-900 dark:text-white">
-               Escape AI Slop teaches you how to see the difference between something AI can generate and something worth shipping.
+               Your job is to develop the judgement to know when that's good enough—and when it isn't.
              </p>
           </motion.div>
         </motion.section>
@@ -189,23 +204,23 @@ const EscapeAISlop = () => {
           className="w-full flex flex-col gap-12 pt-20 border-t border-neutral-200 dark:border-neutral-800"
         >
           <motion.div variants={fadeUp} className="flex items-baseline gap-4 mb-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
-             <h2 className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase">
-                What You'll Learn
+             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+                This is what I want you to learn.
               </h2>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { num: "01", title: "Think Before You Prompt", desc: "Learn how to establish the strategy, structure and creative direction before asking AI to start building." },
-              { num: "02", title: "Build a Design System", desc: "Stop relying on AI's default visual decisions. Create the rules for typography, colour, spacing, layout and components." },
-              { num: "03", title: "Direct AI Properly", desc: "Learn how to communicate your intent to AI coding tools so you're not constantly fighting with the output." },
-              { num: "04", title: "Recognise AI Slop", desc: "Understand the visual patterns, design decisions and copy that instantly make a website feel generic." },
-              { num: "05", title: "Refine Instead of Accepting", desc: "Learn how to critique an AI-generated website and systematically push it toward something more intentional." },
-              { num: "06", title: "Build Your Own Process", desc: "Turn what you've learned into a repeatable workflow you can use again and again for future websites." }
+              { num: "01", title: "HOW TO THINK BEFORE YOU BUILD", desc: "The quality of your final website is heavily influenced by what happens before you open your AI coding tool. Learn how to think through structure, content, and visual direction." },
+              { num: "02", title: "HOW TO GIVE AI BETTER DIRECTION", desc: "AI is incredibly good at executing instructions. The problem is that most people give it terrible instructions. Learn how to structure your inputs for better decisions." },
+              { num: "03", title: "HOW TO CREATE A DESIGN SYSTEM AI CAN ACTUALLY FOLLOW", desc: "Typography. Colour. Spacing. Layout. Components. Motion. Establish these decisions deliberately and use them as the foundation for your build." },
+              { num: "04", title: "HOW TO SPOT AI SLOP", desc: "You'll start seeing it everywhere. The predictable layouts. The unnecessary gradients. The strange spacing. The generic copy. Once you know, you'll never see it the same way again." },
+              { num: "05", title: "HOW TO CRITIQUE WHAT AI BUILDS", desc: "This might be the most important part. AI will give you something. Is it good? Learn how to identify what's weakening the design and give direction for the next iteration." },
+              { num: "06", title: "HOW TO BUILD FASTER WITHOUT LOWERING YOUR STANDARD", desc: "The goal isn't to fight AI. The goal is to get really good at working with it. Move from idea to refinement much faster, without handing your taste over to a chatbot." }
             ].map((module, i) => (
-              <motion.div key={i} variants={fadeUp} className="flex flex-col gap-4 p-8 rounded-3xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm">
+              <motion.div key={i} variants={fadeUp} className="flex flex-col gap-4 p-8 rounded-3xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-md transition-shadow">
                 <span className="text-2xl font-bold text-neutral-300 dark:text-neutral-700 font-mono">{module.num}</span>
-                <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">{module.title}</h3>
+                <h3 className="text-lg font-bold text-neutral-900 dark:text-white">{module.title}</h3>
                 <p className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed text-sm">
                   {module.desc}
                 </p>
@@ -214,7 +229,153 @@ const EscapeAISlop = () => {
           </div>
         </motion.section>
 
-        {/* WHO IT'S FOR */}
+        {/* THE OFFER - BOOK & BONUSES */}
+        <motion.section 
+          id="pricing"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={stagger}
+          className="w-full flex flex-col gap-12 pt-20 border-t border-neutral-200 dark:border-neutral-800"
+        >
+          {/* Main Book */}
+          <motion.div variants={fadeUp} className="bg-neutral-900 dark:bg-white text-white dark:text-black rounded-3xl p-8 md:p-12 border border-transparent shadow-2xl flex flex-col md:flex-row gap-8 items-center">
+             <div className="flex-1 flex flex-col gap-6">
+                <span className="text-sm font-bold tracking-widest uppercase opacity-70">The Book</span>
+                <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>ESCAPE AI SLOP</h2>
+                <h3 className="text-xl font-medium opacity-90">How to Build Websites With AI That Actually Look Designed.</h3>
+                <p className="opacity-80 font-light leading-relaxed text-sm md:text-base">
+                  This is the complete framework I use to think about building websites in the age of AI. Inside, we'll go through the thinking, the process, the prompts, the design decisions and the refinement required to turn AI's first attempt into something worth putting your name on.
+                </p>
+             </div>
+             <div className="flex-none">
+                <a href="#checkout" className="inline-flex items-center gap-2 px-8 py-4 bg-white dark:bg-black text-black dark:text-white text-sm font-bold rounded-[14px] hover:scale-105 transition-transform">
+                  GET THE BOOK — ₦20,000
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+             </div>
+          </motion.div>
+
+          <motion.div variants={fadeUp} className="text-center max-w-2xl mx-auto my-12">
+            <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+              And because reading a book isn't the same as actually building...
+            </h2>
+            <p className="mt-4 text-neutral-500 dark:text-neutral-400">
+              I've put together the resources I wish existed when I started figuring this out.
+            </p>
+          </motion.div>
+
+          {/* Bonuses */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { title: "THE AI WEBSITE PROMPT LIBRARY", desc: "A growing library of prompts you can use throughout the website-building process. From figuring out your structure to refining the interface.", highlight: "You don't have to start from a blank chat." },
+              { title: "THE FIRST PROMPT", desc: "The prompt that gets the whole process moving. Give your AI coding tool the right context from the beginning and start your build from a much stronger foundation.", highlight: "Copy. Paste. Build." },
+              { title: "THE ANTI-SLOP CHECKLIST", desc: "Your final website needs a last pass. This checklist gives you the questions to ask before you ship: Typography? Rhythm? Human copy?", highlight: "Use it before you call the website finished." },
+              { title: "WEBSITE BRIEF + DESIGN SYSTEM TEMPLATES", desc: "Don't open your AI coding tool with: 'Build me a website for my business.' These templates help you define structure, visual direction and design system.", highlight: "Start with a proper brief." },
+              { title: "50 RULES FOR BETTER AI WEBSITES", desc: "A short reference guide containing the principles I keep coming back to when designing and building with AI.", highlight: "Keep it beside you while you work." },
+              { title: "AI WEBSITE TEARDOWNS", desc: "This is where the theory gets interesting. We'll take AI-generated websites and break them down. What's working? What's generic? What would I tell the AI?", highlight: "How do you get from 'okay' to 'actually good'?" }
+            ].map((bonus, i) => (
+              <motion.div key={i} variants={fadeUp} className="flex flex-col gap-4 p-8 rounded-3xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm">
+                <h3 className="text-lg font-bold text-neutral-900 dark:text-white uppercase">{bonus.title}</h3>
+                <p className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed text-sm">
+                  {bonus.desc}
+                </p>
+                <p className="font-semibold text-neutral-900 dark:text-white text-sm mt-auto pt-4 border-t border-neutral-100 dark:border-neutral-800/50">
+                  {bonus.highlight}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Live Sessions & Community */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+            <motion.div variants={fadeUp} className="flex flex-col gap-6 p-8 md:p-10 rounded-3xl bg-neutral-100/50 dark:bg-neutral-900/30 border border-neutral-200 dark:border-neutral-800">
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white uppercase">Then We Build Together.<br/><span className="text-pink-500">4 Live AI Website Build Sessions</span></h3>
+              <p className="text-neutral-500 dark:text-neutral-400 font-light text-sm">
+                Because sometimes the easiest way to understand a process is to watch someone actually do it. We'll go through the process together:
+              </p>
+              <ul className="flex flex-col gap-2 font-mono text-xs md:text-sm text-neutral-700 dark:text-neutral-300">
+                <li>01 — Idea → Strategy</li>
+                <li>02 — Strategy → Design Direction</li>
+                <li>03 — Design → AI Build</li>
+                <li>04 — AI Build → Final Polish</li>
+              </ul>
+              <p className="text-sm font-medium text-neutral-900 dark:text-white mt-auto">
+                You'll get the recordings too, so you can come back to them whenever you're building your next project.
+              </p>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="flex flex-col gap-6 p-8 md:p-10 rounded-3xl bg-neutral-100/50 dark:bg-neutral-900/30 border border-neutral-200 dark:border-neutral-800">
+              <h3 className="text-xl font-bold text-neutral-900 dark:text-white uppercase">And You Won't Have To Figure It Out Alone.<br/><span className="text-blue-500">The Escape AI Slop Community</span></h3>
+              <p className="text-neutral-500 dark:text-neutral-400 font-light text-sm">
+                A private space for people learning to build with AI. Share what you're working on. Ask questions. Share prompts. Get feedback. See what other people are building.
+              </p>
+              <p className="text-sm font-medium text-neutral-900 dark:text-white mt-auto">
+                Because the more you build, the better your eye gets.
+              </p>
+            </motion.div>
+          </div>
+        </motion.section>
+
+        {/* PRICING TABLE / VALUE STACK */}
+        <motion.section 
+          id="checkout"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={stagger}
+          className="w-full pt-20 border-t border-neutral-200 dark:border-neutral-800"
+        >
+          <motion.div variants={fadeUp} className="w-full max-w-3xl mx-auto bg-white dark:bg-[#111111] border-2 border-neutral-900 dark:border-white rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-2 bg-neutral-900 dark:bg-white"></div>
+            
+            <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-10 tracking-tight uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+              Here's Everything You Get
+            </h2>
+
+            <div className="flex flex-col gap-4 mb-10 border-l-2 border-neutral-100 dark:border-neutral-800 pl-6">
+              {[
+                ["Escape AI Slop", "The complete book."],
+                ["AI Website Prompt Library", "Ready-to-use prompts for the entire workflow."],
+                ["The First Prompt", "Your starting point for AI-assisted website building."],
+                ["Anti-Slop Checklist", "A final quality-control pass for your website."],
+                ["Website Brief + Templates", "Reusable tools for planning your projects."],
+                ["50 Rules for Better AI Websites", "The principles worth keeping close."],
+                ["AI Website Teardowns", "Real examples. Real critique. Real improvements."],
+                ["4 Live Build Sessions", "Watch the process from beginning to end."],
+                ["Private Community", "Build, share and learn with other people doing the same thing."]
+              ].map(([title, desc], i) => (
+                <div key={i} className="flex flex-col gap-1">
+                  <h4 className="font-bold text-neutral-900 dark:text-white text-base">{title}</h4>
+                  <p className="text-sm text-neutral-500 dark:text-neutral-400 font-light">{desc}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="pt-8 border-t border-neutral-200 dark:border-neutral-800">
+              <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-white mb-4 tracking-tight">
+                ₦20,000
+              </h2>
+              <h3 className="text-xl font-medium text-neutral-900 dark:text-white mb-6">
+                One book. A complete system for building better with AI.
+              </h3>
+
+              <div className="flex flex-col gap-4 text-neutral-500 dark:text-neutral-400 font-light mb-8 text-sm md:text-base">
+                <p>You can spend the next year opening a new AI chat every time you want to build something.</p>
+                <p>Or you can develop a process you can keep using.</p>
+                <p className="font-semibold text-neutral-900 dark:text-white">Get Escape AI Slop for ₦20,000.</p>
+              </div>
+
+              <a href="#" className="inline-flex items-center gap-2 px-10 py-5 bg-neutral-900 dark:bg-white text-white dark:text-black text-lg font-bold rounded-[16px] hover:scale-105 transition-transform w-full justify-center">
+                GET ACCESS NOW
+                <ArrowUpRight className="w-5 h-5" />
+              </a>
+              <p className="text-sm text-neutral-400 mt-4 text-center">Instant access to the book and all included resources.</p>
+            </div>
+          </motion.div>
+        </motion.section>
+
+        {/* WHO IS THIS FOR? */}
         <motion.section 
           initial="hidden"
           whileInView="visible"
@@ -222,166 +383,74 @@ const EscapeAISlop = () => {
           variants={stagger}
           className="w-full flex flex-col lg:flex-row gap-12 pt-20 border-t border-neutral-200 dark:border-neutral-800"
         >
-          <div className="flex-1 flex flex-col gap-8 bg-neutral-100/50 dark:bg-neutral-900/30 p-8 md:p-12 rounded-3xl border border-neutral-200 dark:border-neutral-800">
-            <h3 className="text-2xl font-bold text-neutral-900 dark:text-white">This is for you if...</h3>
-            <ul className="flex flex-col gap-4">
-              {[
-                "You want to build websites with AI but don't want them to look like AI built them.",
-                "You are a designer who wants to use AI without sacrificing your taste.",
-                "You are a developer who wants to produce better-looking interfaces.",
-                "You run a business and want to understand how modern AI website creation actually works.",
-                "You are a freelancer who wants to build better websites, faster.",
-                "You are learning AI coding tools and want a process instead of endless trial and error."
-              ].map((text, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-neutral-900 dark:text-white shrink-0 mt-0.5" />
-                  <span className="text-neutral-600 dark:text-neutral-300 font-light">{text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="flex-1 flex flex-col gap-8 bg-red-50 dark:bg-red-950/20 p-8 md:p-12 rounded-3xl border border-red-100 dark:border-red-900/30">
-            <h3 className="text-2xl font-bold text-red-900 dark:text-red-400">This is NOT for you if...</h3>
-            <ul className="flex flex-col gap-4">
-              {[
-                "You want a magic prompt that produces a perfect website with zero thinking.",
-                "You don't care what your website looks like as long as it technically works.",
-                "You're looking for another collection of generic '10 prompts to build a website' tricks.",
-                "You want AI to make every creative decision for you."
-              ].map((text, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <XCircle className="w-5 h-5 text-red-600 dark:text-red-500 shrink-0 mt-0.5" />
-                  <span className="text-red-900/70 dark:text-red-300/70 font-light">{text}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-4 font-medium text-red-900 dark:text-red-400 italic">
-              This book is about becoming better at directing AI — not becoming dependent on it.
-            </p>
-          </div>
-        </motion.section>
-
-        {/* THE OFFER */}
-        <motion.section 
-          id="pricing"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={stagger}
-          className="w-full flex flex-col items-center pt-20 border-t border-neutral-200 dark:border-neutral-800"
-        >
-          <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-12 text-center uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
-            What You Get
-          </motion.h2>
-
-          <div className="w-full max-w-3xl flex flex-col gap-4 mb-16">
-            {[
-              { title: "THE ESCAPE AI SLOP BOOK", desc: "The complete guide to building intentional, polished websites with AI.", val: "₦20,000", main: true },
-              { title: "BONUS #1 — THE AI WEBSITE PROMPT LIBRARY", desc: "A curated collection of prompts covering the different stages of the website-building process.", val: "₦15,000" },
-              { title: "BONUS #2 — THE ANTI-SLOP CHECKLIST", desc: "A practical checklist for reviewing your website before you ship it.", val: "₦5,000" },
-              { title: "BONUS #3 — WEBSITE BRIEF + DESIGN SYSTEM TEMPLATES", desc: "Reusable templates for planning your website before you start building.", val: "₦10,000" },
-              { title: "BONUS #4 — THE FIRST PROMPT", desc: "The starting framework for taking your website idea and giving your AI coding tool everything it needs to begin intelligently.", val: "₦5,000" },
-              { title: "BONUS #5 — 50 RULES FOR BETTER AI WEBSITES", desc: "A quick-reference guide to the principles that separate intentional websites from AI-generated noise.", val: "₦5,000" },
-              { title: "BONUS #6 — AI WEBSITE TEARDOWNS", desc: "See real examples of AI-generated design, understand what's wrong with them, and learn how to improve them.", val: "₦10,000" },
-              { title: "BONUS #7 — 4 LIVE AI WEBSITE BUILD SESSIONS", desc: "Follow along as we go from idea → strategy → design → AI build → final polish. You'll also receive the recordings.", val: "₦20,000" },
-              { title: "BONUS #8 — THE ESCAPE AI SLOP COMMUNITY", desc: "A private community for sharing your work, asking questions, getting feedback and learning alongside other people building with AI.", val: "₦10,000" }
-            ].map((item, i) => (
-              <motion.div key={i} variants={fadeUp} className={`flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-6 rounded-2xl border ${item.main ? 'bg-neutral-900 dark:bg-white text-white dark:text-black border-transparent' : 'bg-white dark:bg-[#111111] border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white'}`}>
-                <div className="flex flex-col gap-1">
-                  <h4 className="font-bold text-lg">{item.title}</h4>
-                  <p className={`text-sm ${item.main ? 'text-neutral-300 dark:text-neutral-700' : 'text-neutral-500 dark:text-neutral-400'}`}>{item.desc}</p>
-                </div>
-                <div className={`font-mono font-bold whitespace-nowrap ${item.main ? 'text-white dark:text-black' : 'text-neutral-400 dark:text-neutral-600 line-through'}`}>
-                  Value: {item.val}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div variants={fadeUp} className="w-full max-w-2xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 rounded-[2rem] p-8 md:p-12 text-center shadow-2xl relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-2 bg-neutral-900 dark:bg-white"></div>
-            
-            <h3 className="text-xl md:text-2xl text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase mb-4">
-              Total Value: <span className="line-through">₦80,000+</span>
-            </h3>
-            <h2 className="text-5xl md:text-7xl font-bold text-neutral-900 dark:text-white mb-8 tracking-tight">
-              ₦20,000
-            </h2>
-
-            <div className="flex flex-col gap-4 text-neutral-600 dark:text-neutral-300 font-light mb-10">
-              <p>You could spend months figuring this out through trial and error.</p>
-              <p>You could spend thousands hiring someone to build every website for you.</p>
-              <p className="font-medium text-neutral-900 dark:text-white">Or you could learn the process once and use it every time you build.</p>
-            </div>
-
-            <a href="#" className="inline-flex items-center gap-2 px-10 py-5 bg-neutral-900 dark:bg-white text-white dark:text-black text-lg font-bold rounded-[16px] hover:scale-105 transition-transform w-full justify-center">
-              GET ACCESS NOW
-              <ArrowUpRight className="w-5 h-5" />
-            </a>
-            <p className="text-sm text-neutral-400 mt-4">Instant access.</p>
-          </motion.div>
-        </motion.section>
-
-        {/* FINAL PITCH & AUTHOR */}
-        <motion.section 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={stagger}
-          className="w-full flex flex-col md:flex-row gap-16 pt-20 border-t border-neutral-200 dark:border-neutral-800"
-        >
           <div className="flex-1 flex flex-col gap-6">
-            <h2 className="text-3xl font-bold text-neutral-900 dark:text-white mb-4 uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
-              What You're Really Buying
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+              Who is this for?
             </h2>
-            <div className="text-lg text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-4">
-              <p>You're not buying another ebook. You're buying a <strong className="text-neutral-900 dark:text-white font-medium">better way to build.</strong></p>
-              <p>A way to use AI without allowing AI to dictate your taste. A way to move faster without producing generic work.</p>
-              <p>A way to go from:</p>
-              <blockquote className="border-l-4 border-neutral-200 dark:border-neutral-800 pl-4 py-2 italic font-serif text-neutral-400">
-                "AI made this website."
-              </blockquote>
-              <p>to:</p>
+            <div className="text-lg text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-6">
+              <p>This is for you if you've started using AI to build websites and thought:</p>
               <blockquote className="border-l-4 border-neutral-900 dark:border-white pl-4 py-2 italic font-serif text-neutral-900 dark:text-white font-medium text-xl">
-                "Wait… AI made this?"
+                "Why does mine look like this?"
               </blockquote>
+              <ul className="flex flex-col gap-4">
+                {[
+                  "It's for designers figuring out how their craft changes when AI can write the code.",
+                  "It's for developers who want their interfaces to feel considerably more considered.",
+                  "It's for freelancers who want to produce better websites in less time.",
+                  "It's for founders who want to understand what AI can actually do for their business."
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <CheckCircle2 className="w-5 h-5 text-neutral-900 dark:text-white shrink-0 mt-0.5" />
+                    <span className="text-neutral-600 dark:text-neutral-300">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="font-medium text-neutral-900 dark:text-white bg-neutral-100/50 dark:bg-neutral-900/30 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                And it's for anyone who's realised that <strong className="font-bold">having access to the tools is becoming less valuable than knowing how to use them well.</strong>
+              </p>
             </div>
           </div>
 
-          <div className="flex-1 bg-neutral-100/50 dark:bg-neutral-900/30 rounded-3xl p-8 md:p-10 border border-neutral-200 dark:border-neutral-800">
-            <h3 className="text-sm text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase mb-6">
-              About the Author
-            </h3>
-            <div className="flex items-center gap-6 mb-8">
-              <img src="/profile.jpg" alt="Ore Okunade" className="w-20 h-20 rounded-full object-cover grayscale border border-neutral-200 dark:border-neutral-700" />
-              <div>
-                <h4 className="text-xl font-bold text-neutral-900 dark:text-white">Ore Okunade</h4>
-                <p className="text-neutral-500 text-sm">Product Design Engineer</p>
-              </div>
-            </div>
-            <div className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-4 text-sm md:text-base">
-              <p>I'm a product designer and technology builder who has spent years thinking about how products, interfaces and technology come together.</p>
-              <p>I've watched AI completely change the way websites can be built. And I've also watched it create an entirely new category of mediocre websites.</p>
-              <p><strong className="text-neutral-900 dark:text-white font-medium">Escape AI Slop is my attempt to solve that problem.</strong></p>
-              <p>Not by telling you to stop using AI. But by showing you how to use it better.</p>
-            </div>
+          <div className="flex-1 flex flex-col gap-6 bg-white dark:bg-[#111111] p-8 md:p-12 rounded-3xl border border-neutral-200 dark:border-neutral-800 shadow-lg relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-32 h-32 bg-pink-500/10 dark:bg-pink-500/5 rounded-bl-[100px] pointer-events-none"></div>
+             
+             <h2 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase mb-2">
+              One Last Thing.
+             </h2>
+             <div className="text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-4 text-sm md:text-base z-10">
+                <p>AI is going to keep getting better. The tools will improve. The models will get smarter. The prompts will get easier. Building a website will become even more accessible.</p>
+                <p>That's great.</p>
+                <p>But when everyone has access to the same tools, <strong className="text-neutral-900 dark:text-white font-medium">your judgement becomes the differentiator.</strong></p>
+                <ul className="pl-4 border-l-2 border-neutral-200 dark:border-neutral-700 flex flex-col gap-1">
+                  <li>Your taste.</li>
+                  <li>Your ability to recognise what works.</li>
+                  <li>Your ability to ask better questions.</li>
+                  <li>Your ability to take the first version and keep going until it's right.</li>
+                </ul>
+                <p>That's what I want you to get from this book.</p>
+                <p className="text-lg font-bold text-neutral-900 dark:text-white mt-4 leading-tight">
+                  The ability to build with AI without letting AI decide what good looks like.
+                </p>
+             </div>
           </div>
         </motion.section>
 
       </main>
 
       {/* Footer */}
-      <footer className="bg-white dark:bg-[#111111] py-12 border-t border-neutral-200 dark:border-neutral-800">
+      <footer className="bg-white dark:bg-black py-16 border-t border-neutral-200 dark:border-neutral-800">
         <div className="max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col items-center text-center gap-6">
-           <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase max-w-2xl" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
-              Your website doesn't have to look like every other AI website.
+           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase max-w-2xl" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+              Your Website Looks AI-Generated.
             </h2>
-            <p className="text-neutral-500 dark:text-neutral-400 mb-4">
-              AI has lowered the barrier to building. Now the advantage is knowing what deserves to be built.
+            <p className="text-xl text-neutral-500 dark:text-neutral-400 font-medium">
+              Here's How to Fix It.
             </p>
-            <a href="#pricing" className="inline-flex items-center gap-2 px-8 py-4 bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-semibold rounded-[14px] hover:scale-105 transition-transform">
-              GET THE BOOK + ALL BONUSES
+            <p className="text-lg font-bold text-neutral-900 dark:text-white mt-4">
+              Escape AI Slop — ₦20,000
+            </p>
+            <a href="#checkout" className="inline-flex items-center gap-2 px-8 py-4 bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-semibold rounded-[14px] hover:scale-105 transition-transform mt-4">
+              GET THE BOOK + COMPLETE TOOLKIT
               <ArrowUpRight className="w-4 h-4" />
             </a>
             <p className="text-sm text-neutral-400 mt-8">© {new Date().getFullYear()} Oreoluwa Okunade. All rights reserved.</p>
