@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import '@fontsource/stack-sans-text/400.css';
+import '@fontsource/stack-sans-text/500.css';
+import '@fontsource/stack-sans-text/600.css';
+import '@fontsource-variable/bricolage-grotesque';
 import { BrowserRouter } from 'react-router-dom';
 import '@fontsource-variable/mona-sans';
 import App from './App';
