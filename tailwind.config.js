@@ -14,6 +14,7 @@ export default {
         serif: ['"Cormorant Garamond"', 'serif'],
         mono: ['JetBrains Mono', 'monospace'],
         display: ['Rajdhani', 'sans-serif'],
+        heading: ['"Bricolage Grotesk"', 'sans-serif'],
       },
       colors: {
         neutral: {

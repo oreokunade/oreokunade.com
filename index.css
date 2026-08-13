@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Mona Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Stack Sans", "Inter", system-ui, sans-serif;
+  --font-heading: "Bricolage Grotesk", sans-serif;
 }
 
 body {
@@ -26,7 +27,8 @@ body {
   animation: ambient-shift 15s ease-in-out infinite;
 }
 
-h1, h2, h3 {
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
   letter-spacing: -0.05em;
 }
 

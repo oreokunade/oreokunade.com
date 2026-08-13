@@ -50,8 +50,8 @@ const EscapeAISlop = () => {
         >
           <div className="flex-1 flex flex-col gap-6">
             <motion.div variants={fadeUp}>
-              <h1 style={{ fontFamily: "'Saira Condensed', sans-serif", lineHeight: "1.05" }} className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 uppercase">
-                Your Website Looks <span style={{ fontFamily: "'Cormorant Garamond', serif" }} className="italic font-medium text-pink-500 lowercase text-[1.1em]">AI-Generated.</span>
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-neutral-900 dark:text-white mb-4 uppercase">
+                Your Website Looks <span className="text-pink-500">AI-Generated.</span>
               </h1>
               <h2 className="text-2xl md:text-4xl text-neutral-500 dark:text-neutral-400 font-semibold tracking-tight">
                 Here's How to Fix It.
@@ -98,7 +98,7 @@ const EscapeAISlop = () => {
           variants={stagger}
           className="flex flex-col items-center text-center max-w-3xl mx-auto border-t border-neutral-200 dark:border-neutral-800 pt-20"
         >
-          <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-8 uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+          <motion.h2 variants={fadeUp} className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-8 uppercase">
             AI didn't kill good design.
           </motion.h2>
           
@@ -138,7 +138,7 @@ const EscapeAISlop = () => {
           className="w-full flex flex-col gap-12 pt-20 border-t border-neutral-200 dark:border-neutral-800"
         >
           <motion.div variants={fadeUp} className="text-center max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6 uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white mb-6 uppercase">
               You've probably seen it.
             </h2>
             <p className="text-lg text-neutral-500 dark:text-neutral-400 font-light">
@@ -204,7 +204,7 @@ const EscapeAISlop = () => {
           className="w-full flex flex-col gap-12 pt-20 border-t border-neutral-200 dark:border-neutral-800"
         >
           <motion.div variants={fadeUp} className="flex items-baseline gap-4 mb-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
-             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+             <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase">
                 This is what I want you to learn.
               </h2>
           </motion.div>
@@ -242,7 +242,7 @@ const EscapeAISlop = () => {
           <motion.div variants={fadeUp} className="bg-neutral-900 dark:bg-white text-white dark:text-black rounded-3xl p-8 md:p-12 border border-transparent shadow-2xl flex flex-col md:flex-row gap-8 items-center">
              <div className="flex-1 flex flex-col gap-6">
                 <span className="text-sm font-bold tracking-widest uppercase opacity-70">The Book</span>
-                <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>ESCAPE AI SLOP</h2>
+                <h2 className="text-4xl md:text-5xl font-bold uppercase tracking-tight">ESCAPE AI SLOP</h2>
                 <h3 className="text-xl font-medium opacity-90">How to Build Websites With AI That Actually Look Designed.</h3>
                 <p className="opacity-80 font-light leading-relaxed text-sm md:text-base">
                   This is the complete framework I use to think about building websites in the age of AI. Inside, we'll go through the thinking, the process, the prompts, the design decisions and the refinement required to turn AI's first attempt into something worth putting your name on.
@@ -257,7 +257,7 @@ const EscapeAISlop = () => {
           </motion.div>
 
           <motion.div variants={fadeUp} className="text-center max-w-2xl mx-auto my-12">
-            <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+            <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase">
               And because reading a book isn't the same as actually building...
             </h2>
             <p className="mt-4 text-neutral-500 dark:text-neutral-400">
@@ -329,7 +329,7 @@ const EscapeAISlop = () => {
           <motion.div variants={fadeUp} className="w-full max-w-3xl mx-auto bg-white dark:bg-[#111111] border-2 border-neutral-900 dark:border-white rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-2 bg-neutral-900 dark:bg-white"></div>
             
-            <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-10 tracking-tight uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+            <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-white mb-10 tracking-tight uppercase">
               Here's Everything You Get
             </h2>
 
@@ -384,7 +384,7 @@ const EscapeAISlop = () => {
           className="w-full flex flex-col lg:flex-row gap-12 pt-20 border-t border-neutral-200 dark:border-neutral-800"
         >
           <div className="flex-1 flex flex-col gap-6">
-            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase">
               Who is this for?
             </h2>
             <div className="text-lg text-neutral-500 dark:text-neutral-400 font-light leading-relaxed flex flex-col gap-6">
@@ -440,7 +440,7 @@ const EscapeAISlop = () => {
       {/* Footer */}
       <footer className="bg-white dark:bg-black py-16 border-t border-neutral-200 dark:border-neutral-800">
         <div className="max-w-[1200px] mx-auto px-6 md:px-12 flex flex-col items-center text-center gap-6">
-           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase max-w-2xl" style={{ fontFamily: "'Saira Condensed', sans-serif" }}>
+           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-white uppercase max-w-2xl">
               Your Website Looks AI-Generated.
             </h2>
             <p className="text-xl text-neutral-500 dark:text-neutral-400 font-medium">
