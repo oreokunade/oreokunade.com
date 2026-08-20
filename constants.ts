@@ -208,7 +208,7 @@ export const OFFERS = [
   },
   {
     title: "Consultation",
-    description: "Expert guidance on a product you're currently building or planning to build. Ask me anything about design engineering, web design, or product strategy."
+    description: "Strategic advisory on design engineering, technical scaling, and product roadmap alignment."
   }
 ];
 
