@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowUpRight, ArrowRight, Github, Twitter, Linkedin, Sparkles, Copy, Instagram, Code2, Layers, Cpu, MousePointer2, Terminal } from 'lucide-react';
+import { ArrowUpRight, ArrowRight, Github, Twitter, Linkedin, Sparkles, Copy, Instagram, Code2, Layers, Cpu, MousePointer2, Terminal, Search, MessageSquare } from 'lucide-react';
 import { FaEnvelope, FaBookOpen, FaFigma } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { WORKS, WRITING, SOCIAL_LINKS, OFFERS } from '../constants';
@@ -45,7 +45,7 @@ const stagger: any = {
 };
 
   return (
-    <div className="h-screen w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth bg-[#fcfbf8] dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative">
+    <div className="min-h-screen w-full overflow-x-hidden scroll-smooth bg-[#fcfbf8] dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative">
       
 
 
@@ -59,7 +59,7 @@ const stagger: any = {
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="min-h-screen w-full snap-start flex flex-col justify-center items-center text-center gap-6 md:gap-8 pt-24 pb-10 md:pt-32 md:pb-12"
+          className="min-h-screen w-full flex flex-col justify-center items-center text-center gap-6 md:gap-8 pt-24 pb-10 md:pt-32 md:pb-12"
         >
           <motion.div 
             variants={fadeUp}
@@ -149,25 +149,24 @@ const stagger: any = {
 
         {/* The Philosophy / When to Hire Me */}
         <motion.section 
-          id="services"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={stagger}
-          className="w-full snap-start border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
+          className="w-full border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
-            <motion.div variants={fadeUp} className="lg:col-span-5">
-              <h2 className="text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-white mb-6">
+          <div className="flex flex-col gap-12 md:gap-16">
+            <motion.div variants={fadeUp} className="max-w-3xl mx-auto text-center flex flex-col items-center">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight text-neutral-900 dark:text-white mb-6">
                 When is it ideal to partner with me?
               </h2>
-              <p className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
-                The traditional handoff from design to engineering is broken. A lot gets lost in translation. As a Product Design Engineer, I operate precisely at this intersection.
+              <p className="text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed font-light max-w-2xl mx-auto">
+                When you need someone who combines high-end aesthetic ability, deep technical understanding, and sharp product sense.
               </p>
             </motion.div>
 
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 h-full">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
                   <Layers className="w-5 h-5" />
                 </div>
@@ -177,7 +176,7 @@ const stagger: any = {
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 h-full">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
                   <Cpu className="w-5 h-5" />
                 </div>
@@ -187,44 +186,18 @@ const stagger: any = {
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 sm:col-span-2">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 h-full">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
                   <Code2 className="w-5 h-5" />
                 </div>
                 <h3 className="text-xl font-semibold text-neutral-900 dark:text-white">The Engineering Bridge</h3>
-                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm max-w-xl">
+                <p className="text-neutral-500 dark:text-neutral-400 leading-relaxed font-light text-sm">
                   I speak the language of software engineering. I collaborate seamlessly with backend and full-stack developers, architecting the UI layer so they can focus on core infrastructure.
                 </p>
               </motion.div>
             </div>
           </div>
         </motion.section>
-
-        {/* 2. Philosophy / Manifesto Section */}
-        <section 
-          id="about" 
-          className="w-full snap-start flex flex-col justify-center items-center py-20 md:py-24"
-        >
-          <div className="max-w-[800px] mx-auto px-6 md:px-12 w-full text-center">
-            <h2 className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase mb-6">
-              Philosophy & Vision
-            </h2>
-            <div className="flex flex-col gap-6 text-lg md:text-xl lg:text-2xl text-neutral-500 dark:text-neutral-400 font-light leading-relaxed md:leading-[2]">
-              <p>
-                My vision is simple: <span className="text-neutral-900 dark:text-white font-medium italic text-[1.05em]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>help people live focused, purposeful lives.</span> I'm doing this through{' '}
-                <a href="https://www.instagram.com/ore.okunade/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 px-3 py-0.5 rounded-full transition-all border border-neutral-200 dark:border-neutral-800 shadow-sm group align-middle mx-1 relative -top-[2px]">
-                  <Instagram className="w-[0.9em] h-[0.9em] text-neutral-400 group-hover:text-pink-500 transition-colors" />
-                  <span className="text-neutral-700 dark:text-neutral-200 font-medium text-[0.95em]">writing</span>
-                  <ArrowUpRight className="w-[0.8em] h-[0.8em] text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
-                </a>
-                , speaking, and a suite of products I'm building over the next couple of years, helping people lay aside the things that hinder them from becoming who they were made to be.
-              </p>
-              <p>
-                This vision also drives my design philosophy (simplicity).<br className="hidden md:block" /> My mantra: <strong className="text-neutral-700 dark:text-neutral-300 font-medium">complexity is easy, simplicity is hard.</strong> It's easy to add another button or feature. What's hard is asking what to take away. If an element doesn't actively serve the user, it gets cut. Strip the bloat, kill the friction, make the design invisible.
-              </p>
-            </div>
-          </div>
-        </section>
 
         {/* Selected Works */}
         <motion.section 
@@ -233,7 +206,7 @@ const stagger: any = {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={stagger}
-          className="w-full snap-start flex flex-col justify-center py-20 md:py-24"
+          className="w-full flex flex-col justify-center py-20 md:py-24"
         >
           <motion.div 
             variants={fadeUp}
@@ -265,15 +238,42 @@ const stagger: any = {
           </div>
         </motion.section>
 
+        {/* 2. Philosophy / Manifesto Section */}
+        <section 
+          id="about" 
+          className="w-full flex flex-col justify-center items-center py-20 md:py-24"
+        >
+          <div className="max-w-[800px] mx-auto px-6 md:px-12 w-full text-center">
+            <h2 className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase mb-6">
+              Philosophy & Vision
+            </h2>
+            <div className="flex flex-col gap-6 text-base md:text-lg lg:text-xl text-neutral-500 dark:text-neutral-400 font-light leading-relaxed md:leading-[2]">
+              <p>
+                My vision is simple: <span className="text-neutral-900 dark:text-white font-medium italic text-[1.05em]" style={{ fontFamily: "'Cormorant Garamond', serif" }}>help people live focused, purposeful lives.</span> I'm doing this through{' '}
+                <a href="https://www.instagram.com/ore.okunade/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-white dark:bg-neutral-900 hover:bg-neutral-50 dark:hover:bg-neutral-800 px-3 py-0.5 rounded-full transition-all border border-neutral-200 dark:border-neutral-800 shadow-sm group align-middle mx-1 relative -top-[2px]">
+                  <Instagram className="w-[0.9em] h-[0.9em] text-neutral-400 group-hover:text-pink-500 transition-colors" />
+                  <span className="text-neutral-700 dark:text-neutral-200 font-medium text-[0.95em]">writing</span>
+                  <ArrowUpRight className="w-[0.8em] h-[0.8em] text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
+                </a>
+                , speaking, and a suite of products I'm building over the next couple of years, helping people lay aside the things that hinder them from becoming who they were made to be.
+              </p>
+              <p>
+                This vision also drives my design philosophy (simplicity).<br className="hidden md:block" /> My mantra: <strong className="text-neutral-700 dark:text-neutral-300 font-medium">complexity is easy, simplicity is hard.</strong> It's easy to add another button or feature. What's hard is asking what to take away. If an element doesn't actively serve the user, it gets cut. Strip the bloat, kill the friction, make the design invisible.
+              </p>
+            </div>
+          </div>
+        </section>
+
 
 
         {/* Services */}
         <motion.section 
+          id="services"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
           variants={stagger}
-          className="w-full snap-start flex flex-col justify-center border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
+          className="w-full flex flex-col justify-center border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
         >
           <motion.div variants={fadeUp} className="flex items-baseline gap-4 mb-8 border-b border-neutral-200 dark:border-neutral-800 pb-4">
              <h2 className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase">
@@ -286,10 +286,18 @@ const stagger: any = {
               <motion.div 
                 key={index} 
                 variants={fadeUp}
-                className="flex flex-col p-8 md:p-10 rounded-3xl bg-neutral-50/50 dark:bg-neutral-900/20 border border-neutral-200/60 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500"
+                className="flex flex-col p-8 md:p-10 rounded-3xl bg-neutral-50/50 dark:bg-neutral-900/20 border border-neutral-200/60 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 group"
               >
-                <span className="text-xs font-semibold tracking-widest text-neutral-400 dark:text-neutral-600 mb-8">
+                <span className="text-xs font-semibold tracking-widest text-neutral-400 dark:text-neutral-600 mb-8 flex justify-between items-center w-full">
                   0{index + 1}
+                  <div className="w-8 h-8 rounded-full bg-white dark:bg-neutral-800 flex items-center justify-center border border-neutral-200 dark:border-neutral-700 shadow-sm text-neutral-900 dark:text-white group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                    {index === 0 && <Code2 className="w-4 h-4 group-hover:text-neutral-900 dark:group-hover:text-white" />}
+                    {index === 1 && <Layers className="w-4 h-4 group-hover:text-neutral-900 dark:group-hover:text-white" />}
+                    {index === 2 && <Cpu className="w-4 h-4 group-hover:text-neutral-900 dark:group-hover:text-white" />}
+                    {index === 3 && <Search className="w-4 h-4 group-hover:text-neutral-900 dark:group-hover:text-white" />}
+                    {index === 4 && <MessageSquare className="w-4 h-4 group-hover:text-neutral-900 dark:group-hover:text-white" />}
+                    {index > 4 && <ArrowUpRight className="w-4 h-4" />}
+                  </div>
                 </span>
                 
                 <h3 className="text-xl md:text-2xl font-semibold text-neutral-900 dark:text-white mb-3 tracking-tight">
@@ -305,11 +313,74 @@ const stagger: any = {
         </motion.section>
 
 
+        {/* The Process */}
+        <motion.section 
+          id="process"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={stagger}
+          className="w-full flex flex-col justify-center border-t border-neutral-200 dark:border-neutral-900 py-20 md:py-24"
+        >
+          <motion.div variants={fadeUp} className="flex items-baseline gap-4 mb-12 border-b border-neutral-200 dark:border-neutral-800 pb-4">
+             <h2 className="text-sm md:text-base text-neutral-500 dark:text-neutral-400 font-medium tracking-[0.2em] uppercase">
+                The Process
+              </h2>
+          </motion.div>
+
+          <div className="flex flex-col gap-8 md:gap-10 w-full max-w-3xl mx-auto">
+            {[
+              {
+                title: "Understand the Brief",
+                description: "We start by defining exactly what needs to be built and identifying the core constraints."
+              },
+              {
+                title: "AI Concepting",
+                description: "I use AI to rapidly generate structural ideas and wireframes, cycling through concepts in minutes."
+              },
+              {
+                title: "Figma Refinement",
+                description: "We move to Figma to establish a strict, beautiful design system (typography, colors, spacing)."
+              },
+              {
+                title: "AI Integration",
+                description: "The design system is fed directly into AI tools to ensure the code output matches the aesthetic standard."
+              },
+              {
+                title: "Rapid Building",
+                description: "I build the product fast, jumping back to Figma only for intricate micro-interactions or custom assets."
+              },
+              {
+                title: "Real-Time Iteration",
+                description: "You get to see and iterate on working software in hours, not weeks."
+              }
+            ].map((step, index) => (
+              <motion.div 
+                key={index} 
+                variants={fadeUp}
+                className="flex items-start gap-6 md:gap-8 group"
+              >
+                <span className="text-sm font-semibold tracking-widest text-neutral-400 dark:text-neutral-600 mt-1 shrink-0">
+                  0{index + 1}
+                </span>
+                
+                <div className="flex flex-col">
+                  <h3 className="text-lg md:text-xl font-medium text-neutral-900 dark:text-white mb-2 tracking-tight group-hover:text-neutral-700 dark:group-hover:text-neutral-300 transition-colors">
+                    {step.title}
+                  </h3>
+                  <p className="text-base md:text-lg text-neutral-500 dark:text-neutral-400 leading-relaxed font-light">
+                    {step.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.section>
 
       </div>
 
       {/* Footer CTA */}
-      <section className="snap-start border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-black relative overflow-hidden">
+      <section className="border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-black relative overflow-hidden">
         <div className="max-w-[1400px] mx-auto px-6 md:px-12 py-24 md:py-32 relative z-10">
           <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-medium text-neutral-900 dark:text-white mb-6 tracking-tight">
@@ -332,7 +403,7 @@ const stagger: any = {
       </section>
 
       {/* Infinite Marquee */}
-      <div className="snap-start w-full overflow-hidden border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-black py-6 md:py-8 flex relative">
+      <div className="w-full overflow-hidden border-t border-neutral-200 dark:border-neutral-800 bg-white dark:bg-black py-6 md:py-8 flex relative">
         <motion.div
           className="flex whitespace-nowrap shrink-0 items-center"
           animate={{ x: ["0%", "-50%"] }}
@@ -350,9 +421,25 @@ const stagger: any = {
       </div>
 
       {/* Footer */}
-      <footer className="snap-start bg-white dark:bg-black pb-12 pt-6">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6 text-sm text-neutral-400">
+      <footer className="bg-white dark:bg-black pb-12 pt-6">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 flex flex-col md:flex-row justify-between items-center gap-8 md:gap-6 text-sm text-neutral-400">
           <p>© {new Date().getFullYear()} Oreoluwa Okunade.</p>
+          
+          <div className="flex flex-wrap items-center justify-center gap-6 text-neutral-500 dark:text-neutral-400">
+            <span className="font-medium text-neutral-900 dark:text-white mr-2 hidden sm:inline-block">Connect with me:</span>
+            <a href="https://www.instagram.com/ore.okunade" target="_blank" rel="noopener noreferrer" className="hover:text-pink-500 transition-colors flex items-center gap-2 group">
+              <Instagram className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span>@ore.okunade</span>
+            </a>
+            <a href="https://linkedin.com/in/oreokunade" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500 transition-colors flex items-center gap-2 group">
+              <Linkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span>LinkedIn</span>
+            </a>
+            <a href={`mailto:${SOCIAL_LINKS.email}`} className="hover:text-neutral-900 dark:hover:text-white transition-colors flex items-center gap-2 group">
+              <FaEnvelope className="w-4 h-4 group-hover:scale-110 transition-transform" />
+              <span>Email</span>
+            </a>
+          </div>
         </div>
       </footer>
     </div>
