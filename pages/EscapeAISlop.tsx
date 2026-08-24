@@ -141,7 +141,7 @@ const EscapeAISlop = () => {
                     </div>
                   ))}
                 </div>
-                <span>Over 200+ people trained</span>
+                <span>Trusted by ambitious designers and founders</span>
               </div>
             </motion.div>
 
