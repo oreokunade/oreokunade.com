@@ -5,7 +5,7 @@ import { FaEnvelope } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import { WORKS, SOCIAL_LINKS } from '../constants';
 import PocketCard from '../components/PocketCard';
-import Navbar from '../components/Navbar';
+
 import PurchaseToast from '../components/PurchaseToast';
 
 const EscapeAISlop = () => {
@@ -83,7 +83,7 @@ const EscapeAISlop = () => {
 
   return (
     <div className="min-h-screen w-full bg-transparent dark:bg-transparent text-neutral-900 dark:text-neutral-100 font-sans selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative">
-      <Navbar />
+      
       
       {/* HERO SECTION */}
       <section className="w-full px-6 md:px-[100px] pt-[100px] md:pt-[132px] pb-16 md:pb-24 flex flex-col-reverse md:flex-row md:items-start justify-between gap-12 md:gap-16 max-w-[1600px] mx-auto">

@@ -5,6 +5,7 @@ import Store from './pages/Store';
 import CaseStudy from './pages/CaseStudy';
 import EscapeAISlop from './pages/EscapeAISlop';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const { pathname, hash } = useLocation();
@@ -22,12 +23,15 @@ const App = () => {
   }, [pathname, hash]);
 
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/store" element={<Store />} />
-      <Route path="/escape-ai-slop" element={<ErrorBoundary><EscapeAISlop /></ErrorBoundary>} />
-      <Route path="/work/:id" element={<ErrorBoundary><CaseStudy /></ErrorBoundary>} />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/store" element={<Store />} />
+        <Route path="/escape-ai-slop" element={<ErrorBoundary><EscapeAISlop /></ErrorBoundary>} />
+        <Route path="/work/:id" element={<ErrorBoundary><CaseStudy /></ErrorBoundary>} />
+      </Routes>
+    </>
   );
 };
 

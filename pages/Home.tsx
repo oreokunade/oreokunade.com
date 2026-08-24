@@ -4,7 +4,7 @@ import { ArrowUpRight, ArrowRight, Github, Twitter, Linkedin, Sparkles, Copy, In
 import { FaEnvelope, FaBookOpen, FaFigma } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { WORKS, WRITING, SOCIAL_LINKS, OFFERS } from '../constants';
-import Navbar from '../components/Navbar';
+
 import PocketCard from '../components/PocketCard';
 
 const Home = () => {
@@ -49,7 +49,7 @@ const stagger: any = {
       
 
 
-      <Navbar />
+      
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
         

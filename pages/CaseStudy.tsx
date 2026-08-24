@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, Calendar, Circle } from 'lucide-react';
 import { WORKS, SOCIAL_LINKS } from '../constants';
 import { Project } from '../types';
-import Navbar from '../components/Navbar';
+
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -64,7 +64,7 @@ const CaseStudy = () => {
 
   return (
     <div className="min-h-screen bg-transparent dark:bg-transparent text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
-      <Navbar />
+      
 
       <main className="pt-24 md:pt-32 pb-24 md:pb-40">
         

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { ArrowUpRight, ChevronDown, Copy, Check } from 'lucide-react';
 import { FaBagShopping, FaBook, FaCirclePlay, FaCode, FaPenNib } from 'react-icons/fa6';
 import { DIGITAL_PRODUCTS, WRITING, DigitalProduct } from '../constants';
-import Navbar from '../components/Navbar';
+
 import PocketCard from '../components/PocketCard';
 import PromptModal from '../components/PromptModal';
 
@@ -98,7 +98,6 @@ const Store = () => {
 
   return (
     <div className={`min-h-screen bg-transparent dark:bg-transparent font-sans selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black overflow-x-hidden ${isDarkMode ? 'dark' : ''}`}>
-      <Navbar />
 
       <main className="max-w-[1400px] mx-auto px-4 md:px-8 pt-32 pb-24 flex flex-col lg:flex-row gap-8 lg:gap-16">
         
