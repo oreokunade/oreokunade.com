@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, ArrowUpRight, ArrowRight, Instagram, Linkedin } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowRight, Instagram, Linkedin, Sparkles } from 'lucide-react';
 import { FaEnvelope } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import { WORKS, SOCIAL_LINKS } from '../constants';
@@ -96,7 +96,7 @@ const EscapeAISlop = () => {
             className="w-full md:w-[55%] text-left md:mt-12 lg:mt-16"
           >
             <h1 className="text-[2.25rem] md:text-[3.5rem] lg:text-[3.75rem] font-medium tracking-tight text-neutral-900 dark:text-white leading-[1.1] flex flex-wrap justify-start gap-x-2 gap-y-1 md:gap-x-3 mb-5">
-            {"Learn how to build clean and professional websites with AI.".split(" ").map((word, i) => (
+            {"Learn how to build clean and professional websites with".split(" ").map((word, i) => (
               <motion.span 
                 key={i} 
                 variants={{
@@ -107,6 +107,38 @@ const EscapeAISlop = () => {
                 {word}
               </motion.span>
             ))}
+            <motion.span 
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }
+              }}
+              className="relative inline-block pr-[350px]"
+            >
+              {Array.from({ length: 25 }, (_, index) => index + 1).map((i) => (
+                <motion.span 
+                  key={i}
+                  className="absolute top-0 left-0 text-[#ff7a4a] font-bold"
+                  initial={{ x: 0, opacity: 0 }}
+                  animate={{ 
+                    x: [0, i * 13], 
+                    opacity: [0, Math.max(0, 1 - (i * 0.04))]
+                  }}
+                  transition={{ 
+                    duration: 1.5, 
+                    repeat: Infinity, 
+                    repeatType: "reverse", 
+                    ease: "easeInOut"
+                  }}
+                  style={{ zIndex: -i }}
+                  aria-hidden="true"
+                >
+                  AI
+                </motion.span>
+              ))}
+              <span className="relative z-10 text-[#ff4306] font-bold">
+                AI
+              </span>
+            </motion.span>
           </h1>
             
             <motion.div 
