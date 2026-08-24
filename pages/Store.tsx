@@ -192,12 +192,15 @@ const Store = () => {
                 <motion.a
                   key={product.id}
                   href={product.promptTemplate ? '#' : product.link}
-                  target={product.promptTemplate ? undefined : "_blank"}
-                  rel={product.promptTemplate ? undefined : "noopener noreferrer"}
+                  target={(!product.promptTemplate && !product.link?.startsWith('/')) ? "_blank" : undefined}
+                  rel={(!product.promptTemplate && !product.link?.startsWith('/')) ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
                     if (product.promptTemplate) {
                       e.preventDefault();
                       setSelectedPrompt(product);
+                    } else if (product.link?.startsWith('/')) {
+                      e.preventDefault();
+                      navigate(product.link);
                     }
                   }}
                   variants={fadeUp}
