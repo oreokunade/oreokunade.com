@@ -212,6 +212,7 @@ const EscapeAISlop = () => {
                 alt="Escape AI Slop Cover" 
                 className="w-full max-w-[380px] md:max-w-[580px] lg:max-w-[720px] h-auto object-contain"
                 fetchPriority="high"
+                loading="eager"
              />
           </motion.div>
       </section>
@@ -258,6 +259,7 @@ const EscapeAISlop = () => {
                     src={`/slopexamples/Screenshot (${num}).png`}
                     alt={`AI Slop Example ${i + 1}`}
                     className="w-full h-full object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 border border-black/5 dark:border-white/5 rounded-2xl pointer-events-none" />
                 </div>
