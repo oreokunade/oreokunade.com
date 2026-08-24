@@ -45,7 +45,7 @@ const stagger: any = {
 };
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden scroll-smooth bg-[#fcfbf8] dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative">
+    <div className="min-h-screen w-full overflow-x-hidden scroll-smooth bg-transparent dark:bg-transparent text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative">
       
 
 
@@ -166,7 +166,7 @@ const stagger: any = {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 h-full">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-2xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
                   <Layers className="w-5 h-5" />
                 </div>
@@ -176,7 +176,7 @@ const stagger: any = {
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 h-full">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-2xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
                   <Cpu className="w-5 h-5" />
                 </div>
@@ -186,7 +186,7 @@ const stagger: any = {
                 </p>
               </motion.div>
               
-              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-3xl border border-neutral-200/60 dark:border-neutral-800/60 bg-neutral-50/50 dark:bg-neutral-900/20 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 h-full">
+              <motion.div variants={fadeUp} className="flex flex-col gap-4 p-6 md:p-8 rounded-2xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                 <div className="w-12 h-12 rounded-xl bg-white dark:bg-neutral-800 flex items-center justify-center text-neutral-900 dark:text-white shadow-sm border border-neutral-200/50 dark:border-neutral-700/50">
                   <Code2 className="w-5 h-5" />
                 </div>
@@ -286,7 +286,7 @@ const stagger: any = {
               <motion.div 
                 key={index} 
                 variants={fadeUp}
-                className="flex flex-col p-8 md:p-10 rounded-3xl bg-neutral-50/50 dark:bg-neutral-900/20 border border-neutral-200/60 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-900/50 transition-colors duration-500 group"
+                className="flex flex-col p-8 md:p-10 rounded-2xl bg-white dark:bg-[#111111] border border-neutral-200 dark:border-neutral-800 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group"
               >
                 <span className="text-xs font-semibold tracking-widest text-neutral-400 dark:text-neutral-600 mb-8 flex justify-between items-center w-full">
                   0{index + 1}

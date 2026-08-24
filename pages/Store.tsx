@@ -97,13 +97,13 @@ const Store = () => {
   });
 
   return (
-    <div className={`min-h-screen bg-[#FDFCFB] dark:bg-[#0a0a0a] font-sans selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black overflow-x-hidden ${isDarkMode ? 'dark' : ''}`}>
+    <div className={`min-h-screen bg-transparent dark:bg-transparent font-sans selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black overflow-x-hidden ${isDarkMode ? 'dark' : ''}`}>
       <Navbar />
 
       <main className="max-w-[1400px] mx-auto px-4 md:px-8 pt-32 pb-24 flex flex-col lg:flex-row gap-8 lg:gap-16">
         
         {/* Mobile Category Selector */}
-        <div className="lg:hidden w-[100vw] relative z-30 mb-8 -mx-4 px-4 flex overflow-x-auto gap-2 py-3 border-y border-neutral-200 dark:border-neutral-800/50 bg-[#FDFCFB]/80 dark:bg-[#0a0a0a]/80 backdrop-blur-md" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <div className="lg:hidden w-[100vw] relative z-30 mb-8 -mx-4 px-4 flex overflow-x-auto gap-2 py-3 border-y border-neutral-200 dark:border-neutral-800/50 bg-transparent/80 dark:bg-transparent/80 backdrop-blur-md" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <style dangerouslySetInnerHTML={{__html: `.lg\\\\:hidden::-webkit-scrollbar { display: none; }`}} />
           {CATEGORIES.map(cat => (
             <button

@@ -424,16 +424,6 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
     tags: ["PDF", "Guide", "Design Strategy"]
   },
   {
-    id: "design-engineer-roadmap",
-    title: "The Product Design Engineer Roadmap",
-    type: "E-Book",
-    price: "Free",
-    coverImage: "/products/roadmap.png",
-    description: "The complete step-by-step guide to mastering the intersection of design and engineering. Learn what skills to acquire and how to position yourself.",
-    link: "#",
-    tags: ["PDF", "Career", "Roadmap"]
-  },
-  {
     id: "design-md-prompt",
     title: "Design.md Generator",
     type: "Template",

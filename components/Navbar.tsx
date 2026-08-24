@@ -18,7 +18,7 @@ const Navbar = () => {
 
   // Determine active state based on pathname and hash
   const getActiveId = () => {
-    if (location.pathname === '/store') return 'Resources';
+    if (location.pathname === '/store' || location.pathname === '/escape-ai-slop') return 'Resources';
     if (location.hash) {
       const hashMap: Record<string, string> = {
         '#home': 'Home',

@@ -45,7 +45,7 @@ const CaseStudy = () => {
 
   if (!project) {
     return (
-      <div className="min-h-screen bg-[#fcfbf8] dark:bg-[#0a0a0a] flex items-center justify-center">
+      <div className="min-h-screen bg-transparent dark:bg-transparent flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-white mb-4">Project not found</h1>
           <button
@@ -63,7 +63,7 @@ const CaseStudy = () => {
   const details = project.details;
 
   return (
-    <div className="min-h-screen bg-[#fcfbf8] dark:bg-[#0a0a0a] text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
+    <div className="min-h-screen bg-transparent dark:bg-transparent text-neutral-900 dark:text-neutral-100 font-sans transition-colors duration-500 selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black">
       <Navbar />
 
       <main className="pt-24 md:pt-32 pb-24 md:pb-40">

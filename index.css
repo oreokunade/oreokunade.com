@@ -10,9 +10,11 @@ body {
   overflow-x: hidden;
 }
 
+
+
 @layer utilities {
   .liquid-glass {
-    @apply bg-white/30 dark:bg-[#1d1d1f]/40 backdrop-blur-2xl saturate-[1.8] border border-white/20 dark:border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.1)];
+    @apply bg-white/95 dark:bg-[#1d1d1f]/95 backdrop-blur-xl saturate-[1.5] border border-white/40 dark:border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.05)];
   }
 }
 
