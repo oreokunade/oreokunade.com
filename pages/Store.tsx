@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowUpRight, ChevronDown, Copy, Check } from 'lucide-react';
 import { FaBagShopping, FaBook, FaCirclePlay, FaCode, FaPenNib } from 'react-icons/fa6';
 import { DIGITAL_PRODUCTS, WRITING, DigitalProduct } from '../constants';
@@ -74,6 +74,7 @@ const Store = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState<DigitalProduct | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
