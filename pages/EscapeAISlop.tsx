@@ -422,7 +422,12 @@ const EscapeAISlop = () => {
               </p>
             </div>
             
-            <a href="#" className="group relative inline-flex items-center justify-center w-full px-10 py-5 bg-[#ff4306] text-white text-xl font-bold rounded-2xl hover:scale-105 transition-all shadow-xl shadow-[#ff4306]/20">
+            <a 
+              href="https://selar.com/477l7i83b4" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="group relative inline-flex items-center justify-center w-full px-10 py-5 bg-[#ff4306] text-white text-xl font-bold rounded-2xl hover:scale-105 transition-all shadow-xl shadow-[#ff4306]/20"
+            >
               <span className="relative z-10 flex items-center gap-2">
                 Pre-order for ₦7,500
                 <div className="relative w-6 h-6 flex items-center justify-center overflow-hidden">
