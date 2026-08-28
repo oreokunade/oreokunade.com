@@ -207,12 +207,7 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
                               >
                                 Full Palette
                               </button>
-                              <button
-                                onClick={() => setColorModes(prev => ({ ...prev, [variable.id]: 'vibe' }))}
-                                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${mode === 'vibe' ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'}`}
-                              >
-                                Generate for me
-                              </button>
+
                             </div>
                           </div>
                           {mode === 'color' && (
