@@ -562,7 +562,7 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
       { id: "[Target Audience]", label: "Target Audience", placeholder: "e.g. creative professionals, enterprise clients" },
       { id: "[Primary Goal]", label: "Primary Goal", placeholder: "e.g. convert visitors to newsletter subscribers" },
       { id: "[Brand Name]", label: "Brand Name", placeholder: "e.g. Acme Corp" },
-      { id: "[Color Context]", label: "Primary Brand Color OR Vibe", type: "color-vibe" }
+      { id: "[Color Context]", label: "Primary brand colour or palette", type: "color-vibe" }
     ]
   },
 
@@ -587,7 +587,7 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
     promptTemplate: DESIGN_MD_TEMPLATE,
     promptVariables: [
       { id: "[business type]", label: "What is the business type?", placeholder: "e.g. luxury real estate platform" },
-      { id: "[Color Context]", label: "Primary Brand Color OR Vibe", type: "color-vibe" },
+      { id: "[Color Context]", label: "Primary brand colour or palette", type: "color-vibe" },
       { id: "[Project Name]", label: "Project Name", placeholder: "e.g. Acme Corp" },
       { id: "[Brief project description]", label: "Project Description", placeholder: "e.g. A marketplace for high-end properties" }
     ]
