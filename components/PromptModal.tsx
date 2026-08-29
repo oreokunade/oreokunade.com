@@ -96,12 +96,8 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
     };
   }, [product]);
 
-  if (!product || !product.promptTemplate) return null;
-
-  const handleInputChange = (id: string, value: string) => {
-    setValues(prev => ({ ...prev, [id]: value }));
-  };
-
+  const deferredValues = useDeferredValue(values);
+  
   const extractHexColors = (text: string) => {
     if (!text) return [];
     const hexRegex = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\b/gi;
@@ -109,9 +105,8 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
     return matches ? Array.from(new Set(matches)) : []; // unique colors
   };
 
-  const deferredValues = useDeferredValue(values);
-  
   const generatedPrompt = useMemo(() => {
+    if (!product || !product.promptTemplate) return '';
     return product.promptTemplate.replace(/\[([^\]]+)\]/g, (match) => {
       const variable = product.promptVariables?.find(v => v.id === match);
       const rawVal = deferredValues[match];
@@ -140,6 +135,12 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
       return rawVal || match;
     });
   }, [product, deferredValues, colorModes, paletteLabels]);
+
+  if (!product || !product.promptTemplate) return null;
+
+  const handleInputChange = (id: string, value: string) => {
+    setValues(prev => ({ ...prev, [id]: value }));
+  };
 
   const handleCopy = async () => {
     try {
