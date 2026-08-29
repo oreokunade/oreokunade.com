@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useDeferredValue, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { DigitalProduct } from '../constants';
 import { X, Copy, Check, Info, ChevronDown } from 'lucide-react';
@@ -109,9 +109,12 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
     return matches ? Array.from(new Set(matches)) : []; // unique colors
   };
 
-  const generatedPrompt = product.promptTemplate.replace(/\[([^\]]+)\]/g, (match) => {
-    const variable = product.promptVariables?.find(v => v.id === match);
-    const rawVal = values[match];
+  const deferredValues = useDeferredValue(values);
+  
+  const generatedPrompt = useMemo(() => {
+    return product.promptTemplate.replace(/\[([^\]]+)\]/g, (match) => {
+      const variable = product.promptVariables?.find(v => v.id === match);
+      const rawVal = deferredValues[match];
     
     if (variable?.type === 'color-vibe') {
       const mode = colorModes[match] || 'color';
@@ -134,8 +137,9 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
       }
     }
     
-    return rawVal || match;
-  });
+      return rawVal || match;
+    });
+  }, [product, deferredValues, colorModes, paletteLabels]);
 
   const handleCopy = async () => {
     try {
