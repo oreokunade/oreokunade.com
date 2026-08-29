@@ -275,7 +275,7 @@ export interface PromptVariable {
   id: string;
   label: string;
   placeholder?: string;
-  type?: 'text' | 'color-vibe';
+  type?: 'text' | 'color-vibe' | 'textarea';
 }
 
 export interface DigitalProduct {
@@ -427,6 +427,9 @@ The brand name is **[Brand Name]**.
 
 Use colours intentionally across the interface rather than applying them uniformly.
 
+Here is the provided website copy that you should use to populate the content:
+[Website Copy]
+
 ## 2. Design Direction
 
 Before writing any code, inspect the project's **\`design.md\`** file.
@@ -562,7 +565,8 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
       { id: "[Target Audience]", label: "Target Audience", placeholder: "e.g. creative professionals, enterprise clients" },
       { id: "[Primary Goal]", label: "Primary Goal", placeholder: "e.g. convert visitors to newsletter subscribers" },
       { id: "[Brand Name]", label: "Brand Name", placeholder: "e.g. Acme Corp" },
-      { id: "[Color Context]", label: "Primary brand colour or palette", type: "color-vibe" }
+      { id: "[Color Context]", label: "Primary brand colour or palette", type: "color-vibe" },
+      { id: "[Website Copy]", label: "Website Copy", placeholder: "Paste your website copy/content here...", type: "textarea" }
     ]
   },
 

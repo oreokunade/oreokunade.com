@@ -258,17 +258,27 @@ const PromptModal: React.FC<PromptModalProps> = ({ product, onClose }) => {
                     }
                     
                     return (
-                      <div key={variable.id} className="flex flex-col gap-1.5">
+                      <div key={variable.id} className={`flex flex-col gap-1.5 ${variable.type === 'textarea' ? 'sm:col-span-2' : ''}`}>
                         <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
                           {variable.label}
                         </label>
-                        <input
-                          type="text"
-                          placeholder={variable.placeholder}
-                          value={values[variable.id] || ''}
-                          onChange={(e) => handleInputChange(variable.id, e.target.value)}
-                          className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all"
-                        />
+                        {variable.type === 'textarea' ? (
+                          <textarea
+                            placeholder={variable.placeholder}
+                            value={values[variable.id] || ''}
+                            onChange={(e) => handleInputChange(variable.id, e.target.value)}
+                            rows={4}
+                            className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all resize-y w-full"
+                          />
+                        ) : (
+                          <input
+                            type="text"
+                            placeholder={variable.placeholder}
+                            value={values[variable.id] || ''}
+                            onChange={(e) => handleInputChange(variable.id, e.target.value)}
+                            className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all"
+                          />
+                        )}
                       </div>
                     );
                   })}
