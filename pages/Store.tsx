@@ -196,6 +196,10 @@ const Store = () => {
                   target={(!product.promptTemplate && !product.link?.startsWith('/')) ? "_blank" : undefined}
                   rel={(!product.promptTemplate && !product.link?.startsWith('/')) ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
+                    if (product.id === 'master-prompt-generator') {
+                      window.location.href = '/masterprompt';
+                      return;
+                    }
                     if (product.promptTemplate) {
                       e.preventDefault();
                       setSelectedPrompt(product);
@@ -253,14 +257,10 @@ const Store = () => {
                         ))}
                       </div>
                       
-                      {/* Copy icon for Prompt Templates, Arrow for others */}
-                      {product.tags.includes('Prompts') ? (
-                        <CopyButton text={product.description} />
-                      ) : (
-                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors shrink-0">
-                          <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
-                        </div>
-                      )}
+                      {/* Arrow icon for all products */}
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center group-hover:bg-neutral-900 group-hover:text-white dark:group-hover:bg-white dark:group-hover:text-black transition-colors shrink-0">
+                        <ArrowUpRight className="w-3 h-3 md:w-4 md:h-4" />
+                      </div>
                     </div>
                   </div>
                 </motion.a>

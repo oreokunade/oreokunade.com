@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Store from './pages/Store';
 import CaseStudy from './pages/CaseStudy';
 import EscapeAISlop from './pages/EscapeAISlop';
+import MasterPrompt from './pages/MasterPrompt';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Navbar from './components/Navbar';
 
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/store" element={<Store />} />
         <Route path="/escape-ai-slop" element={<ErrorBoundary><EscapeAISlop /></ErrorBoundary>} />
+        <Route path="/masterprompt" element={<ErrorBoundary><MasterPrompt /></ErrorBoundary>} />
         <Route path="/work/:id" element={<ErrorBoundary><CaseStudy /></ErrorBoundary>} />
       </Routes>
     </>
