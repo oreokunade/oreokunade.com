@@ -134,7 +134,7 @@ const stagger: any = {
                   <span className="font-semibold tracking-tight text-sm md:text-base">Google Antigravity</span>
                 </div>
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
-                  <img src="/logos/anthropic.svg" alt="Claude Code" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
+                  <img src="/logos/claude.svg" alt="Claude Code" className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="font-semibold tracking-tight text-sm md:text-base">Claude Code</span>
                 </div>
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
