@@ -211,7 +211,7 @@ const EscapeAISlop = () => {
           {/* BOOK IMAGE (Right) */}
           <motion.div variants={fadeUp} initial="hidden" animate="visible" className="w-full md:w-[45%] flex justify-center md:justify-end">
              <img 
-                src="/products/main-cover.png" 
+                src="/products/killaislop-cover.png" 
                 alt="Escape AI Slop Cover" 
                 className="w-full max-w-[380px] md:max-w-[580px] lg:max-w-[720px] h-auto object-contain"
                 fetchPriority="high"

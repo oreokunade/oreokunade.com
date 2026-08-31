@@ -575,7 +575,7 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
     title: "Escape AI slop pandemic - Build Websites That Don't Look AI-Built",
     type: "E-Book",
     price: "₦7,500",
-    coverImage: "/products/escape-ai-slop.png",
+    coverImage: "/products/killaislop-cover.png",
     description: "Learn how to inject soul, personality, and bespoke craftsmanship into your projects to stand out in a sea of generic AI-generated templates.",
     link: "/escape-ai-slop",
     tags: ["PDF", "Guide", "Design Strategy"]
