@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useDeferredValue, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DigitalProduct } from '../constants';
+import { DigitalProduct, DIGITAL_PRODUCTS } from '../constants';
 import { Copy, Check, Info, ChevronDown } from 'lucide-react';
 
 
