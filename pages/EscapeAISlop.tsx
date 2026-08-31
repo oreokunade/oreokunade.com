@@ -186,15 +186,18 @@ const EscapeAISlop = () => {
                 {[
                   { name: "Figma", icon: "/logos/figma.svg", invert: true },
                   { name: "Google Antigravity", icon: "/logos/antigravity.svg", invert: false },
-                  { name: "Claude Code", icon: "/logos/anthropic.svg", invert: true },
+                  { name: "Claude Code", icon: "/logos/claude.svg", invert: false },
+                  { name: "Anthropic", icon: "/logos/anthropic.svg", invert: true },
                   { name: "Cursor", icon: "/logos/cursor.svg", invert: true },
                   { name: "Figma", icon: "/logos/figma.svg", invert: true },
                   { name: "Google Antigravity", icon: "/logos/antigravity.svg", invert: false },
-                  { name: "Claude Code", icon: "/logos/anthropic.svg", invert: true },
+                  { name: "Claude Code", icon: "/logos/claude.svg", invert: false },
+                  { name: "Anthropic", icon: "/logos/anthropic.svg", invert: true },
                   { name: "Cursor", icon: "/logos/cursor.svg", invert: true },
                   { name: "Figma", icon: "/logos/figma.svg", invert: true },
                   { name: "Google Antigravity", icon: "/logos/antigravity.svg", invert: false },
-                  { name: "Claude Code", icon: "/logos/anthropic.svg", invert: true },
+                  { name: "Claude Code", icon: "/logos/claude.svg", invert: false },
+                  { name: "Anthropic", icon: "/logos/anthropic.svg", invert: true },
                   { name: "Cursor", icon: "/logos/cursor.svg", invert: true }
                 ].map((tool, i) => (
                   <div key={i} className="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
