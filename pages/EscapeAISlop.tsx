@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight, ArrowRight, Instagram, Linkedin, Sparkles } fr
 import { FaEnvelope } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import { WORKS, SOCIAL_LINKS } from '../constants';
+import killaislopCover from '../public/products/killaislop-cover.png';
 import PocketCard from '../components/PocketCard';
 
 import PurchaseToast from '../components/PurchaseToast';
@@ -184,21 +185,21 @@ const EscapeAISlop = () => {
                 transition={{ ease: "linear", duration: 25, repeat: Infinity }}
               >
                 {[
-                  { name: "Figma", icon: "/logos/figma.svg", invert: true },
-                  { name: "Google Antigravity", icon: "/logos/antigravity.svg", invert: false },
-                  { name: "Claude Code", icon: "/logos/claude.svg", invert: false },
-                  { name: "Anthropic", icon: "/logos/anthropic.svg", invert: true },
-                  { name: "Cursor", icon: "/logos/cursor.svg", invert: true },
-                  { name: "Figma", icon: "/logos/figma.svg", invert: true },
-                  { name: "Google Antigravity", icon: "/logos/antigravity.svg", invert: false },
-                  { name: "Claude Code", icon: "/logos/claude.svg", invert: false },
-                  { name: "Anthropic", icon: "/logos/anthropic.svg", invert: true },
-                  { name: "Cursor", icon: "/logos/cursor.svg", invert: true },
-                  { name: "Figma", icon: "/logos/figma.svg", invert: true },
-                  { name: "Google Antigravity", icon: "/logos/antigravity.svg", invert: false },
-                  { name: "Claude Code", icon: "/logos/claude.svg", invert: false },
-                  { name: "Anthropic", icon: "/logos/anthropic.svg", invert: true },
-                  { name: "Cursor", icon: "/logos/cursor.svg", invert: true }
+                  { name: "Figma", icon: import.meta.env.BASE_URL + "logos/figma.svg", invert: true },
+                  { name: "Google Antigravity", icon: import.meta.env.BASE_URL + "logos/antigravity.svg", invert: false },
+                  { name: "Claude Code", icon: import.meta.env.BASE_URL + "logos/claude.svg", invert: false },
+                  { name: "Anthropic", icon: import.meta.env.BASE_URL + "logos/anthropic.svg", invert: true },
+                  { name: "Cursor", icon: import.meta.env.BASE_URL + "logos/cursor.svg", invert: true },
+                  { name: "Figma", icon: import.meta.env.BASE_URL + "logos/figma.svg", invert: true },
+                  { name: "Google Antigravity", icon: import.meta.env.BASE_URL + "logos/antigravity.svg", invert: false },
+                  { name: "Claude Code", icon: import.meta.env.BASE_URL + "logos/claude.svg", invert: false },
+                  { name: "Anthropic", icon: import.meta.env.BASE_URL + "logos/anthropic.svg", invert: true },
+                  { name: "Cursor", icon: import.meta.env.BASE_URL + "logos/cursor.svg", invert: true },
+                  { name: "Figma", icon: import.meta.env.BASE_URL + "logos/figma.svg", invert: true },
+                  { name: "Google Antigravity", icon: import.meta.env.BASE_URL + "logos/antigravity.svg", invert: false },
+                  { name: "Claude Code", icon: import.meta.env.BASE_URL + "logos/claude.svg", invert: false },
+                  { name: "Anthropic", icon: import.meta.env.BASE_URL + "logos/anthropic.svg", invert: true },
+                  { name: "Cursor", icon: import.meta.env.BASE_URL + "logos/cursor.svg", invert: true }
                 ].map((tool, i) => (
                   <div key={i} className="flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
                     <img src={tool.icon} alt={tool.name} className={`w-8 h-8 md:w-10 md:h-10 object-contain ${tool.invert ? 'dark:invert' : ''}`} />
@@ -211,7 +212,7 @@ const EscapeAISlop = () => {
           {/* BOOK IMAGE (Right) */}
           <motion.div variants={fadeUp} initial="hidden" animate="visible" className="w-full md:w-[45%] flex justify-center md:justify-end">
              <img 
-                src="/products/killaislop-cover.png" 
+                src={killaislopCover} 
                 alt="Escape AI Slop Cover" 
                 className="w-full max-w-[380px] md:max-w-[580px] lg:max-w-[720px] h-auto object-contain"
                 fetchPriority="high"
@@ -259,7 +260,7 @@ const EscapeAISlop = () => {
               {[59, 60, 61, 62, 59, 60, 61, 62].map((num, i) => (
                 <div key={i} className="w-[320px] md:w-[500px] shrink-0 rounded-2xl overflow-hidden border border-neutral-200 dark:border-neutral-800 shadow-sm bg-neutral-100 dark:bg-neutral-900 group relative">
                   <img 
-                    src={`/slopexamples/Screenshot (${num}).png`}
+                    src={`${import.meta.env.BASE_URL}slopexamples/Screenshot (${num}).png`}
                     alt={`AI Slop Example ${i + 1}`}
                     className="w-full h-full object-cover aspect-[4/3] group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"

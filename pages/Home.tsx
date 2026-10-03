@@ -66,7 +66,7 @@ const stagger: any = {
             className="w-32 h-32 md:w-40 md:h-40 shrink-0 rounded-full overflow-hidden bg-neutral-200 dark:bg-neutral-800 shadow-xl dark:shadow-none"
           >
             <img 
-              src="/profile.jpg" 
+              src={import.meta.env.BASE_URL + "profile.jpg"} 
               alt="Oreoluwa Okunade" 
               className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out"
             />
@@ -88,14 +88,14 @@ const stagger: any = {
                 <span className="block mt-4 md:inline md:mt-0 leading-[2.2]">
                   Currently building{' '}
                   <a href="https://usephocus.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-neutral-100 dark:bg-neutral-800/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-3 py-1 rounded-xl transition-all border border-neutral-200 dark:border-neutral-700 shadow-sm group align-middle mx-1 md:-mt-1">
-                    <img src="/logos/phocus.svg" alt="Phocus" className="w-4 h-4 md:w-5 md:h-5 rounded-md" />
+                    <img src={import.meta.env.BASE_URL + "logos/phocus.svg"} alt="Phocus" className="w-4 h-4 md:w-5 md:h-5 rounded-md" />
                     <span className="text-neutral-900 dark:text-white font-medium text-lg md:text-xl">Phocus</span>
                     <ArrowUpRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
                   </a>
                   {' '}and running{' '}
                   <span className="relative inline-flex items-center group/studiox align-middle mx-1 md:-mt-1">
                     <a href="https://www.instagram.com/studiox.build/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-neutral-100 dark:bg-neutral-800/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-3 py-1 rounded-xl transition-all border border-neutral-200 dark:border-neutral-700 shadow-sm group cursor-pointer">
-                      <img src="/logos/studio-x.png" alt="Studio X" className="w-4 h-4 md:w-5 md:h-5 rounded-md object-cover" />
+                      <img src={import.meta.env.BASE_URL + "logos/studio-x.png"} alt="Studio X" className="w-4 h-4 md:w-5 md:h-5 rounded-md object-cover" />
                       <span className="text-neutral-900 dark:text-white font-medium text-lg md:text-xl">Studio X</span>
                       <ArrowUpRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
                     </a>
@@ -122,23 +122,23 @@ const stagger: any = {
               </p>
               <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 text-neutral-400 dark:text-neutral-500">
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
-                  <img src="/logos/figma.svg" alt="Figma" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
+                  <img src={import.meta.env.BASE_URL + "logos/figma.svg"} alt="Figma" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
                   <span className="font-semibold tracking-tight text-sm md:text-base">Figma</span>
                 </div>
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
-                  <img src="/logos/storybook.svg" alt="Storybook" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
+                  <img src={import.meta.env.BASE_URL + "logos/storybook.svg"} alt="Storybook" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
                   <span className="font-semibold tracking-tight text-sm md:text-base">Storybook</span>
                 </div>
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
-                  <img src="/logos/antigravity.svg" alt="Google Antigravity" className="w-4 h-4 md:w-5 md:h-5" />
+                  <img src={import.meta.env.BASE_URL + "logos/antigravity.svg"} alt="Google Antigravity" className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="font-semibold tracking-tight text-sm md:text-base">Google Antigravity</span>
                 </div>
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
-                  <img src="/logos/claude.svg" alt="Claude Code" className="w-4 h-4 md:w-5 md:h-5" />
+                  <img src={import.meta.env.BASE_URL + "logos/claude.svg"} alt="Claude Code" className="w-4 h-4 md:w-5 md:h-5" />
                   <span className="font-semibold tracking-tight text-sm md:text-base">Claude Code</span>
                 </div>
                 <div className="flex items-center gap-2 hover:text-neutral-900 dark:hover:text-white transition-colors cursor-default">
-                  <img src="/logos/cursor.svg" alt="Cursor" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
+                  <img src={import.meta.env.BASE_URL + "logos/cursor.svg"} alt="Cursor" className="w-4 h-4 md:w-5 md:h-5 dark:invert" />
                   <span className="font-semibold tracking-tight text-sm md:text-base">Cursor</span>
                 </div>
               </div>

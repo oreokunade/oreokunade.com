@@ -65,7 +65,7 @@ const Navbar = () => {
           {/* Left Logo Block */}
           <div className="flex items-center justify-center px-4 w-14 md:w-16 h-12 bg-[#1a1a1a] rounded-[14px] shrink-0 border border-white/5 z-50 relative">
             <img
-              src="/logos/logo-dark.svg"
+              src={import.meta.env.BASE_URL + "logos/logo-dark.svg"}
               alt="Logo"
               className="w-8 md:w-10 h-auto object-contain"
             />

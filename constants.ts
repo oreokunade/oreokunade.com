@@ -33,10 +33,10 @@ const RAW_WORKS: Project[] = [
     year: "2026",
     status: "In Progress",
     link: "https://usephocus.com",
-    logo: "/logos/phocus.svg",
+    logo: import.meta.env.BASE_URL + "logos/phocus.svg",
     details: {
       subtitle: "Engineering a Secure Agentic Productivity Operating System",
-      heroImage: "/casestudies/phocus-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/phocus-hero.png",
       mainParagraph: "The modern knowledge worker is paralyzed by context switching. Phocus OS is not just another task tracker, it is a localized productivity operating system engineered to combat digital distraction. By actively monitoring desktop window states, it calculates focus stability. We paired this strict monitoring with an autonomous Agentic AI layer that actively updates the user's schedule and manages their backlog, turning a passive list into a proactive executive assistant.",
       highlights: [
         { title: "Agentic AI Integration", description: "Engineered an autonomous AI capable of updating complex application state using heavily optimized data packages and strict function calls." },
@@ -60,10 +60,10 @@ const RAW_WORKS: Project[] = [
     year: "2026",
     status: "Active",
     link: "https://i-nofficial.com",
-    logo: "/logos/in-official.png",
+    logo: import.meta.env.BASE_URL + "logos/in-official.png",
     details: {
       subtitle: "Crafting a Blazing Fast Headless Commerce Engine for Luxury Fashion",
-      heroImage: "/casestudies/in-official-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/in-official-hero.png",
       mainParagraph: "IN Official is the digital flagship of designer Ifeanyi Nwune. The technical challenge was monumental: translate a high fashion, image heavy editorial aesthetic into an incredibly fast digital commerce experience. By fully decoupling the visual frontend from Shopify, I built a headless Next.js commerce engine that achieves load times under two seconds while maintaining the uncompromised visual fidelity expected of contemporary luxury.",
       highlights: [
         { title: "Shopify Headless Commerce", description: "Integrated Shopify's backend system with a completely custom Next.js frontend, entirely separating the database from the presentation layer to unlock total creative freedom." },
@@ -86,10 +86,10 @@ const RAW_WORKS: Project[] = [
     year: "2026",
     status: "Active",
     link: "https://betpanta.vercel.app",
-    logo: "/logos/betpanta.svg",
+    logo: import.meta.env.BASE_URL + "logos/betpanta.svg",
     details: {
       subtitle: "Architecting a High Concurrency Real Time Sports Betting Platform",
-      heroImage: "/casestudies/betpanta-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/betpanta-hero.png",
       mainParagraph: "BetPanta is a next generation sports betting application demanding extreme performance and zero latency reliability in the Nigerian market. From day one, the entire platform was architected with a strict mobile-first approach, recognizing that the vast majority of the target demographic engages exclusively via smartphones. The architectural demands were massive: handling real time data ingestion, performing complex odds calculations on the fly, and maintaining a robust, swipe friendly mobile interface capable of sustaining thousands of concurrent users during peak live matches.",
       highlights: [
         { title: "Real Time Odds Engine", description: "Architected a highly resilient socket powered feed that pushes live match scores and fluctuating betting lines to the client instantly with zero page refresh delay." },
@@ -112,10 +112,10 @@ const RAW_WORKS: Project[] = [
     year: "2026",
     status: "Active",
     link: "https://simondanconsulting.com",
-    logo: "/logos/seun-daniel.png",
+    logo: import.meta.env.BASE_URL + "logos/seun-daniel.png",
     details: {
       subtitle: "Engineering Digital Trust and Conversion for Corporate Consulting",
-      heroImage: "/casestudies/simondan-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/simondan-hero.png",
       mainParagraph: "For Simon and Dan Consulting, a firm helping startups design solid financial structures, the digital presence had to instantly communicate rigorous credibility while actively driving lead conversion. I engineered a highly polished, conversion optimized platform that utilizes fluid animation and psychological trust architecture to convert passive visitors into booked advisory calls.",
       highlights: [
         { title: "Conversion Optimized Architecture", description: "Engineered strategic call to action placements integrated directly with scheduling software, resulting in a drastically reduced friction path for discovery call bookings." },
@@ -138,10 +138,10 @@ const RAW_WORKS: Project[] = [
     year: "2026",
     status: "Active",
     link: "https://abujastartupexpo.com",
-    logo: "/logos/ase.png",
+    logo: import.meta.env.BASE_URL + "logos/ase.png",
     details: {
       subtitle: "Building the Digital Infrastructure for Nigeria's Premier Startup Gathering",
-      heroImage: "/casestudies/ase-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/ase-hero.png",
       mainParagraph: "CONVERGE 2026 required a digital footprint that matched the sheer scale of hosting over a thousand founders and investors. I engineered a high energy, scalable web platform designed specifically as a conversion engine for ticket sales, sponsorship acquisition, and complex multi tier user registration funnels.",
       highlights: [
         { title: "High Fidelity Visual Engineering", description: "Crafted a dark mode, high contrast user interface with bespoke amber accents. The design language was strictly codified to ensure pixel perfect consistency and authoritative brand messaging." },
@@ -167,7 +167,7 @@ const RAW_WORKS: Project[] = [
     logo: "",
     details: {
       subtitle: "Engineering Digital Authority for Startup Fundraising",
-      heroImage: "/casestudies/wecreate-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/wecreate-hero.png",
       mainParagraph: "Wecreate Consult specializes in making African startups fundable. To communicate their deep expertise in investment readiness and grant writing, I built a sophisticated, problem focused platform. The engineering focus was on simplifying a complex six tier service offering into an intuitive, high converting digital narrative that instills immediate confidence in founders and investors alike.",
       highlights: [
         { title: "Problem First UX Architecture", description: "Engineered a storytelling flow that intercepts the user's specific pain points, like needing a business case, before dynamically rendering the appropriate service solutions." },
@@ -575,7 +575,7 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
     title: "Escape AI Slop - A Builder's Guide",
     type: "E-Book",
     price: "₦7,500",
-    coverImage: "/products/killaislop-cover.png",
+    coverImage: import.meta.env.BASE_URL + "products/killaislop-cover.png",
     description: "A builder's guide to websites that look professional and feel human. Build clean websites that don't look AI-built.",
     link: "/escape-ai-slop",
     tags: ["PDF", "Guide", "Design Strategy"]
