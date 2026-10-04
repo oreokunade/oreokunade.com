@@ -368,13 +368,11 @@ const EscapeAISlop = () => {
             <div className="w-full mb-10 flex flex-col gap-8 max-w-3xl mx-auto px-4 md:px-0">
                <div className="flex flex-col gap-6">
                  {[
-                   { title: "01 — The Full Escape AI Slop Book", desc: "The complete system for going from idea to a polished website with AI, without settling for generic output.", value: "₦15,000" },
-                   { title: "02 — The Prompt Library", desc: "Ready-to-use prompts for ideating, generating, iterating, refining and building with AI.", value: "₦10,000" },
-                   { title: "03 — The DESIGN.md Framework", desc: "A practical system for giving AI a visual source of truth and keeping your website consistent as you build and iterate.", value: "₦10,000" },
-                   { title: "04 — The Asset Resource Library", desc: "A curated list of resources for finding high-quality fonts, images, icons, illustrations, videos, 3D assets and more.", value: "₦5,000" },
-                   { title: "05 — The AI Slop Checklist", desc: "A practical checklist for spotting the generic patterns AI keeps falling back on and knowing what to fix.", value: "₦5,000" },
+                   { title: "01 — The Full Escape AI Slop Book", desc: "The complete system for going from idea to a polished website with AI, without settling for generic output.", value: "₦20,000" },
+                   { title: "02 — The Prompt Library", desc: "Ready-to-use prompts for ideating, generating, iterating, refining and building with AI.", value: "₦15,000" },
+                   { title: "03 — The Asset Resource Library", desc: "A curated list of resources for finding high-quality fonts, images, icons, illustrations, videos, 3D assets and more.", value: "₦10,000" },
                    { 
-                     title: "06 — Build With AI Community", 
+                     title: "04 — Build With AI Community", 
                      desc: "Get access to the community where we build together every week.", 
                      value: "₦25,000",
                      features: [
