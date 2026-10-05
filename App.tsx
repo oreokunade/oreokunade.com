@@ -29,7 +29,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/store" element={<Store />} />
-        <Route path="/escape-ai-slop" element={<ErrorBoundary><EscapeAISlop /></ErrorBoundary>} />
+        <Route path="/kill-ai-slop" element={<ErrorBoundary><EscapeAISlop /></ErrorBoundary>} />
         <Route path="/masterprompt" element={<ErrorBoundary><MasterPrompt /></ErrorBoundary>} />
         <Route path="/work/:id" element={<ErrorBoundary><CaseStudy /></ErrorBoundary>} />
       </Routes>

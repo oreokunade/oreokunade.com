@@ -571,13 +571,13 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
   },
 
   {
-    id: "escape-ai-slop",
+    id: "kill-ai-slop",
     title: "Escape AI Slop - A Builder's Guide",
     type: "E-Book",
     price: "₦7,500",
     coverImage: import.meta.env.BASE_URL + "products/killaislop-cover.png",
     description: "A builder's guide to websites that look professional and feel human. Build clean websites that don't look AI-built.",
-    link: "/escape-ai-slop",
+    link: "/kill-ai-slop",
     tags: ["PDF", "Guide", "Design Strategy"]
   },
   {
