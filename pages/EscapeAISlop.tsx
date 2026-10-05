@@ -463,6 +463,7 @@ const EscapeAISlop = () => {
           </div>
         </div>
       </footer>
+      <PurchaseToast />
     </div>
   );
 };

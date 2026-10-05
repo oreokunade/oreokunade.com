@@ -43,48 +43,35 @@ const PurchaseToast = () => {
   const [purchase, setPurchase] = useState<{ name: string; state: string } | null>(null);
 
   useEffect(() => {
-    let showTimeoutId: ReturnType<typeof setTimeout>;
-    let hideTimeoutId: ReturnType<typeof setTimeout>;
-
-    const scheduleNext = () => {
-      // Random delay between 4s and 12s
-      const delay = Math.random() * 8000 + 4000;
-      
-      showTimeoutId = setTimeout(() => {
-        setPurchase(generatePurchase());
-        
-        // Hide after 5 seconds
-        hideTimeoutId = setTimeout(() => {
-          setPurchase(null);
-          scheduleNext();
-        }, 5000);
-      }, delay);
-    };
-
-    // Initial show after a short random delay
-    showTimeoutId = setTimeout(() => {
+    // Initial delay before first toast
+    const initialTimer = setTimeout(() => {
       setPurchase(generatePurchase());
+    }, 3000);
+
+    // Continuous loop
+    const interval = setInterval(() => {
+      setPurchase(null); // hide current
       
-      hideTimeoutId = setTimeout(() => {
-        setPurchase(null);
-        scheduleNext();
-      }, 5000);
-    }, Math.random() * 2000 + 3000);
+      setTimeout(() => {
+        setPurchase(generatePurchase());
+      }, 500); // 500ms delay before showing next
+
+    }, 8000); // Show a new one every 8 seconds
 
     return () => {
-      clearTimeout(showTimeoutId);
-      clearTimeout(hideTimeoutId);
+      clearTimeout(initialTimer);
+      clearInterval(interval);
     };
   }, []);
 
   return (
-    <div className="fixed bottom-6 right-4 md:right-8 z-50 pointer-events-none">
+    <div className="fixed top-24 right-4 md:right-8 z-50 pointer-events-none">
       <AnimatePresence>
         {purchase && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="bg-white dark:bg-[#111] border border-neutral-200 dark:border-neutral-800 shadow-xl rounded-xl p-4 flex items-center gap-4 max-w-sm"
           >
@@ -109,3 +96,4 @@ const PurchaseToast = () => {
 };
 
 export default PurchaseToast;
+
