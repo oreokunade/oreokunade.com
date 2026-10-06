@@ -83,7 +83,9 @@ const ThankYou = () => {
             </p>
 
             <a 
-              href="#" 
+              href="https://chat.whatsapp.com/Bg23GwQIegS3UGe3sHeiK6" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative inline-flex items-center justify-center px-8 py-4 bg-[#ff4306] text-white text-lg font-bold rounded-2xl hover:scale-105 transition-all shadow-xl shadow-[#ff4306]/20 w-full md:w-auto"
             >
               <span className="flex items-center gap-2">
