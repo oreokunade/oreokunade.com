@@ -49,11 +49,7 @@ const ThankYou = () => {
         variants={fadeUp}
         className="w-full max-w-4xl mx-auto flex flex-col items-center text-center mt-12 md:mt-0"
       >
-        <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-full flex items-center justify-center mb-8 shadow-xl">
-          <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
+        
 
         <h1 className="text-4xl md:text-6xl font-black tracking-tight mb-4 text-[#ff4306]">
           Purchase Successful!
@@ -93,9 +89,7 @@ const ThankYou = () => {
                 Join the Community
               </span>
             </a>
-            <p className="text-sm text-neutral-500 mt-4 italic">
-              * The link to join is also included in your receipt email.
-            </p>
+            
           </div>
         </div>
       </motion.div>
