@@ -229,6 +229,39 @@ const CaseStudy = () => {
                 </motion.section>
               )}
 
+              {/* Screen Showcase */}
+              {details?.screens && details.screens.length > 0 && (
+                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}>
+                  <motion.h2 variants={fadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 mb-8">
+                    Project Screens
+                  </motion.h2>
+                  <div className="flex flex-col gap-16">
+                    {details.screens.map((screen, idx) => (
+                      <motion.div key={idx} variants={fadeUp} className="flex flex-col gap-4">
+                        <div className="rounded-2xl overflow-hidden border border-neutral-200/80 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 shadow-md">
+                          <img 
+                            src={screen.image} 
+                            alt={screen.title} 
+                            className="w-full h-auto block"
+                            loading="lazy"
+                          />
+                        </div>
+                        <div className="flex flex-col gap-1 px-1">
+                          <h3 className="text-xl font-medium text-neutral-900 dark:text-neutral-100">
+                            {screen.title}
+                          </h3>
+                          {screen.description && (
+                            <p className="text-neutral-600 dark:text-neutral-400 font-light text-base leading-relaxed">
+                              {screen.description}
+                            </p>
+                          )}
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.section>
+              )}
+
               {/* Conclusion */}
               {details?.conclusion && (
                 <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp}>
@@ -236,6 +269,31 @@ const CaseStudy = () => {
                   <p className="text-xl md:text-2xl text-neutral-800 dark:text-neutral-200 font-light leading-[1.6] md:leading-[1.7] tracking-[-0.01em]">
                     {details.conclusion}
                   </p>
+                </motion.section>
+              )}
+
+              {/* Learnings */}
+              {details?.learnings && details.learnings.length > 0 && (
+                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={stagger}>
+                  <motion.h2 variants={fadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 mb-6">
+                    What I Learned
+                  </motion.h2>
+                  <div className="flex flex-col gap-4">
+                    {details.learnings.map((learning, idx) => (
+                      <motion.div 
+                        key={idx} 
+                        variants={fadeUp}
+                        className="flex items-start gap-4 p-6 rounded-2xl bg-neutral-50 dark:bg-neutral-900/60 border border-neutral-200/80 dark:border-neutral-800/80"
+                      >
+                        <div className="w-7 h-7 rounded-full bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center text-xs font-semibold text-neutral-800 dark:text-neutral-200 shrink-0 mt-0.5">
+                          {idx + 1}
+                        </div>
+                        <p className="text-neutral-700 dark:text-neutral-300 text-base md:text-lg font-light leading-relaxed">
+                          {learning}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.section>
               )}
 

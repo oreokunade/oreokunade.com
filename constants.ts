@@ -55,28 +55,56 @@ const RAW_WORKS: Project[] = [
   {
     id: 'plugin-portfolio',
     title: "Plugin Portfolio",
-    description: "Portfolio intelligence and talent matching engine.",
+    description: "Portfolio and project delivery tool for creators and freelancers.",
     tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
     year: "2026",
     status: "Active",
     link: "https://github.com/oreokunade/Plugin-2",
     logo: import.meta.env.BASE_URL + "logos/plugin.png",
     details: {
-      subtitle: "Engineering an Intelligent Portfolio & Matching Infrastructure for Creators",
+      subtitle: "A simple way for freelancers to showcase work, manage clients, and deliver projects",
       heroImage: import.meta.env.BASE_URL + "casestudies/plugin-hero.png",
-      mainParagraph: "Plugin is an internal portfolio intelligence platform (PIL) and automated matchmaking engine engineered to connect verified African creative talent with discerning clients. Built with a headless Next.js architecture, Plugin ingests creative work across various formats, sanitizes media against disintermediation, algorithmically ranks providers into tiered quality brackets, and provides a frictionless, WhatsApp-friendly review and delivery interface for clients.",
+      mainParagraph: "Freelancers often struggle when sharing work with potential clients. They end up sending scattered Google Drive links, messy PDF files, or screenshots across WhatsApp chats. Plugin solves this by giving freelancers a single, clean home for their craft. Creators get an intuitive dashboard to manage their work, share a polished personal portfolio link, and send project deliverables directly to clients for instant approval.",
       highlights: [
-        { title: "Automated Media Sanitization", description: "Engineered an edge processing pipeline using Sharp that strips sensitive EXIF metadata, detects contact watermarks, and optimizes multi-gigabyte media uploads for rapid client-side delivery." },
-        { title: "Dynamic Multi-Template Rendering", description: "Architected a modular showcase renderer supporting bespoke case studies, media galleries, and video showcases with fluid typography controls and instant responsive layout re-flow." },
-        { title: "Algorithmic Provider Tiering", description: "Developed a multi-factor quality scoring system categorizing creative providers into dynamic tiers (Gold, Silver, Bronze) to power automated bot matching via REST APIs." }
+        { title: "Automatic Photo Cleanup", description: "When creators upload photos, Plugin automatically strips out sensitive location data and checks for phone numbers or watermarks so the work stays clean and professional." },
+        { title: "Flexible Project Templates", description: "Different types of work need different presentations. Creators can pick between visual photo galleries, in-depth written case studies, or video showcases." },
+        { title: "One-Tap Client Approval", description: "Clients do not need to download an app or create an account. They simply open a link on their phone, review the finished work, and tap to approve it." },
+        { title: "Live Availability Status", description: "A simple toggle on the dashboard lets creators switch between 'Available', 'Busy', and 'Away' so clients know immediately when they can take on new work." }
       ],
       features: [
-        { title: "Zero-Friction Ingestion Pipeline", description: "Designed an intuitive multi-step upload flow allowing service providers to document full-scale case studies or deliverable submissions without navigating complex CMS overhead." },
-        { title: "Automated Content Moderation", description: "Integrated heuristic pattern scanning and optical character recognition pipelines to catch embedded phone numbers, social handles, and watermarks before assets go live." },
-        { title: "Client Delivery & Approval Portal", description: "Built dedicated, lightweight client review portals that allow stakeholders to inspect high-resolution deliverables and approve milestone payouts directly from mobile chat links." },
-        { title: "Resilient Hybrid Data Architecture", description: "Implemented a unified schema combining PostgreSQL via Supabase with Firebase authentication, supporting robust relationships between providers, submissions, and active projects." }
+        { title: "Quick & Simple Uploads", description: "A guided step-by-step upload screen that lets creators drag and drop their best images, pick their preferred layout, and write a summary without complicated settings." },
+        { title: "Mobile-First Portfolio Links", description: "Portfolios are designed specifically to look incredible on mobile devices, making them easy to open and browse directly inside messaging apps like WhatsApp." },
+        { title: "Clear Deliverable Tracking", description: "A clean review screen where clients can see exactly what was promised, inspect high-resolution deliverables, and sign off on completed milestones." },
+        { title: "Fast & Lightweight Performance", description: "Built with Next.js, Supabase, and Tailwind CSS so every page and high-res image loads in the blink of an eye, even on slow network connections." }
       ],
-      conclusion: "Plugin transformed a fractured freelance portfolio model into an automated, intelligence-driven marketplace infrastructure. By marrying high-performance media pipelines with automated quality tiering, the platform established a trusted, low-friction bridge between top-tier creative talent and discerning clients."
+      screens: [
+        {
+          title: "Freelancer Dashboard",
+          image: import.meta.env.BASE_URL + "casestudies/plugin-hero.png",
+          description: "The creator's home base. Shows their live availability badge, quick business numbers, active contracts, and a one-click button to copy their public portfolio link."
+        },
+        {
+          title: "Public Client Portfolio",
+          image: import.meta.env.BASE_URL + "casestudies/plugin-screen-portfolio.png",
+          description: "What clients see when opening the creator's link on mobile web or WhatsApp. Displays a clean bio, verified skills tags, and categorized project cards."
+        },
+        {
+          title: "Project Upload & Template Picker",
+          image: import.meta.env.BASE_URL + "casestudies/plugin-screen-upload.png",
+          description: "Creators choose whether they want an image portfolio, a detailed case study, or a video showcase, keeping the upload flow fast and focused."
+        },
+        {
+          title: "Client Deliverable Approval",
+          image: import.meta.env.BASE_URL + "casestudies/plugin-screen-review.png",
+          description: "A simple page sent to clients when a milestone is completed, allowing them to review files and approve the work with zero signup friction."
+        }
+      ],
+      conclusion: "Plugin replaced messy links and confusing chat threads with a calm, organized experience. Freelancers got a professional presence they were proud to share, and clients got a clear, zero-friction way to review and sign off on completed work.",
+      learnings: [
+        "Zero friction for clients is everything: If a client has to sign up, download an app, or create a password just to review a file, they will delay it or ignore it. Keeping review links completely frictionless made approvals happen 5x faster.",
+        "Automating photo cleanup saves creators hours: Freelancers often upload massive 20MB photos straight from cameras. Stripping heavy EXIF metadata and resizing images automatically on the server kept pages loading under one second and saved huge storage costs.",
+        "Simple status controls build trust: A simple toggle between 'Available' and 'Busy' was one of the most loved features. It gave clients clarity upfront and saved freelancers from constantly answering 'Are you free for work?' messages."
+      ]
     }
   },
   {

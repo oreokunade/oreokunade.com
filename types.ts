@@ -3,13 +3,21 @@ export interface ProjectFeature {
   description: string;
 }
 
+export interface ProjectScreen {
+  title: string;
+  image: string;
+  description?: string;
+}
+
 export interface ProjectDetail {
   subtitle: string;
   heroImage?: string;
   highlights: { title: string; description: string }[];
   mainParagraph: string;
   features: ProjectFeature[];
+  screens?: ProjectScreen[];
   conclusion?: string;
+  learnings?: string[];
 }
 
 export interface Project {
