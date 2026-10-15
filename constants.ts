@@ -53,6 +53,33 @@ const RAW_WORKS: Project[] = [
     }
   },
   {
+    id: 'plugin-portfolio',
+    title: "Plugin Portfolio",
+    description: "Portfolio intelligence and talent matching engine.",
+    tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
+    year: "2026",
+    status: "Active",
+    link: "https://github.com/oreokunade/Plugin-2",
+    logo: import.meta.env.BASE_URL + "logos/plugin.png",
+    details: {
+      subtitle: "Engineering an Intelligent Portfolio & Matching Infrastructure for Creators",
+      heroImage: import.meta.env.BASE_URL + "casestudies/plugin-hero.png",
+      mainParagraph: "Plugin is an internal portfolio intelligence platform (PIL) and automated matchmaking engine engineered to connect verified African creative talent with discerning clients. Built with a headless Next.js architecture, Plugin ingests creative work across various formats, sanitizes media against disintermediation, algorithmically ranks providers into tiered quality brackets, and provides a frictionless, WhatsApp-friendly review and delivery interface for clients.",
+      highlights: [
+        { title: "Automated Media Sanitization", description: "Engineered an edge processing pipeline using Sharp that strips sensitive EXIF metadata, detects contact watermarks, and optimizes multi-gigabyte media uploads for rapid client-side delivery." },
+        { title: "Dynamic Multi-Template Rendering", description: "Architected a modular showcase renderer supporting bespoke case studies, media galleries, and video showcases with fluid typography controls and instant responsive layout re-flow." },
+        { title: "Algorithmic Provider Tiering", description: "Developed a multi-factor quality scoring system categorizing creative providers into dynamic tiers (Gold, Silver, Bronze) to power automated bot matching via REST APIs." }
+      ],
+      features: [
+        { title: "Zero-Friction Ingestion Pipeline", description: "Designed an intuitive multi-step upload flow allowing service providers to document full-scale case studies or deliverable submissions without navigating complex CMS overhead." },
+        { title: "Automated Content Moderation", description: "Integrated heuristic pattern scanning and optical character recognition pipelines to catch embedded phone numbers, social handles, and watermarks before assets go live." },
+        { title: "Client Delivery & Approval Portal", description: "Built dedicated, lightweight client review portals that allow stakeholders to inspect high-resolution deliverables and approve milestone payouts directly from mobile chat links." },
+        { title: "Resilient Hybrid Data Architecture", description: "Implemented a unified schema combining PostgreSQL via Supabase with Firebase authentication, supporting robust relationships between providers, submissions, and active projects." }
+      ],
+      conclusion: "Plugin transformed a fractured freelance portfolio model into an automated, intelligence-driven marketplace infrastructure. By marrying high-performance media pipelines with automated quality tiering, the platform established a trusted, low-friction bridge between top-tier creative talent and discerning clients."
+    }
+  },
+  {
     id: 'in-official',
     title: "IN official",
     description: "Luxury digital storefront.",

@@ -27,7 +27,7 @@ const CaseStudy = () => {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const project: Project | undefined = WORKS.find(w => w.id === id);
+  const project: Project | undefined = WORKS.find(w => w.id === id || (id === 'plugin' && w.id === 'plugin-portfolio'));
 
   useEffect(() => {
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
