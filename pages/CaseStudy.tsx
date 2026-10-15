@@ -254,7 +254,7 @@ const CaseStudy = () => {
                   <motion.h2 variants={fadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400 mb-8">
                     Project Screens
                   </motion.h2>
-                  <div className="flex flex-col gap-16">
+                  <div className={project.id === 'betpanta' ? "grid grid-cols-1 md:grid-cols-2 gap-8 items-start" : "flex flex-col gap-16"}>
                     {details.screens.map((screen, idx) => (
                       <motion.div key={idx} variants={fadeUp} className="flex flex-col gap-4">
                         <div className="rounded-2xl overflow-hidden border border-neutral-200/80 dark:border-neutral-800 bg-neutral-100 dark:bg-neutral-900 shadow-md">

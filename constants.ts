@@ -194,14 +194,14 @@ const RAW_WORKS: Project[] = [
     id: 'betpanta',
     title: "betpanta",
     description: "Sports betting platform.",
-    tags: ["Vue", "Node.js", "PostgreSQL"],
+    tags: ["React", "Node.js", "Sportsbook"],
     year: "2026",
     status: "Active",
     link: "https://betpanta.vercel.app",
     logo: import.meta.env.BASE_URL + "logos/betpanta.svg",
     details: {
       subtitle: "A fast, lightweight mobile sports betting app built for real-time odds and one-handed use",
-      heroImage: import.meta.env.BASE_URL + "casestudies/betpanta-screen-home.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/betpanta-hero.png",
       mainParagraph: "In sports betting, timing is everything. When a team scores a goal, odds change in a split second. Bettors in Nigeria need an app that responds immediately without freezing or reloading the entire page, even on spotty mobile network connections. BetPanta was designed from the ground up as a mobile-first sportsbook that loads instantly, updates live scores in real time, and makes placing bets simple and intuitive with one hand.",
       highlights: [
         { title: "Live Instant Odds Updates", description: "Scores and odds flash red or green the exact moment they change during a live match, without needing to refresh the page." },
@@ -217,24 +217,24 @@ const RAW_WORKS: Project[] = [
       ],
       screens: [
         {
-          title: "Mobile Sportsbook Discovery & Match Hub",
+          title: "Live Matchday & Sportsbook Discovery",
           image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-home.png",
-          description: "The mobile home screen featuring category pills, quick bet code loading, top European league shortcuts, and live match highlights."
+          description: "The mobile home screen featuring game shortcuts (Panta Jet, Jackpot, Aviator), quick code loader, UEFA Europa League live match cards, and live odds."
         },
         {
           title: "Real-Time In-Play Match Feed & Dynamic Odds",
           image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-live.png",
-          description: "Live match tracker displaying active match clocks, real-time score updates, and fluctuating betting lines that update instantly without refreshing."
+          description: "Live match tracker displaying active match clocks (90:00+ H2, 53:32 H2), real-time score updates, and fluctuating 1X2 and Over/Under betting lines."
         },
         {
-          title: "Smart Combination Picks & Boosted Accumulators",
-          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-smartpicks.png",
-          description: "Curated betting combinations, enhanced accumulator boosts, and upcoming fixture cards tailored to user preferences."
+          title: "Integrated Instant Win & Casino Lobby",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-casino.png",
+          description: "Direct access to popular instant games, Golden Tomb Guardians, Aviator by Spribe, and live dealer lobbies without separate wallet transfers."
         },
         {
-          title: "Top League Navigation & Fixture Directory",
-          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-leagues.png",
-          description: "Dedicated league shortcut hub showing Premier League, La Liga, Serie A, and Champions League matches with real-time odds."
+          title: "Interactive Odds Selection & Betslip Drawer",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-betslip.png",
+          description: "Instant odds selection with active highlighting, real-time potential payout calculations, and shareable booking codes for community discussions."
         }
       ],
       conclusion: "BetPanta delivered a fast, rock-solid betting experience that Nigerian sports fans could rely on during high-traffic weekend matchdays. By prioritizing mobile responsiveness and zero-latency odds updates, user retention and daily bet volume surged.",
