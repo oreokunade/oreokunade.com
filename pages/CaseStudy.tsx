@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowUpRight, Calendar, Circle } from 'lucide-react';
 import { WORKS, SOCIAL_LINKS } from '../constants';
 import { Project } from '../types';
+import { PhocusRemotionPlayer } from '../src/components/remotion/PhocusPlayer';
 
 
 const fadeUp = {
@@ -226,6 +227,24 @@ const CaseStudy = () => {
                       </motion.div>
                     ))}
                   </div>
+                </motion.section>
+              )}
+
+              {/* Product in Action (Interactive Remotion Player) */}
+              {project.id === 'phocus' && (
+                <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={fadeUp} className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+                      <h2 className="text-xs font-semibold tracking-[0.2em] uppercase text-neutral-400">
+                        Product in Action • Remotion
+                      </h2>
+                    </div>
+                    <p className="text-sm text-neutral-500 dark:text-neutral-400 font-light">
+                      Interactive programmatic product walkthrough built with Remotion — demonstrating daily priority completion, deep work focus sprint, and real-time focus stability tracking.
+                    </p>
+                  </div>
+                  <PhocusRemotionPlayer />
                 </motion.section>
               )}
 

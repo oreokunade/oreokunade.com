@@ -36,7 +36,7 @@ const RAW_WORKS: Project[] = [
     logo: import.meta.env.BASE_URL + "logos/phocus.svg",
     details: {
       subtitle: "A desktop operating system that helps knowledge workers beat digital distraction and finish what they start",
-      heroImage: import.meta.env.BASE_URL + "casestudies/phocus-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/phocus-screen-dashboard.png",
       mainParagraph: "Most knowledge workers struggle with digital distraction. You sit down to work on an important project, but within twenty minutes you are switching tabs, responding to notifications, and losing your train of thought. Phocus is a desktop app designed to break that cycle. It combines daily to-do lists, calendar time blocking, and a distraction-free focus timer with smart background tracking that gently reminds you when you drift off task.",
       highlights: [
         { title: "Real-Time Focus Tracking", description: "Phocus runs quietly in the background on your computer, noticing when you are actively working in your main app versus switching away to social media or random browser tabs." },
@@ -146,7 +146,7 @@ const RAW_WORKS: Project[] = [
     logo: import.meta.env.BASE_URL + "logos/in-official.png",
     details: {
       subtitle: "A lightning-fast luxury storefront for high-fashion collections that loads in under two seconds",
-      heroImage: import.meta.env.BASE_URL + "casestudies/in-official-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/in-official-screen-hero.png",
       mainParagraph: "Luxury fashion brands face a tough problem online. Their websites rely on massive, high-resolution photography and cinematic videos to convey luxury, but those heavy files usually make the website slow and clunky. Customers get frustrated waiting for pages to load and leave before buying. For IN Official, the digital home of designer Ifeanyi Nwune, I built a custom storefront that loads in less than two seconds without sacrificing any of the rich, high-end visual polish.",
       highlights: [
         { title: "Under 2-Second Global Load Times", description: "High-res images load almost instantly so shoppers never see blank screens or stuttering animations, even on mobile data." },
@@ -162,9 +162,14 @@ const RAW_WORKS: Project[] = [
       ],
       screens: [
         {
-          title: "Cinematic Editorial Flagship",
-          image: import.meta.env.BASE_URL + "casestudies/in-official-hero.png",
+          title: "Contemporary African Luxury Heritage Flagship",
+          image: import.meta.env.BASE_URL + "casestudies/in-official-screen-hero.png",
           description: "The full-bleed hero experience introducing the brand's contemporary African luxury identity, pairing high-impact imagery with subtle navigation."
+        },
+        {
+          title: "New Collection • Fidelitas Launch Showcase",
+          image: import.meta.env.BASE_URL + "casestudies/in-official-screen-fidelitas.png",
+          description: "Featured release announcement for the Fidelitas seasonal drop, pairing editorial imagery with direct lookbook exploration."
         },
         {
           title: "High-Fashion Lookbook Gallery",
@@ -175,11 +180,6 @@ const RAW_WORKS: Project[] = [
           title: "Curated Luxury Product Showcase",
           image: import.meta.env.BASE_URL + "casestudies/in-official-screen-products.png",
           description: "Clean product cards with high-contrast framing, transparent pricing, and instant size selection for seamless checkout."
-        },
-        {
-          title: "Responsive Multi-Device Commerce",
-          image: import.meta.env.BASE_URL + "casestudies/in-official-screen-device.png",
-          description: "Engineered to deliver flawless typography and responsive scaling whether customers view on large 4K studio monitors or mobile handsets."
         }
       ],
       conclusion: "IN Official proved that luxury fashion websites don't have to be slow to feel premium. By pairing headless architecture with aggressive image optimization, the store delivered instant page loads and drove a noticeable increase in completed orders.",
@@ -201,7 +201,7 @@ const RAW_WORKS: Project[] = [
     logo: import.meta.env.BASE_URL + "logos/betpanta.svg",
     details: {
       subtitle: "A fast, lightweight mobile sports betting app built for real-time odds and one-handed use",
-      heroImage: import.meta.env.BASE_URL + "casestudies/betpanta-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/betpanta-screen-home.png",
       mainParagraph: "In sports betting, timing is everything. When a team scores a goal, odds change in a split second. Bettors in Nigeria need an app that responds immediately without freezing or reloading the entire page, even on spotty mobile network connections. BetPanta was designed from the ground up as a mobile-first sportsbook that loads instantly, updates live scores in real time, and makes placing bets simple and intuitive with one hand.",
       highlights: [
         { title: "Live Instant Odds Updates", description: "Scores and odds flash red or green the exact moment they change during a live match, without needing to refresh the page." },
@@ -217,24 +217,24 @@ const RAW_WORKS: Project[] = [
       ],
       screens: [
         {
-          title: "Mobile Sportsbook Discovery",
+          title: "Mobile Sportsbook Discovery & Match Hub",
           image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-home.png",
           description: "The mobile home screen featuring category pills, quick bet code loading, top European league shortcuts, and live match highlights."
         },
         {
-          title: "Real-Time In-Play Odds Feed",
+          title: "Real-Time In-Play Match Feed & Dynamic Odds",
           image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-live.png",
           description: "Live match tracker displaying active match clocks, real-time score updates, and fluctuating betting lines that update instantly without refreshing."
         },
         {
-          title: "Smart Picks & Combinations",
+          title: "Smart Combination Picks & Boosted Accumulators",
           image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-smartpicks.png",
           description: "Curated betting combinations, enhanced accumulator boosts, and upcoming fixture cards tailored to user preferences."
         },
         {
-          title: "Pocket Sportsbook Experience",
-          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-mockup.png",
-          description: "Engineered specifically for mobile browsers to feel like an ultra-responsive native smartphone application."
+          title: "Top League Navigation & Fixture Directory",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-leagues.png",
+          description: "Dedicated league shortcut hub showing Premier League, La Liga, Serie A, and Champions League matches with real-time odds."
         }
       ],
       conclusion: "BetPanta delivered a fast, rock-solid betting experience that Nigerian sports fans could rely on during high-traffic weekend matchdays. By prioritizing mobile responsiveness and zero-latency odds updates, user retention and daily bet volume surged.",
@@ -256,11 +256,11 @@ const RAW_WORKS: Project[] = [
     logo: import.meta.env.BASE_URL + "logos/seun-daniel.png",
     details: {
       subtitle: "A high-credibility website that helps a financial advisory firm turn visitors into booked client calls",
-      heroImage: import.meta.env.BASE_URL + "casestudies/simondan-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/simondan-screen-hero.png",
       mainParagraph: "When startups and growing companies look for financial advisors to help them restructure or raise capital, trust is the only thing that matters. A generic consulting website with stock photos and vague promises won't win serious contracts. For Simon and Dan Consulting, I created a clean, modern digital presence built around real client proof, clear service packages, and an effortless way for founders to schedule an introductory consultation call.",
       highlights: [
         { title: "Clear 3-Click Call Booking", description: "Prospective clients can learn what the firm does, review past results, and book a discovery call on the calendar without filling out tedious contact forms." },
-        { title: "Proof-First Credibility Layout", description: "Prominently displays key firm milestones (25+ years experience, 150+ clients served, 480+ projects) and verified client logos from the first screen." },
+        { title: "Proof-First Credibility Layout", description: "Prominently displays key firm milestones (10+ years in finance, 40+ companies supported, $15M+ funding raised) and verified client logos from the first screen." },
         { title: "Tailored Messaging for Two Audiences", description: "A simple toggle helps visitors self-identify whether they are an early-stage startup looking for seed funding or an established company looking to optimize cash flow." },
         { title: "Smooth, Distraction-Free Navigation", description: "Deliberately minimalist design that guides the reader step-by-step from understanding their financial problem to taking action." }
       ],
@@ -272,19 +272,24 @@ const RAW_WORKS: Project[] = [
       ],
       screens: [
         {
-          title: "Corporate Advisory Platform",
-          image: import.meta.env.BASE_URL + "casestudies/simondan-hero.png",
+          title: "Corporate Advisory Homepage",
+          image: import.meta.env.BASE_URL + "casestudies/simondan-screen-hero.png",
           description: "High-contrast hero section with bold headline typography and immediate call-to-action buttons for booking discovery calls or making inquiries."
         },
         {
-          title: "Trust & Authority Architecture",
-          image: import.meta.env.BASE_URL + "casestudies/simondan-screen-mockup.png",
-          description: "Displays concrete track-record statistics (25+ years, 150+ clients, 480+ projects delivered) alongside core consulting pillars on a 3D desktop canvas."
+          title: "Proven Track Record & Client Ecosystem",
+          image: import.meta.env.BASE_URL + "casestudies/simondan-screen-stats.png",
+          description: "Demonstrating verified impact with 10+ years in finance, 40+ companies supported, and $15M+ in client funding raised alongside real client logos (solv, TENN, Blueroomcare, FannDrop)."
+        },
+        {
+          title: "Executive Leadership & Advisory Philosophy",
+          image: import.meta.env.BASE_URL + "casestudies/simondan-screen-about.png",
+          description: "Clear statement of the firm's approach to financial restructuring, corporate governance, and sustainable business models."
         }
       ],
       conclusion: "Simon and Dan Consulting replaced vague corporate jargon with concrete proof and clear outcomes. The redesigned platform directly increased discovery call bookings by over 60% in the first quarter after launch.",
       learnings: [
-        "Show numbers, not adjectives: Saying 'we deliver exceptional strategic advisory' convinces nobody. Stating '480+ projects delivered and 150+ clients served' builds instant credibility.",
+        "Show numbers, not adjectives: Saying 'we deliver exceptional strategic advisory' convinces nobody. Stating '10+ years in finance, 40+ companies supported, and $15M+ funding raised' builds instant credibility.",
         "Remove friction before the calendar: If a founder has to type a long essay into a contact form and wait three days for an email reply, they will go elsewhere. Direct calendar booking converted twice as many leads.",
         "Clarity beats complexity: Corporate advisory services can sound intimidating. Explaining services in plain, human language helped prospective clients immediately understand how the firm could help them."
       ]
@@ -301,7 +306,7 @@ const RAW_WORKS: Project[] = [
     logo: import.meta.env.BASE_URL + "logos/ase.png",
     details: {
       subtitle: "The official event platform for Nigeria's premier gathering of 1,000+ founders, investors, and tech leaders",
-      heroImage: import.meta.env.BASE_URL + "casestudies/ase-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/ase-screen-hero.png",
       mainParagraph: "Organizing a large tech conference means managing multiple moving parts at once: selling tickets across different pricing tiers, vetting startup pitch applications, confirming keynote speakers, and signing corporate sponsors. For CONVERGE 2026 (Abuja Startup Expo), I built a high-energy, conversion-focused event website that handled ticket checkout, showcased the speaker lineup, and gave attendees a clear schedule for the day.",
       highlights: [
         { title: "Fast Ticket Checkout", description: "A streamlined checkout flow that lets attendees choose between Standard, VIP, and Investor passes and complete payment in seconds." },
@@ -317,14 +322,19 @@ const RAW_WORKS: Project[] = [
       ],
       screens: [
         {
-          title: "CONVERGE 2026 Conference Stage",
-          image: import.meta.env.BASE_URL + "casestudies/ase-hero.png",
+          title: "CONVERGE 2026 Main Stage Hero",
+          image: import.meta.env.BASE_URL + "casestudies/ase-screen-hero.png",
           description: "Bold dark-mode visual design featuring amber accents, headline ticker announcements, and instant access to ticket purchasing and speaker applications."
         },
         {
-          title: "Tiered Ticketing & Keynote Showcase",
-          image: import.meta.env.BASE_URL + "casestudies/ase-screen-mockup.png",
-          description: "Clean presentation of ticket pricing options ($299 Standard, $599 Premium), featured speaker cards, and the day's event schedule."
+          title: "Conference Zones & Working Ecosystem",
+          image: import.meta.env.BASE_URL + "casestudies/ase-screen-ecosystem.png",
+          description: "Visual guide breaking down the four active zones: Keynote Stage, Deal Room, Demo Arena, and Founder Lounge."
+        },
+        {
+          title: "Visual Impact & Summit Photography",
+          image: import.meta.env.BASE_URL + "casestudies/ase-screen-gallery.png",
+          description: "High-energy photo gallery of past summit stages, live founder pitches, and venture networking sessions."
         }
       ],
       conclusion: "The CONVERGE 2026 website processed hundreds of early-bird ticket sales within days of launch and streamlined startup applications. It established immediate authority for the event and gave attendees a frictionless digital experience.",
@@ -346,7 +356,7 @@ const RAW_WORKS: Project[] = [
     logo: "",
     details: {
       subtitle: "A consulting platform that helps African founders become investment-ready and raise venture capital",
-      heroImage: import.meta.env.BASE_URL + "casestudies/wecreate-hero.png",
+      heroImage: import.meta.env.BASE_URL + "casestudies/wecreate-screen-hero.png",
       mainParagraph: "Early-stage founders in emerging markets often have brilliant product ideas but struggle with financial models, pitch decks, and investor diligence. They don't know what venture capitalists look for or how to structure their round. Wecreate Consult helps founders become fundable. I designed and built their digital platform to clearly outline their six advisory verticals, demonstrate millions in facilitated funding, and make it easy for founders to start the readiness process.",
       highlights: [
         { title: "4-Step Investment Roadmap", description: "Breaks down the daunting fundraising journey into four simple steps: Discovery & Analysis, Strategy Design, Execution & Delivery, and Growth Support." },
@@ -362,14 +372,19 @@ const RAW_WORKS: Project[] = [
       ],
       screens: [
         {
-          title: "Problem-First Consulting Narrative",
-          image: import.meta.env.BASE_URL + "casestudies/wecreate-hero.png",
+          title: "Problem-First Venture Advisory",
+          image: import.meta.env.BASE_URL + "casestudies/wecreate-screen-hero.png",
           description: "A bold, unmistakable value statement that directly tells founders how the firm prepares them to raise institutional venture capital."
         },
         {
-          title: "Investment Readiness Architecture",
-          image: import.meta.env.BASE_URL + "casestudies/wecreate-screen-mockup.png",
-          description: "Showcases client partner logos (Kuda, Paystack, Flutterwave), the 4-step execution framework, and dedicated advisory modules on a floating laptop canvas."
+          title: "Founder Trust & Portfolio Network",
+          image: import.meta.env.BASE_URL + "casestudies/wecreate-screen-mission.png",
+          description: "Real portfolio startup logos trusted by bold founders (Chalant AI, Foodie Box, Ondigo, Odoezi, Sandwich, AfriLeap Labs)."
+        },
+        {
+          title: "Funding Facilitation & Ecosystem Metrics",
+          image: import.meta.env.BASE_URL + "casestudies/wecreate-screen-impact.png",
+          description: "Concrete track-record metrics showing ₦547M+ funding facilitated across 5 service lines and 60 Abuja startups mapped."
         }
       ],
       conclusion: "By transforming a dense consulting offering into a clear, problem-first narrative, Wecreate Consult attracted serious tech founders and streamlined their initial discovery workflow, leading to more high-quality advisory engagements.",
