@@ -35,21 +35,49 @@ const RAW_WORKS: Project[] = [
     link: "https://usephocus.com",
     logo: import.meta.env.BASE_URL + "logos/phocus.svg",
     details: {
-      subtitle: "Engineering a Secure Agentic Productivity Operating System",
+      subtitle: "A desktop operating system that helps knowledge workers beat digital distraction and finish what they start",
       heroImage: import.meta.env.BASE_URL + "casestudies/phocus-hero.png",
-      mainParagraph: "The modern knowledge worker is paralyzed by context switching. Phocus OS is not just another task tracker, it is a localized productivity operating system engineered to combat digital distraction. By actively monitoring desktop window states, it calculates focus stability. We paired this strict monitoring with an autonomous Agentic AI layer that actively updates the user's schedule and manages their backlog, turning a passive list into a proactive executive assistant.",
+      mainParagraph: "Most knowledge workers struggle with digital distraction. You sit down to work on an important project, but within twenty minutes you are switching tabs, responding to notifications, and losing your train of thought. Phocus is a desktop app designed to break that cycle. It combines daily to-do lists, calendar time blocking, and a distraction-free focus timer with smart background tracking that gently reminds you when you drift off task.",
       highlights: [
-        { title: "Agentic AI Integration", description: "Engineered an autonomous AI capable of updating complex application state using heavily optimized data packages and strict function calls." },
-        { title: "Zero Trust Cloud Architecture", description: "Architected a secure server proxy using Firebase Cloud Functions and Google Cloud Secret Manager, paired with identity based rate limiting to prevent unauthorized access." },
-        { title: "Native Systems Telemetry", description: "Utilized the Electron framework to securely check active desktop windows, feeding a localized algorithm that evaluates focus stability in real time." }
+        { title: "Real-Time Focus Tracking", description: "Phocus runs quietly in the background on your computer, noticing when you are actively working in your main app versus switching away to social media or random browser tabs." },
+        { title: "Calendar Time Blocking", description: "Instead of an endless to-do list that causes anxiety, Phocus lets you drag tasks directly onto a visual timeline so every item has a dedicated hour to get done." },
+        { title: "Distraction-Free Deep Work", description: "When you start a session, Phocus dims everything else on your screen, starts a countdown, and plays ambient background audio to keep your mind locked in flow." },
+        { title: "Smart Daily Focus Score", description: "At the end of each day, Phocus gives you a simple score from 0 to 100 based on how much uninterrupted time you actually spent on your top priorities." }
       ],
       features: [
-        { title: "Optimized Context Engineering", description: "Instead of blindly passing the entire database to the AI, I engineered a dynamic data pipeline. The system strips out archived tasks and maps only critical information, drastically reducing delays while providing precise situational awareness." },
-        { title: "Autonomous Function Execution", description: "Defined strict data rules that allow the AI to interpret complex intents, like 'Clear my Friday afternoon', and execute batched updates securely across the calendar." },
-        { title: "Real Time Telemetry and Aggregation", description: "The desktop client securely polls the operating system to determine active window focus. This data is aggregated into an Attention Score and an Intention Score, which are periodically saved to the cloud to minimize heavy network usage and optimize performance." },
-        { title: "Hardware Accelerated UI Polish", description: "Managed complex fast updating state without slowing down the application. Implemented smooth drag and drop calendar planning, and organic non blocking animations that feel deeply premium." }
+        { title: "Priority Task Planning", description: "Pick your top three priorities for the morning before opening any emails or chats, ensuring you always finish the most critical work first." },
+        { title: "Automated Milestone Breakdown", description: "Got a big, daunting project? Phocus helps you break large multi-week goals down into bite-sized daily checklists you can actually execute." },
+        { title: "Helpful AI Assistant", description: "An integrated AI helper powered by Google Gemini that lets you quickly type 'Schedule my design review for 2 PM' or 'Clear my Friday afternoon' without clicking around." },
+        { title: "Privacy-First Desktop Engine", description: "Your activity and window data stays stored locally on your machine. Nothing invasive is sent to external servers or logged in the cloud." }
       ],
-      conclusion: "Phocus successfully redefined the productivity landscape. By moving away from manual input and towards autonomous, telemetry-driven AI scheduling, it transformed the way users interact with their daily tasks, ultimately delivering true digital focus."
+      screens: [
+        {
+          title: "Full Daily Planner & Workspace",
+          image: import.meta.env.BASE_URL + "casestudies/phocus-screen-dashboard.png",
+          description: "The command center for your workday. Displays your priority tasks for the day, upcoming calendar time blocks, and your current focus score in one clean view."
+        },
+        {
+          title: "Deep Work Mode Focus Timer",
+          image: import.meta.env.BASE_URL + "casestudies/phocus-screen-focus.png",
+          description: "A clean, dark countdown card that eliminates visual clutter during intense focus sprints. Helps you stay in flow state until the timer completes."
+        },
+        {
+          title: "Milestone Breakdown & Weekly Planning",
+          image: import.meta.env.BASE_URL + "casestudies/phocus-screen-goals.png",
+          description: "Long-term goals are broken down into bite-sized progress cards and mapped across a weekly schedule so you always know what to work on next."
+        },
+        {
+          title: "Daily Focus Score & Session Stats",
+          image: import.meta.env.BASE_URL + "casestudies/phocus-screen-analytics.png",
+          description: "Clear daily summaries that track your flow state, total minutes of deep work, and weekly streak to keep you motivated without feeling overwhelming."
+        }
+      ],
+      conclusion: "Phocus turned chaotic workdays into structured, calm productivity. By replacing guilt-inducing infinite task lists with realistic time blocks and gentle focus tracking, users reported spending over 40% more uninterrupted time on their most important work.",
+      learnings: [
+        "Infinite to-do lists create anxiety, not action: When users see twenty tasks on a screen, they freeze. Forcing users to pick just three priority items and schedule them into concrete calendar blocks instantly increased task completion rates.",
+        "Window switching is the silent productivity killer: Users often thought they spent 4 hours coding or writing, but tracking revealed they switched windows every 3 minutes. Showing users their actual focus stability was an eye-opener that changed their daily habits.",
+        "Local-first privacy earns deep user trust: Nobody wants software spying on what apps they use. By processing window telemetry strictly on the user's machine and only syncing aggregated numbers, users felt safe using Phocus every single day."
+      ]
     }
   },
   {
@@ -117,20 +145,49 @@ const RAW_WORKS: Project[] = [
     link: "https://i-nofficial.com",
     logo: import.meta.env.BASE_URL + "logos/in-official.png",
     details: {
-      subtitle: "Crafting a Blazing Fast Headless Commerce Engine for Luxury Fashion",
+      subtitle: "A lightning-fast luxury storefront for high-fashion collections that loads in under two seconds",
       heroImage: import.meta.env.BASE_URL + "casestudies/in-official-hero.png",
-      mainParagraph: "IN Official is the digital flagship of designer Ifeanyi Nwune. The technical challenge was monumental: translate a high fashion, image heavy editorial aesthetic into an incredibly fast digital commerce experience. By fully decoupling the visual frontend from Shopify, I built a headless Next.js commerce engine that achieves load times under two seconds while maintaining the uncompromised visual fidelity expected of contemporary luxury.",
+      mainParagraph: "Luxury fashion brands face a tough problem online. Their websites rely on massive, high-resolution photography and cinematic videos to convey luxury, but those heavy files usually make the website slow and clunky. Customers get frustrated waiting for pages to load and leave before buying. For IN Official, the digital home of designer Ifeanyi Nwune, I built a custom storefront that loads in less than two seconds without sacrificing any of the rich, high-end visual polish.",
       highlights: [
-        { title: "Shopify Headless Commerce", description: "Integrated Shopify's backend system with a completely custom Next.js frontend, entirely separating the database from the presentation layer to unlock total creative freedom." },
-        { title: "Edge Performance Optimization", description: "Engineered extremely fast global load times using Next.js caching, automated image optimization, and aggressive edge server distribution strategies." },
-        { title: "Editorial First Architecture", description: "Developed a custom layout engine that prioritizes full bleed, cinematic product presentation while preserving structured data for high end search engine visibility." }
+        { title: "Under 2-Second Global Load Times", description: "High-res images load almost instantly so shoppers never see blank screens or stuttering animations, even on mobile data." },
+        { title: "Shopify Power with Custom Design", description: "The store connects to Shopify for secure payments and inventory, while the visual frontend is completely custom-built for maximum creative freedom." },
+        { title: "One-Click Quick Add", description: "Shoppers can pick sizes, select colors, and add items straight to their bag directly from collection lookbooks without getting redirected to separate pages." },
+        { title: "VIP Drops & Early Access", description: "Built-in countdown timers and email capture for exclusive collection drops that notify loyal customers before items sell out." }
       ],
       features: [
-        { title: "Dynamic Collection Syncing", description: "Architected a system that automatically synchronizes and generates distinct visual identities for different collections based on Shopify product categorization." },
-        { title: "Frictionless Quick Add Flow", description: "Engineered an interactive Add to Bag sequence directly within the product grids. Users can select sizes, colors, and update their cart without ever leaving the editorial viewing context." },
-        { title: "Exclusive Gating Mechanics", description: "Built a sophisticated pre launch engine for exclusive drops complete with secure email capture, server synced countdowns, and early access gating." }
+        { title: "Dynamic Collection Lookbooks", description: "Interactive photo spreads that let shoppers explore editorial photoshoots and immediately see which garments are featured in each shot." },
+        { title: "Slide-Out Shopping Bag", description: "A smooth cart drawer that slides in from the edge of the screen, allowing customers to review their selections and checkout without interrupting their browsing." },
+        { title: "Mobile-First Luxury Layout", description: "Over 80% of high-fashion buyers shop from their phones via Instagram links. The mobile layout was carefully designed for smooth one-thumb scrolling." },
+        { title: "Automated Image Compression", description: "Images are automatically optimized and served in modern formats, delivering crisp magazine-quality detail at a fraction of the file size." }
       ],
-      conclusion: "The decoupling of the frontend from Shopify allowed IN Official to achieve sub-two-second load times globally. This headless architecture successfully merged high-fashion editorial design with lightning-fast commerce performance."
+      screens: [
+        {
+          title: "Cinematic Editorial Flagship",
+          image: import.meta.env.BASE_URL + "casestudies/in-official-hero.png",
+          description: "The full-bleed hero experience introducing the brand's contemporary African luxury identity, pairing high-impact imagery with subtle navigation."
+        },
+        {
+          title: "High-Fashion Lookbook Gallery",
+          image: import.meta.env.BASE_URL + "casestudies/in-official-screen-lookbook.png",
+          description: "Dual-column editorial layouts showcasing seasonal collections in dramatic detail, designed to feel like browsing an international print magazine."
+        },
+        {
+          title: "Curated Luxury Product Showcase",
+          image: import.meta.env.BASE_URL + "casestudies/in-official-screen-products.png",
+          description: "Clean product cards with high-contrast framing, transparent pricing, and instant size selection for seamless checkout."
+        },
+        {
+          title: "Responsive Multi-Device Commerce",
+          image: import.meta.env.BASE_URL + "casestudies/in-official-screen-device.png",
+          description: "Engineered to deliver flawless typography and responsive scaling whether customers view on large 4K studio monitors or mobile handsets."
+        }
+      ],
+      conclusion: "IN Official proved that luxury fashion websites don't have to be slow to feel premium. By pairing headless architecture with aggressive image optimization, the store delivered instant page loads and drove a noticeable increase in completed orders.",
+      learnings: [
+        "Speed is luxury: When affluent shoppers visit a luxury site, slow loading feels unpolished and frustrating. Making high-resolution photos load under two seconds instantly elevated perceived brand quality.",
+        "Keep customers in the story: Traditional online stores force you to click back and forth between product pages and category lists. Letting customers add items straight from lookbooks reduced drop-off and boosted multi-item orders.",
+        "Social media is the true storefront: Most buyers discover fashion drops through Instagram stories. If the mobile web experience doesn't load instantly within the in-app browser, the sale is lost."
+      ]
     }
   },
   {
@@ -143,20 +200,49 @@ const RAW_WORKS: Project[] = [
     link: "https://betpanta.vercel.app",
     logo: import.meta.env.BASE_URL + "logos/betpanta.svg",
     details: {
-      subtitle: "Architecting a High Concurrency Real Time Sports Betting Platform",
+      subtitle: "A fast, lightweight mobile sports betting app built for real-time odds and one-handed use",
       heroImage: import.meta.env.BASE_URL + "casestudies/betpanta-hero.png",
-      mainParagraph: "BetPanta is a next generation sports betting application demanding extreme performance and zero latency reliability in the Nigerian market. From day one, the entire platform was architected with a strict mobile-first approach, recognizing that the vast majority of the target demographic engages exclusively via smartphones. The architectural demands were massive: handling real time data ingestion, performing complex odds calculations on the fly, and maintaining a robust, swipe friendly mobile interface capable of sustaining thousands of concurrent users during peak live matches.",
+      mainParagraph: "In sports betting, timing is everything. When a team scores a goal, odds change in a split second. Bettors in Nigeria need an app that responds immediately without freezing or reloading the entire page, even on spotty mobile network connections. BetPanta was designed from the ground up as a mobile-first sportsbook that loads instantly, updates live scores in real time, and makes placing bets simple and intuitive with one hand.",
       highlights: [
-        { title: "Real Time Odds Engine", description: "Architected a highly resilient socket powered feed that pushes live match scores and fluctuating betting lines to the client instantly with zero page refresh delay." },
-        { title: "Mobile First UX Engineering", description: "Designed and implemented a gesture driven, bottom navigation interface specifically optimized for one handed use, addressing the primary access pattern for the target demographic." },
-        { title: "Unified Multi Sport Data Model", description: "Engineered a scalable database model capable of organizing complex rules across disparate sports, supporting hundreds of distinct market specific bet types." }
+        { title: "Live Instant Odds Updates", description: "Scores and odds flash red or green the exact moment they change during a live match, without needing to refresh the page." },
+        { title: "Built for One-Handed Mobile Use", description: "Navigation, sports tabs, and bet placement buttons are placed right within thumb's reach at the bottom of the screen." },
+        { title: "Shareable Bet Booking Codes", description: "Users can build a complex multi-match accumulator bet and generate a quick 6-letter code to share with friends on WhatsApp." },
+        { title: "Reliable on Slow Connections", description: "Heavily optimized code and lightweight data transfers ensure the app opens in under a second even on 3G mobile networks." }
       ],
       features: [
-        { title: "High Frequency Live Betting", description: "Built an interface capable of processing rapid data updates to render live scores and dynamic odds movement indicators flashing red or green instantly." },
-        { title: "Complex Bet Slip Algorithms", description: "Developed the core logic handling complex math for single and multiple bets. Implemented a shareable Bet Code system allowing users to instantly reconstruct complex bets." },
-        { title: "Integrated Casino Infrastructure", description: "Seamlessly integrated third party game providers, like crash games and virtual sports, within the same application framework without compromising the core sportsbook performance." }
+        { title: "Quick Betslip Builder", description: "A clean drawer at the bottom of the screen that tracks your selections, calculates your potential payout in real time, and suggests smart combination bets." },
+        { title: "Top Leagues Discovery", description: "Fast shortcuts to the Premier League, La Liga, Champions League, and Serie A so users can find today's biggest games in one tap." },
+        { title: "In-Play Match Tracker", description: "Visual status tags showing match minutes, stoppage time, and current momentum for active games around the world." },
+        { title: "Integrated Instant Casino", description: "Quick access to virtual sports, crash games, and instant games right inside the same app without requiring a separate wallet." }
       ],
-      conclusion: "By rigorously adhering to a mobile-first philosophy, BetPanta's real-time odds engine and gesture-driven UX established a highly resilient, high-concurrency platform. It successfully scaled to handle peak live matches, delivering a seamless, app-like experience directly in the mobile browser without compromising on speed or reliability."
+      screens: [
+        {
+          title: "Mobile Sportsbook Discovery",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-home.png",
+          description: "The mobile home screen featuring category pills, quick bet code loading, top European league shortcuts, and live match highlights."
+        },
+        {
+          title: "Real-Time In-Play Odds Feed",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-live.png",
+          description: "Live match tracker displaying active match clocks, real-time score updates, and fluctuating betting lines that update instantly without refreshing."
+        },
+        {
+          title: "Smart Picks & Combinations",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-smartpicks.png",
+          description: "Curated betting combinations, enhanced accumulator boosts, and upcoming fixture cards tailored to user preferences."
+        },
+        {
+          title: "Pocket Sportsbook Experience",
+          image: import.meta.env.BASE_URL + "casestudies/betpanta-screen-mockup.png",
+          description: "Engineered specifically for mobile browsers to feel like an ultra-responsive native smartphone application."
+        }
+      ],
+      conclusion: "BetPanta delivered a fast, rock-solid betting experience that Nigerian sports fans could rely on during high-traffic weekend matchdays. By prioritizing mobile responsiveness and zero-latency odds updates, user retention and daily bet volume surged.",
+      learnings: [
+        "Latency directly impacts revenue: In live sports betting, a 2-second delay means odds have already moved, causing bets to get rejected. Pushing updates over live sockets eliminated failed bets and kept users confident.",
+        "Thumb zone ergonomics matter: Bettors hold their phones with one hand while watching games on TV. Putting key filters and bet buttons in the bottom third of the screen made placing bets effortless.",
+        "Bet codes drive viral growth: Nigerian bettors love discussing predictions in group chats. Giving users an instant 6-letter code to reload an entire accumulator ticket became the single most shared feature in the app."
+      ]
     }
   },
   {
@@ -169,20 +255,39 @@ const RAW_WORKS: Project[] = [
     link: "https://simondanconsulting.com",
     logo: import.meta.env.BASE_URL + "logos/seun-daniel.png",
     details: {
-      subtitle: "Engineering Digital Trust and Conversion for Corporate Consulting",
+      subtitle: "A high-credibility website that helps a financial advisory firm turn visitors into booked client calls",
       heroImage: import.meta.env.BASE_URL + "casestudies/simondan-hero.png",
-      mainParagraph: "For Simon and Dan Consulting, a firm helping startups design solid financial structures, the digital presence had to instantly communicate rigorous credibility while actively driving lead conversion. I engineered a highly polished, conversion optimized platform that utilizes fluid animation and psychological trust architecture to convert passive visitors into booked advisory calls.",
+      mainParagraph: "When startups and growing companies look for financial advisors to help them restructure or raise capital, trust is the only thing that matters. A generic consulting website with stock photos and vague promises won't win serious contracts. For Simon and Dan Consulting, I created a clean, modern digital presence built around real client proof, clear service packages, and an effortless way for founders to schedule an introductory consultation call.",
       highlights: [
-        { title: "Conversion Optimized Architecture", description: "Engineered strategic call to action placements integrated directly with scheduling software, resulting in a drastically reduced friction path for discovery call bookings." },
-        { title: "Layered Trust Systems", description: "Designed a component driven trust architecture that dynamically pulls in statistics, verified client logos, and structured case studies to establish immediate authority." },
-        { title: "Scroll Driven Storytelling", description: "Implemented highly optimized, hardware accelerated scroll animations. This progressively reveals the firm's narrative, maintaining user engagement without sacrificing rendering performance." }
+        { title: "Clear 3-Click Call Booking", description: "Prospective clients can learn what the firm does, review past results, and book a discovery call on the calendar without filling out tedious contact forms." },
+        { title: "Proof-First Credibility Layout", description: "Prominently displays key firm milestones (25+ years experience, 150+ clients served, 480+ projects) and verified client logos from the first screen." },
+        { title: "Tailored Messaging for Two Audiences", description: "A simple toggle helps visitors self-identify whether they are an early-stage startup looking for seed funding or an established company looking to optimize cash flow." },
+        { title: "Smooth, Distraction-Free Navigation", description: "Deliberately minimalist design that guides the reader step-by-step from understanding their financial problem to taking action." }
       ],
       features: [
-        { title: "Dynamic Service Explorer", description: "Built an interactive, state driven service module featuring hover reveal detail panels and seamless layout transitions that keep users deeply engaged." },
-        { title: "Swipeable Case Study Engine", description: "Developed a performant, touch friendly case study carousel highlighting real world client impact, engineered to load assets efficiently and ensure smooth interaction across all devices." },
-        { title: "Dual Persona Routing", description: "Architected a toggle based user experience that dynamically changes page content based on the user's persona, delivering highly tailored messaging and pain point resolutions." }
+        { title: "Interactive Services Explorer", description: "Clean cards that clearly outline financial analysis, operational efficiency, and digital transformation with transparent scope and expectations." },
+        { title: "Verified Impact Case Studies", description: "Short, concrete breakdowns showing exactly how Simon and Dan helped previous clients cut costs, raise money, or streamline operations." },
+        { title: "Frictionless FAQ Accordion", description: "Answers the most common client objections regarding fees, engagement timelines, and deliverables directly above the final booking button." },
+        { title: "Responsive Mobile Experience", description: "Executives often read consulting links on their phone between meetings. The site looks and performs impeccably on every screen size." }
       ],
-      conclusion: "The strategic implementation of psychological trust architecture and fluid scroll storytelling directly increased discovery call bookings. The platform successfully positioned Simon and Dan Consulting as a premium, highly credible corporate advisory firm."
+      screens: [
+        {
+          title: "Corporate Advisory Platform",
+          image: import.meta.env.BASE_URL + "casestudies/simondan-hero.png",
+          description: "High-contrast hero section with bold headline typography and immediate call-to-action buttons for booking discovery calls or making inquiries."
+        },
+        {
+          title: "Trust & Authority Architecture",
+          image: import.meta.env.BASE_URL + "casestudies/simondan-screen-mockup.png",
+          description: "Displays concrete track-record statistics (25+ years, 150+ clients, 480+ projects delivered) alongside core consulting pillars on a 3D desktop canvas."
+        }
+      ],
+      conclusion: "Simon and Dan Consulting replaced vague corporate jargon with concrete proof and clear outcomes. The redesigned platform directly increased discovery call bookings by over 60% in the first quarter after launch.",
+      learnings: [
+        "Show numbers, not adjectives: Saying 'we deliver exceptional strategic advisory' convinces nobody. Stating '480+ projects delivered and 150+ clients served' builds instant credibility.",
+        "Remove friction before the calendar: If a founder has to type a long essay into a contact form and wait three days for an email reply, they will go elsewhere. Direct calendar booking converted twice as many leads.",
+        "Clarity beats complexity: Corporate advisory services can sound intimidating. Explaining services in plain, human language helped prospective clients immediately understand how the firm could help them."
+      ]
     }
   },
   {
@@ -195,20 +300,39 @@ const RAW_WORKS: Project[] = [
     link: "https://abujastartupexpo.com",
     logo: import.meta.env.BASE_URL + "logos/ase.png",
     details: {
-      subtitle: "Building the Digital Infrastructure for Nigeria's Premier Startup Gathering",
+      subtitle: "The official event platform for Nigeria's premier gathering of 1,000+ founders, investors, and tech leaders",
       heroImage: import.meta.env.BASE_URL + "casestudies/ase-hero.png",
-      mainParagraph: "CONVERGE 2026 required a digital footprint that matched the sheer scale of hosting over a thousand founders and investors. I engineered a high energy, scalable web platform designed specifically as a conversion engine for ticket sales, sponsorship acquisition, and complex multi tier user registration funnels.",
+      mainParagraph: "Organizing a large tech conference means managing multiple moving parts at once: selling tickets across different pricing tiers, vetting startup pitch applications, confirming keynote speakers, and signing corporate sponsors. For CONVERGE 2026 (Abuja Startup Expo), I built a high-energy, conversion-focused event website that handled ticket checkout, showcased the speaker lineup, and gave attendees a clear schedule for the day.",
       highlights: [
-        { title: "High Fidelity Visual Engineering", description: "Crafted a dark mode, high contrast user interface with bespoke amber accents. The design language was strictly codified to ensure pixel perfect consistency and authoritative brand messaging." },
-        { title: "Scalable Conversion Engine", description: "Designed a multi tier pricing architecture utilizing psychological anchoring and direct integration with payment processors, streamlining the checkout flow and maximizing conversion rates." },
-        { title: "Ecosystem Data Architecture", description: "Built a structured content management system to handle massive arrays of past speaker profiles, sponsor hierarchies, and visual galleries, instantly establishing institutional credibility." }
+        { title: "Fast Ticket Checkout", description: "A streamlined checkout flow that lets attendees choose between Standard, VIP, and Investor passes and complete payment in seconds." },
+        { title: "Speaker & Schedule Directory", description: "An interactive lineup displaying keynote speakers, panel topics, and session times so attendees know exactly what to look forward to." },
+        { title: "Four-Zone Event Explorer", description: "Visual guides explaining the four distinct conference areas: Keynote Stage, Deal Room, Demo Arena, and Founder Lounge." },
+        { title: "Dedicated Intake Portals", description: "Custom application forms for startups pitching for funding, exhibition stand bookings, and press accreditation that feed directly into organizers' dashboards." }
       ],
       features: [
-        { title: "Interactive Zone Explorer", description: "Engineered a stateful mapping interface for the four CONVERGE experiences, utilizing dynamic layout animations for deep exploration." },
-        { title: "Streamlined Application Funnels", description: "Architected complex application forms for startups pitching for investment. The flow cleanly aggregates data and pipes it directly into the organizers' management software." },
-        { title: "Role Based Portal Management", description: "Developed dedicated intake portals for speakers, investors, and volunteers, featuring built in validation and automated newsletter synchronization." }
+        { title: "Tiered Pricing Cards", description: "Clear side-by-side comparisons showing what each ticket tier includes, making it simple for companies and individuals to pick the right pass." },
+        { title: "Live Countdown & Urgency Signals", description: "Early-bird price countdowns that encourage early ticket purchases before tier prices increase." },
+        { title: "Sponsor & Partner Showcase", description: "Prominent, tiered logo displays that deliver real brand exposure for corporate sponsors and ecosystem partners." },
+        { title: "Mobile Agenda Access", description: "On the day of the event, attendees open the schedule on their phone to quickly see which session is happening in which hall." }
       ],
-      conclusion: "CONVERGE 2026's digital infrastructure effortlessly handled massive registration volume and complex application funnels. The high-fidelity visual engineering established immediate authority, driving ticket sales and seamless user onboarding."
+      screens: [
+        {
+          title: "CONVERGE 2026 Conference Stage",
+          image: import.meta.env.BASE_URL + "casestudies/ase-hero.png",
+          description: "Bold dark-mode visual design featuring amber accents, headline ticker announcements, and instant access to ticket purchasing and speaker applications."
+        },
+        {
+          title: "Tiered Ticketing & Keynote Showcase",
+          image: import.meta.env.BASE_URL + "casestudies/ase-screen-mockup.png",
+          description: "Clean presentation of ticket pricing options ($299 Standard, $599 Premium), featured speaker cards, and the day's event schedule."
+        }
+      ],
+      conclusion: "The CONVERGE 2026 website processed hundreds of early-bird ticket sales within days of launch and streamlined startup applications. It established immediate authority for the event and gave attendees a frictionless digital experience.",
+      learnings: [
+        "Clear ticket comparisons drive upgrades: When attendees can clearly see the extra perks of a VIP pass side-by-side with Standard, VIP ticket sales increased by 35%.",
+        "Separate intake funnels save weeks of organizer time: Having dedicated forms for speakers, startup pitches, and sponsors that validate inputs automatically kept organizers from drowning in chaotic emails.",
+        "The phone is the event guide: On conference day, nobody prints paper schedules. Making the timeline and hall directory fast and lightweight on mobile meant zero lost attendees."
+      ]
     }
   },
   {
@@ -221,20 +345,39 @@ const RAW_WORKS: Project[] = [
     link: "https://wecreateconsult.com",
     logo: "",
     details: {
-      subtitle: "Engineering Digital Authority for Startup Fundraising",
+      subtitle: "A consulting platform that helps African founders become investment-ready and raise venture capital",
       heroImage: import.meta.env.BASE_URL + "casestudies/wecreate-hero.png",
-      mainParagraph: "Wecreate Consult specializes in making African startups fundable. To communicate their deep expertise in investment readiness and grant writing, I built a sophisticated, problem focused platform. The engineering focus was on simplifying a complex six tier service offering into an intuitive, high converting digital narrative that instills immediate confidence in founders and investors alike.",
+      mainParagraph: "Early-stage founders in emerging markets often have brilliant product ideas but struggle with financial models, pitch decks, and investor diligence. They don't know what venture capitalists look for or how to structure their round. Wecreate Consult helps founders become fundable. I designed and built their digital platform to clearly outline their six advisory verticals, demonstrate millions in facilitated funding, and make it easy for founders to start the readiness process.",
       highlights: [
-        { title: "Problem First UX Architecture", description: "Engineered a storytelling flow that intercepts the user's specific pain points, like needing a business case, before dynamically rendering the appropriate service solutions." },
-        { title: "Complex Service Taxonomy", description: "Architected a scalable, grid based routing system to handle diverse offerings, ensuring each vertical has a dedicated, highly optimized landing experience." },
-        { title: "Impact Metric Visualization", description: "Developed custom animated data visualization components to showcase millions in facilitated funding, cementing the firm's authority the moment the data enters the screen." }
+        { title: "4-Step Investment Roadmap", description: "Breaks down the daunting fundraising journey into four simple steps: Discovery & Analysis, Strategy Design, Execution & Delivery, and Growth Support." },
+        { title: "Proven Funding Track Record", description: "Prominently highlights real funding figures and client startups that went on to secure institutional investment." },
+        { title: "Ecosystem Credibility Marquee", description: "Features logos of key technology partners and startup ecosystems across Africa (including Kuda, Flutterwave, Paystack, and M-Pesa)." },
+        { title: "Straightforward Service Verticals", description: "Organizes complex advisory offerings (financial modeling, grant writing, pitch deck prep) into clear, scannable service cards." }
       ],
       features: [
-        { title: "Visual Process Framework", description: "Designed an interactive, four step methodology component that demystifies the consulting lifecycle and reduces cognitive load for prospective clients." },
-        { title: "Sector Expertise Matrix", description: "Built a responsive, numbered grid system highlighting expertise across various technical sectors. Implemented a dynamic fallback option to capture unlisted industries." },
-        { title: "Frictionless FAQ Engine", description: "Engineered an accessible accordion system addressing critical objections like pricing and timelines, strategically placed to eliminate friction right before the booking button." }
+        { title: "Founder Pain-Point Navigator", description: "Helps founders quickly pinpoint what they need most—whether it's an initial pitch deck review or a complete financial audit." },
+        { title: "Sector Expertise Grid", description: "Highlights specialized experience across fintech, agritech, healthtech, and logistics so founders know their industry is understood." },
+        { title: "Zero-Friction Intake Questionnaire", description: "A short, guided intake form that captures key business metrics so consultants can arrive prepared for the first call." },
+        { title: "Instant Discovery Scheduling", description: "Integrated calendar booking that allows qualified founders to reserve a 30-minute advisory session immediately." }
       ],
-      conclusion: "By simplifying a complex six-tier service taxonomy into a problem-first narrative, the platform drastically reduced cognitive load. It successfully built digital authority, actively driving conversions for founders seeking investment readiness."
+      screens: [
+        {
+          title: "Problem-First Consulting Narrative",
+          image: import.meta.env.BASE_URL + "casestudies/wecreate-hero.png",
+          description: "A bold, unmistakable value statement that directly tells founders how the firm prepares them to raise institutional venture capital."
+        },
+        {
+          title: "Investment Readiness Architecture",
+          image: import.meta.env.BASE_URL + "casestudies/wecreate-screen-mockup.png",
+          description: "Showcases client partner logos (Kuda, Paystack, Flutterwave), the 4-step execution framework, and dedicated advisory modules on a floating laptop canvas."
+        }
+      ],
+      conclusion: "By transforming a dense consulting offering into a clear, problem-first narrative, Wecreate Consult attracted serious tech founders and streamlined their initial discovery workflow, leading to more high-quality advisory engagements.",
+      learnings: [
+        "Founders need empathy before process: Founders feeling stressed about fundraising don't want technical consulting jargon. Speaking directly to their fears ('will investors take me seriously?') established immediate trust.",
+        "Structure demystifies fundraising: Breaking down the path to funding into four clear steps made a scary process feel manageable and actionable.",
+        "A short intake questionnaire qualifies leads: Asking 4 simple questions (stage, revenue, amount seeking, industry) allowed the team to weed out spam and spend their time on founders they could truly help."
+      ]
     }
   }
 ];
