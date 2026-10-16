@@ -82,7 +82,7 @@ const RAW_WORKS: Project[] = [
   },
   {
     id: 'plugin-portfolio',
-    title: "Plugin Portfolio",
+    title: "Plugin internal portfolio system",
     description: "Portfolio and project delivery tool for creators and freelancers.",
     tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
     year: "2026",
