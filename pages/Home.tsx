@@ -94,7 +94,7 @@ const stagger: any = {
                   </a>
                   {' '}and running{' '}
                   <span className="relative inline-flex items-center group/studiox align-middle mx-1 md:-mt-1">
-                    <a href="https://www.instagram.com/studiox.build/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-neutral-100 dark:bg-neutral-800/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-3 py-1 rounded-xl transition-all border border-neutral-200 dark:border-neutral-700 shadow-sm group cursor-pointer">
+                    <a href="https://www.instagram.com/bystudio_x/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 bg-neutral-100 dark:bg-neutral-800/50 hover:bg-neutral-200 dark:hover:bg-neutral-800 px-3 py-1 rounded-xl transition-all border border-neutral-200 dark:border-neutral-700 shadow-sm group cursor-pointer">
                       <img src={import.meta.env.BASE_URL + "logos/studio-x.png"} alt="Studio X" className="w-4 h-4 md:w-5 md:h-5 rounded-md object-cover" />
                       <span className="text-neutral-900 dark:text-white font-medium text-lg md:text-xl">Studio X</span>
                       <ArrowUpRight className="w-3.5 h-3.5 md:w-4 md:h-4 text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors" />
