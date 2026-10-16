@@ -87,7 +87,7 @@ const RAW_WORKS: Project[] = [
     tags: ["Next.js", "TypeScript", "Supabase", "Tailwind"],
     year: "2026",
     status: "Active",
-    link: "https://github.com/oreokunade/Plugin-2",
+    link: "https://plugin-2.vercel.app",
     logo: import.meta.env.BASE_URL + "logos/plugin.png",
     details: {
       subtitle: "A simple way for freelancers to showcase work, manage clients, and deliver projects",
