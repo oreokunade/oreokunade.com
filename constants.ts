@@ -787,7 +787,7 @@ export const DIGITAL_PRODUCTS: DigitalProduct[] = [
     id: "kill-ai-slop",
     title: "Escape AI Slop - A Builder's Guide",
     type: "E-Book",
-    price: "₦7,500",
+    price: "₦5,500",
     coverImage: import.meta.env.BASE_URL + "products/killaislop-cover.png",
     description: "A builder's guide to websites that look professional and feel human. Build clean websites that don't look AI-built.",
     link: "/kill-ai-slop",
