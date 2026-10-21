@@ -372,7 +372,7 @@ const EscapeAISlop = () => {
                    { title: "02 — The Prompt Library", desc: "Ready-to-use prompts for ideating, generating, iterating, refining and building with AI.", value: "₦15,000" },
                    { title: "03 — The Asset Resource Library", desc: "A curated list of resources for finding high-quality fonts, images, icons, illustrations, videos, 3D assets and more.", value: "₦10,000" },
                    { 
-                     title: "04 — Build With AI Community", 
+                     title: "04 — Direct Mentorship", 
                      desc: "Get access to the community where we build together every week.", 
                      value: "₦25,000",
                      features: [
@@ -392,7 +392,7 @@ const EscapeAISlop = () => {
                       
                       {item.features && (
                         <div className="mt-4">
-                          <h4 className="font-bold mb-3 text-[#ff4306]">What you get in the community:</h4>
+                          <h4 className="font-bold mb-3 text-[#ff4306]">What you get with direct mentorship:</h4>
                           <ul className="list-disc pl-5 flex flex-col gap-2 marker:text-[#ff4306]">
                             {item.features.map((feature, j) => (
                               <li key={j} className="text-sm md:text-base text-neutral-700 dark:text-neutral-300 leading-relaxed pl-1">{feature}</li>
