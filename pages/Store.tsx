@@ -197,7 +197,8 @@ const Store = () => {
                   rel={(!product.promptTemplate && !product.link?.startsWith('/')) ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
                     if (product.id === 'master-prompt-generator') {
-                      window.location.href = '/masterprompt';
+                      e.preventDefault();
+                      navigate('/masterprompt');
                       return;
                     }
                     if (product.promptTemplate) {

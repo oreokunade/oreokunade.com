@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useDeferredValue, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DigitalProduct, DIGITAL_PRODUCTS } from '../constants';
-import { Copy, Check, Info, ChevronDown } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { DIGITAL_PRODUCTS } from '../constants';
+import { Copy, Check, Info, ChevronDown, ArrowLeft, X } from 'lucide-react';
 
-
-
-const ColorLabelSelect: React.FC<{ value: string, onChange: (val: string) => void }> = ({ value, onChange }) => {
+const ColorLabelSelect: React.FC<{ value: string; onChange: (val: string) => void }> = ({ value, onChange }) => {
   const [open, setOpen] = useState(false);
   const options = ["Primary", "Secondary", "Accent", "Background", "Neutrals"];
   
@@ -28,6 +27,7 @@ const ColorLabelSelect: React.FC<{ value: string, onChange: (val: string) => voi
   return (
     <div className="relative color-label-select ml-1">
       <button 
+        type="button"
         onClick={() => setOpen(!open)} 
         className="flex items-center gap-1 text-xs font-medium text-neutral-400 hover:text-neutral-600 dark:text-neutral-500 dark:hover:text-neutral-300 transition-colors outline-none"
       >
@@ -44,6 +44,7 @@ const ColorLabelSelect: React.FC<{ value: string, onChange: (val: string) => voi
             className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-32 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl shadow-xl flex flex-col py-1 z-[100]"
           >
             <button 
+              type="button"
               onClick={() => { onChange(""); setOpen(false); }}
               className={`px-3 py-1.5 text-xs text-left transition-colors ${!value ? 'bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-white font-medium' : 'text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-800/50 hover:text-neutral-900 dark:hover:text-neutral-200'}`}
             >
@@ -72,11 +73,10 @@ const ColorLabelSelect: React.FC<{ value: string, onChange: (val: string) => voi
   );
 };
 
-import { DIGITAL_PRODUCTS } from '../constants';
+const MasterPrompt: React.FC = () => {
+  const navigate = useNavigate();
+  const product = useMemo(() => DIGITAL_PRODUCTS.find(p => p.id === 'master-prompt-generator'), []);
 
-const MasterPrompt = () => {
-  const product = DIGITAL_PRODUCTS.find(p => p.id === 'master-prompt-generator');
-  if (!product) return null;
   const [values, setValues] = useState<Record<string, string>>({});
   const [colorModes, setColorModes] = useState<Record<string, 'color' | 'palette' | 'vibe'>>({});
   const [paletteLabels, setPaletteLabels] = useState<Record<string, string>>({});
@@ -97,7 +97,7 @@ const MasterPrompt = () => {
     if (!text) return [];
     const hexRegex = /#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})\b/gi;
     const matches = text.match(hexRegex);
-    return matches ? Array.from(new Set(matches)) : []; // unique colors
+    return matches ? Array.from(new Set(matches)) : [];
   };
 
   const generatedPrompt = useMemo(() => {
@@ -106,32 +106,30 @@ const MasterPrompt = () => {
       const variable = product.promptVariables?.find(v => v.id === match);
       const rawVal = deferredValues[match];
     
-    if (variable?.type === 'color-vibe') {
-      const mode = colorModes[match] || 'color';
-      if (mode === 'color') {
-        if (!rawVal) return match;
-        const extractedColors = extractHexColors(rawVal);
-        const colorStr = extractedColors.length > 0 ? extractedColors[0] : rawVal;
-        return `My primary brand colour is ${colorStr}.`;
-      } else if (mode === 'palette') {
-        if (!rawVal) return match;
-        const extractedColors = extractHexColors(rawVal);
-        const labeledColors = extractedColors.map(hex => {
-          const label = paletteLabels[hex];
-          return label ? `${label}: ${hex}` : hex;
-        });
-        const paletteStr = labeledColors.length > 0 ? labeledColors.join(', ') : rawVal;
-        return `Here is the complete color palette I have already created for the brand:\n${paletteStr}\nPlease integrate these exact colors into the color system section.`;
-      } else {
-        return `I don't have a primary color yet. Please extract a suitable primary brand color and a cohesive color system from the reference screenshots.`;
+      if (variable?.type === 'color-vibe') {
+        const mode = colorModes[match] || 'color';
+        if (mode === 'color') {
+          if (!rawVal) return match;
+          const extractedColors = extractHexColors(rawVal);
+          const colorStr = extractedColors.length > 0 ? extractedColors[0] : rawVal;
+          return `My primary brand colour is ${colorStr}.`;
+        } else if (mode === 'palette') {
+          if (!rawVal) return match;
+          const extractedColors = extractHexColors(rawVal);
+          const labeledColors = extractedColors.map(hex => {
+            const label = paletteLabels[hex];
+            return label ? `${label}: ${hex}` : hex;
+          });
+          const paletteStr = labeledColors.length > 0 ? labeledColors.join(', ') : rawVal;
+          return `Here is the complete color palette I have already created for the brand:\n${paletteStr}\nPlease integrate these exact colors into the color system section.`;
+        } else {
+          return `I don't have a primary color yet. Please extract a suitable primary brand color and a cohesive color system from the reference screenshots.`;
+        }
       }
-    }
     
       return rawVal || match;
     });
   }, [product, deferredValues, colorModes, paletteLabels]);
-
-  if (!product || !product.promptTemplate) return null;
 
   const handleInputChange = (id: string, value: string) => {
     setValues(prev => ({ ...prev, [id]: value }));
@@ -141,168 +139,219 @@ const MasterPrompt = () => {
     try {
       await navigator.clipboard.writeText(generatedPrompt);
       setCopied(true);
-      setTimeout(() => setCopied(false), 5000); // Give them 5 seconds to read the reminder
+      setTimeout(() => setCopied(false), 5000);
     } catch (err) {
       console.error('Failed to copy', err);
     }
   };
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate('/store');
+    }
+  };
+
+  if (!product || !product.promptTemplate) {
+    return (
+      <div className="min-h-screen pt-32 pb-20 px-6 sm:px-12 max-w-4xl mx-auto flex flex-col items-center justify-center text-center">
+        <p className="text-neutral-500 mb-4">Prompt resource not found.</p>
+        <button
+          onClick={() => navigate('/store')}
+          className="px-6 py-2.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-black text-sm font-medium"
+        >
+          Back to Resources
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen pt-32 pb-20 px-6 sm:px-12 max-w-4xl mx-auto flex flex-col justify-center">
-        <div className="relative w-full bg-[#F9F8F6] dark:bg-[#0a0a0a] rounded-3xl overflow-hidden shadow-xl flex flex-col border border-neutral-200/50 dark:border-neutral-800/50">
-          {/* Header */}
-          <div className="flex-none flex items-center justify-between px-6 py-5 border-b border-neutral-200/50 dark:border-neutral-800/50">
-            <h3 className="text-xl font-medium text-neutral-900 dark:text-white">
+    <div className="min-h-screen pt-28 md:pt-36 pb-20 px-4 sm:px-8 md:px-12 max-w-4xl mx-auto flex flex-col">
+      {/* Top Back Navigation Bar */}
+      <div className="mb-6 flex items-center justify-between">
+        <button
+          onClick={handleBack}
+          className="inline-flex items-center gap-2 text-sm font-medium text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors group cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+          <span>Back to Resources</span>
+        </button>
+        <span className="text-xs font-medium px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-900 text-neutral-600 dark:text-neutral-400 border border-neutral-200/80 dark:border-neutral-800">
+          Free Interactive Template
+        </span>
+      </div>
+
+      <div className="relative w-full bg-[#F9F8F6] dark:bg-[#0a0a0a] rounded-3xl overflow-hidden shadow-xl flex flex-col border border-neutral-200/60 dark:border-neutral-800/60">
+        {/* Header */}
+        <div className="flex-none flex items-center justify-between px-6 py-5 border-b border-neutral-200/50 dark:border-neutral-800/50">
+          <div>
+            <h1 className="text-xl md:text-2xl font-medium text-neutral-900 dark:text-white">
               {product.title}
-            </h3>
-            <button 
-              onClick={onClose}
-              className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors"
-            >
-              <X className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
-            </button>
+            </h1>
+            <p className="text-xs md:text-sm text-neutral-500 dark:text-neutral-400 font-light mt-1">
+              {product.description}
+            </p>
           </div>
+          <button 
+            type="button"
+            onClick={handleBack}
+            className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-colors cursor-pointer"
+            title="Back to resources"
+            aria-label="Back to resources"
+          >
+            <X className="w-5 h-5 text-neutral-600 dark:text-neutral-400" />
+          </button>
+        </div>
 
-          {/* Content */}
-          <div className="flex-1 overflow-y-auto p-6 flex flex-col gap-8">
-            {product.promptVariables && product.promptVariables.length > 0 && (
-              <div className="flex flex-col gap-4">
-                <h4 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Configure Prompt</h4>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {product.promptVariables.map(variable => {
-                    if (variable.type === 'color-vibe') {
-                      const mode = colorModes[variable.id] || 'color';
-                      return (
-                        <div key={variable.id} className="flex flex-col gap-3 sm:col-span-2 p-4 rounded-2xl bg-neutral-100/50 dark:bg-neutral-800/30 border border-neutral-200 dark:border-neutral-800">
-                          <div className="flex items-center justify-between">
-                            <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                              {variable.label}
-                            </label>
-                            <div className="flex flex-wrap items-center gap-1 bg-neutral-200/50 dark:bg-neutral-900 rounded-lg p-1">
-                              <button
-                                onClick={() => setColorModes(prev => ({ ...prev, [variable.id]: 'color' }))}
-                                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${mode === 'color' ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'}`}
-                              >
-                                Single Color
-                              </button>
-                              <button
-                                onClick={() => setColorModes(prev => ({ ...prev, [variable.id]: 'palette' }))}
-                                className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${mode === 'palette' ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'}`}
-                              >
-                                Full Palette
-                              </button>
-
-                            </div>
-                          </div>
-                          {mode === 'color' && (
-                            <div className="relative">
-                              <input
-                                type="text"
-                                placeholder="e.g. #0F172A"
-                                value={values[variable.id] || ''}
-                                onChange={(e) => handleInputChange(variable.id, e.target.value)}
-                                className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all w-full pr-12 font-mono"
-                              />
-                              {extractHexColors(values[variable.id] || '')[0] && (
-                                <div 
-                                  className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md shadow-sm border border-neutral-200 dark:border-neutral-700" 
-                                  style={{ backgroundColor: extractHexColors(values[variable.id] || '')[0] }} 
-                                />
-                              )}
-                            </div>
-                          )}
-                          {mode === 'palette' && (
-                            <div className="flex flex-col gap-3">
-                              <textarea
-                                placeholder="Paste your generated color palette here (separate with commas)... e.g. #0F172A, #F8FAFC"
-                                value={values[variable.id] || ''}
-                                onChange={(e) => handleInputChange(variable.id, e.target.value)}
-                                rows={4}
-                                className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all w-full resize-none font-mono text-sm leading-relaxed"
-                              />
-                              
-                              {extractHexColors(values[variable.id] || '').length > 0 && (
-                                <div className="flex flex-wrap items-center gap-2 px-1">
-                                  {extractHexColors(values[variable.id] || '').map((hex, i) => (
-                                    <div key={i} className="flex items-center gap-2 px-2.5 py-1.5 bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-sm">
-                                      <div className="w-4 h-4 rounded-full shadow-inner border border-black/10 dark:border-white/10" style={{ backgroundColor: hex }} />
-                                      <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400 uppercase">{hex}</span>
-                                      <ColorLabelSelect 
-                                        value={paletteLabels[hex] || ''}
-                                        onChange={(val) => setPaletteLabels(prev => ({ ...prev, [hex]: val }))}
-                                      />
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      );
-                    }
-                    
+        {/* Content */}
+        <div className="flex-1 p-6 md:p-8 flex flex-col gap-8">
+          {product.promptVariables && product.promptVariables.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">
+                Configure Prompt
+              </h4>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {product.promptVariables.map(variable => {
+                  if (variable.type === 'color-vibe') {
+                    const mode = colorModes[variable.id] || 'color';
                     return (
-                      <div key={variable.id} className={`flex flex-col gap-1.5 ${variable.type === 'textarea' ? 'sm:col-span-2' : ''}`}>
-                        <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
-                          {variable.label}
-                        </label>
-                        {variable.type === 'textarea' ? (
-                          <textarea
-                            placeholder={variable.placeholder}
-                            value={values[variable.id] || ''}
-                            onChange={(e) => handleInputChange(variable.id, e.target.value)}
-                            rows={4}
-                            className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all resize-y w-full"
-                          />
-                        ) : (
-                          <input
-                            type="text"
-                            placeholder={variable.placeholder}
-                            value={values[variable.id] || ''}
-                            onChange={(e) => handleInputChange(variable.id, e.target.value)}
-                            className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all"
-                          />
+                      <div key={variable.id} className="flex flex-col gap-3 sm:col-span-2 p-4 rounded-2xl bg-neutral-100/50 dark:bg-neutral-800/30 border border-neutral-200 dark:border-neutral-800">
+                        <div className="flex items-center justify-between">
+                          <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                            {variable.label}
+                          </label>
+                          <div className="flex flex-wrap items-center gap-1 bg-neutral-200/50 dark:bg-neutral-900 rounded-lg p-1">
+                            <button
+                              type="button"
+                              onClick={() => setColorModes(prev => ({ ...prev, [variable.id]: 'color' }))}
+                              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${mode === 'color' ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'}`}
+                            >
+                              Single Color
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setColorModes(prev => ({ ...prev, [variable.id]: 'palette' }))}
+                              className={`px-3 py-1.5 text-xs font-medium rounded-md transition-colors ${mode === 'palette' ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm' : 'text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200'}`}
+                            >
+                              Full Palette
+                            </button>
+                          </div>
+                        </div>
+                        {mode === 'color' && (
+                          <div className="relative">
+                            <input
+                              type="text"
+                              placeholder="e.g. #0F172A"
+                              value={values[variable.id] || ''}
+                              onChange={(e) => handleInputChange(variable.id, e.target.value)}
+                              className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all w-full pr-12 font-mono text-sm"
+                            />
+                            {extractHexColors(values[variable.id] || '')[0] && (
+                              <div 
+                                className="absolute right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-md shadow-sm border border-neutral-200 dark:border-neutral-700" 
+                                style={{ backgroundColor: extractHexColors(values[variable.id] || '')[0] }} 
+                              />
+                            )}
+                          </div>
+                        )}
+                        {mode === 'palette' && (
+                          <div className="flex flex-col gap-3">
+                            <textarea
+                              placeholder="Paste your generated color palette here (separate with commas)... e.g. #0F172A, #F8FAFC"
+                              value={values[variable.id] || ''}
+                              onChange={(e) => handleInputChange(variable.id, e.target.value)}
+                              rows={4}
+                              className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all w-full resize-none font-mono text-sm leading-relaxed"
+                            />
+                            
+                            {extractHexColors(values[variable.id] || '').length > 0 && (
+                              <div className="flex flex-wrap items-center gap-2 px-1">
+                                {extractHexColors(values[variable.id] || '').map((hex, i) => (
+                                  <div key={i} className="flex items-center gap-2 px-2.5 py-1.5 bg-white dark:bg-neutral-900 rounded-lg border border-neutral-200 dark:border-neutral-800 shadow-sm">
+                                    <div className="w-4 h-4 rounded-full shadow-inner border border-black/10 dark:border-white/10" style={{ backgroundColor: hex }} />
+                                    <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400 uppercase">{hex}</span>
+                                    <ColorLabelSelect 
+                                      value={paletteLabels[hex] || ''}
+                                      onChange={(val) => setPaletteLabels(prev => ({ ...prev, [hex]: val }))}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </div>
                     );
-                  })}
-                </div>
+                  }
+                  
+                  return (
+                    <div key={variable.id} className={`flex flex-col gap-1.5 ${variable.type === 'textarea' ? 'sm:col-span-2' : ''}`}>
+                      <label className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                        {variable.label}
+                      </label>
+                      {variable.type === 'textarea' ? (
+                        <textarea
+                          placeholder={variable.placeholder}
+                          value={values[variable.id] || ''}
+                          onChange={(e) => handleInputChange(variable.id, e.target.value)}
+                          rows={4}
+                          className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all resize-y w-full text-sm leading-relaxed"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder={variable.placeholder}
+                          value={values[variable.id] || ''}
+                          onChange={(e) => handleInputChange(variable.id, e.target.value)}
+                          className="px-4 py-2.5 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 focus:outline-none focus:ring-2 focus:ring-neutral-200 dark:focus:ring-neutral-700 text-neutral-900 dark:text-white transition-all text-sm"
+                        />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            )}
+            </div>
+          )}
 
-            <div className="flex flex-col gap-4">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 uppercase tracking-wider">Generated Prompt</h4>
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors text-sm font-medium"
-                >
-                  {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                  {copied ? 'Copied!' : 'Copy Prompt'}
-                </button>
-              </div>
-              <div className="relative rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 overflow-hidden">
-                <pre className="font-sans text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap leading-relaxed">
-                  {generatedPrompt}
-                </pre>
-                
-                <AnimatePresence>
-                  {copied && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-xl shadow-lg border border-neutral-800 dark:border-neutral-200 flex items-center gap-2 whitespace-nowrap z-10"
-                    >
-                      <Check className="w-4 h-4 text-emerald-400 dark:text-emerald-500" />
-                      Prompt copied! Remember to attach your reference screenshots.
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+          {/* Generated Prompt Preview */}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <h4 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-widest">
+                Generated Prompt
+              </h4>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors text-sm font-medium cursor-pointer shadow-sm"
+              >
+                {copied ? <Check className="w-4 h-4 text-emerald-400 dark:text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                {copied ? 'Copied!' : 'Copy Prompt'}
+              </button>
+            </div>
+            <div className="relative rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-6 overflow-hidden">
+              <pre className="font-sans text-sm text-neutral-700 dark:text-neutral-300 whitespace-pre-wrap leading-relaxed">
+                {generatedPrompt}
+              </pre>
+              
+              <AnimatePresence>
+                {copied && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-3 bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-sm font-medium rounded-xl shadow-lg border border-neutral-800 dark:border-neutral-200 flex items-center gap-2 whitespace-nowrap z-10"
+                  >
+                    <Check className="w-4 h-4 text-emerald-400 dark:text-emerald-500" />
+                    Prompt copied! Remember to attach your reference screenshots.
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
+      </div>
     </div>
   );
 };
