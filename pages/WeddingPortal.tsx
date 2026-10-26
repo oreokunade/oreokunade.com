@@ -36,6 +36,10 @@ interface UploadItem {
 }
 
 interface WeddingFormData {
+  // Optional legacy fallbacks
+  partner1Name?: string;
+  partner2Name?: string;
+
   // 1. The Couple & Custom Domain (First Names only)
   brideFirstName: string;
   brideNickname: string;
@@ -377,6 +381,7 @@ const WeddingPortal: React.FC = () => {
   const [progressStatusText, setProgressStatusText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [copiedPrompt, setCopiedPrompt] = useState(false);
 
   // Auto-save form draft to localStorage on any input change
   useEffect(() => {
