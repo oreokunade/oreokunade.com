@@ -19,6 +19,7 @@ const Navbar = () => {
   // Determine active state based on pathname and hash
   const getActiveId = () => {
     if (location.pathname === '/store' || location.pathname === '/kill-ai-slop') return 'Resources';
+    if (location.pathname.startsWith('/weddings') || location.pathname.startsWith('/wedding-portal')) return '';
     if (location.hash) {
       const hashMap: Record<string, string> = {
         '#home': 'Home',
