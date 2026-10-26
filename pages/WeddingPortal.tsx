@@ -62,7 +62,23 @@ interface WeddingFormData {
   receptionVenue: string;
   receptionAddress: string;
   receptionTime: string;
+  afterPartyVenue: string;
+  afterPartyAddress: string;
+  afterPartyTime: string;
+  afterPartyNotes: string;
   scheduleNotes: string;
+
+  // Event Segments Toggles for Single Day
+  singleHasTraditional: boolean;
+  singleHasCeremony: boolean;
+  singleHasReception: boolean;
+  singleHasAfterParty: boolean;
+
+  // Event Segments Toggles for Separate Day
+  separateHasTraditional: boolean;
+  separateHasCeremony: boolean;
+  separateHasReception: boolean;
+  separateHasAfterParty: boolean;
 
   // 3. Our Love Story
   howWeMet: string;
@@ -107,7 +123,21 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   receptionVenue: '',
   receptionAddress: '',
   receptionTime: '2:00 PM',
+  afterPartyVenue: '',
+  afterPartyAddress: '',
+  afterPartyTime: '7:30 PM',
+  afterPartyNotes: '',
   scheduleNotes: '',
+
+  singleHasTraditional: false,
+  singleHasCeremony: true,
+  singleHasReception: true,
+  singleHasAfterParty: false,
+
+  separateHasTraditional: true,
+  separateHasCeremony: true,
+  separateHasReception: true,
+  separateHasAfterParty: false,
 
   howWeMet: '',
   theProposal: '',
@@ -1446,135 +1476,483 @@ const WeddingPortal: React.FC = () => {
 
                   {formData.eventScheduleType === 'single' ? (
                     /* 1. SINGLE DAY CELEBRATION */
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="space-y-6">
+                      {/* Top Date & Palette */}
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-5 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800">
+                        <div>
+                          <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                            Main Wedding Date *
+                          </label>
+                          <input
+                            type="date"
+                            name="weddingDate"
+                            value={formData.weddingDate}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                            Overall Dress Code
+                          </label>
+                          <input
+                            type="text"
+                            name="dressCode"
+                            value={formData.dressCode}
+                            onChange={handleChange}
+                            placeholder="e.g. Black Tie Formal"
+                            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                            Color Palette Name
+                          </label>
+                          <input
+                            type="text"
+                            name="colorPalette"
+                            value={formData.colorPalette}
+                            onChange={handleChange}
+                            placeholder="e.g. Sage Green & Gold"
+                            className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                        <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                          <Calendar size={16} />
+                          <span>Order of Events (Toggle on/off whichever apply to your day)</span>
+                        </h3>
+                        <p className="text-xs text-neutral-500 mt-0.5">
+                          Customize your event flow. You can toggle off any event your wedding does not have.
+                        </p>
+                      </div>
+
+                      {/* EVENT 1: TRADITIONAL WEDDING / ENGAGEMENT (SINGLE DAY) */}
+                      <div className={`p-5 rounded-2xl border transition-all ${
+                        formData.singleHasTraditional
+                          ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
+                          : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                      }`}>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              formData.singleHasTraditional
+                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
+                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
+                            }`}>
+                              <Sparkles size={16} />
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                <span>1. Traditional Wedding / Engagement</span>
+                                {formData.singleHasTraditional ? (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                    Included
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                    Toggled Off
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-[11px] text-neutral-500">Traditional rites / engagement ceremony on the same day</div>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, singleHasTraditional: !prev.singleHasTraditional }))}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                              formData.singleHasTraditional ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                            }`}
+                          >
+                            <span
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                formData.singleHasTraditional ? 'translate-x-5' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {formData.singleHasTraditional ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Ceremony Time
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalTime"
+                                value={formData.traditionalTime}
+                                onChange={handleChange}
+                                placeholder="e.g. 8:30 AM"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Venue Name
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalVenue"
+                                value={formData.traditionalVenue}
+                                onChange={handleChange}
+                                placeholder="e.g. Landmark Grand Hall A / Bride's Residence"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Attire / Aso-Ebi Colors (Optional)
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalDressCode"
+                                value={formData.traditionalDressCode}
+                                onChange={handleChange}
+                                placeholder="e.g. Champagne Gold & Wine Aso-Ebi"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Venue Address & Maps Link
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalAddress"
+                                value={formData.traditionalAddress}
+                                onChange={handleChange}
+                                placeholder="e.g. Plot 5 Water Corporation Dr, Oniru (https://maps.app.goo.gl/...)"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-neutral-400 italic pt-1">
+                            Traditional ceremony is toggled off. Tap the switch to include if holding traditional rites on the same day.
+                          </div>
+                        )}
+                      </div>
+
+                      {/* EVENT 2: CHURCH / CEREMONY */}
+                      <div className={`p-5 rounded-2xl border transition-all ${
+                        formData.singleHasCeremony
+                          ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
+                          : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                      }`}>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              formData.singleHasCeremony
+                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
+                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
+                            }`}>
+                              <Heart size={16} />
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                <span>2. Church / Solemnization Ceremony</span>
+                                {formData.singleHasCeremony ? (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                    Included
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                    Toggled Off
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-[11px] text-neutral-500">Religious or civil wedding solemnization</div>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, singleHasCeremony: !prev.singleHasCeremony }))}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                              formData.singleHasCeremony ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                            }`}
+                          >
+                            <span
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                formData.singleHasCeremony ? 'translate-x-5' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {formData.singleHasCeremony ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Ceremony Venue Name
+                              </label>
+                              <input
+                                type="text"
+                                name="ceremonyVenue"
+                                value={formData.ceremonyVenue}
+                                onChange={handleChange}
+                                placeholder="e.g. Church of the Nativity, Victoria Island"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Ceremony Time
+                              </label>
+                              <input
+                                type="text"
+                                name="ceremonyTime"
+                                value={formData.ceremonyTime}
+                                onChange={handleChange}
+                                placeholder="e.g. 11:00 AM"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Ceremony Physical Address & Maps Link
+                              </label>
+                              <input
+                                type="text"
+                                name="ceremonyAddress"
+                                value={formData.ceremonyAddress}
+                                onChange={handleChange}
+                                placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos (https://maps.app.goo.gl/...)"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-neutral-400 italic pt-1">
+                            Church / solemnization is toggled off. Tap the switch to include.
+                          </div>
+                        )}
+                      </div>
+
+                      {/* EVENT 3: WEDDING RECEPTION */}
+                      <div className={`p-5 rounded-2xl border transition-all ${
+                        formData.singleHasReception
+                          ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
+                          : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                      }`}>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              formData.singleHasReception
+                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
+                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
+                            }`}>
+                              <Gift size={16} />
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                <span>3. Wedding Reception</span>
+                                {formData.singleHasReception ? (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                    Included
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                    Toggled Off
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-[11px] text-neutral-500">Banquet, dining, speeches and celebrations</div>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, singleHasReception: !prev.singleHasReception }))}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                              formData.singleHasReception ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                            }`}
+                          >
+                            <span
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                formData.singleHasReception ? 'translate-x-5' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {formData.singleHasReception ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Reception Venue Name
+                              </label>
+                              <input
+                                type="text"
+                                name="receptionVenue"
+                                value={formData.receptionVenue}
+                                onChange={handleChange}
+                                placeholder="e.g. Landmark Event Centre, Hall 1"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Reception Time
+                              </label>
+                              <input
+                                type="text"
+                                name="receptionTime"
+                                value={formData.receptionTime}
+                                onChange={handleChange}
+                                placeholder="e.g. 2:00 PM"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Reception Address & Maps Link
+                              </label>
+                              <input
+                                type="text"
+                                name="receptionAddress"
+                                value={formData.receptionAddress}
+                                onChange={handleChange}
+                                placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-neutral-400 italic pt-1">
+                            Reception is toggled off. Tap the switch to include.
+                          </div>
+                        )}
+                      </div>
+
+                      {/* EVENT 4: AFTER-PARTY */}
+                      <div className={`p-5 rounded-2xl border transition-all ${
+                        formData.singleHasAfterParty
+                          ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
+                          : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                      }`}>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              formData.singleHasAfterParty
+                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
+                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
+                            }`}>
+                              <Music size={16} />
+                            </div>
+                            <div>
+                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                                <span>4. After-Party / Late Night Celebration</span>
+                                {formData.singleHasAfterParty ? (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                    Included
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                    Toggled Off
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-[11px] text-neutral-500">Late night dancing, DJ sets, casual lounge vibes</div>
+                            </div>
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, singleHasAfterParty: !prev.singleHasAfterParty }))}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                              formData.singleHasAfterParty ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                            }`}
+                          >
+                            <span
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                formData.singleHasAfterParty ? 'translate-x-5' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
+                        </div>
+
+                        {formData.singleHasAfterParty ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                After-Party Venue Name
+                              </label>
+                              <input
+                                type="text"
+                                name="afterPartyVenue"
+                                value={formData.afterPartyVenue}
+                                onChange={handleChange}
+                                placeholder="e.g. Landmark After-Dark Lounge / Club Oasis"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                After-Party Time
+                              </label>
+                              <input
+                                type="text"
+                                name="afterPartyTime"
+                                value={formData.afterPartyTime}
+                                onChange={handleChange}
+                                placeholder="e.g. 7:30 PM till late"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                After-Party Address & Maps Link
+                              </label>
+                              <input
+                                type="text"
+                                name="afterPartyAddress"
+                                value={formData.afterPartyAddress}
+                                onChange={handleChange}
+                                placeholder="e.g. Landmark Centre, Oniru / Victoria Island"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                After-Party Notes (Dress change / Access rules)
+                              </label>
+                              <input
+                                type="text"
+                                name="afterPartyNotes"
+                                value={formData.afterPartyNotes}
+                                onChange={handleChange}
+                                placeholder="e.g. Casual chic attire / Wristbands required"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="text-xs text-neutral-400 italic pt-1">
+                            No after-party scheduled. Tap the switch to include an after-party on your wedding website.
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Day Highlights / Timeline */}
                       <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Main Wedding Date
-                        </label>
-                        <input
-                          type="date"
-                          name="weddingDate"
-                          value={formData.weddingDate}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Dress Code / Attire
-                        </label>
-                        <input
-                          type="text"
-                          name="dressCode"
-                          value={formData.dressCode}
-                          onChange={handleChange}
-                          placeholder="e.g. Black Tie Formal / Modern Luxury"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Your Custom Color Palette Name
-                        </label>
-                        <input
-                          type="text"
-                          name="colorPalette"
-                          value={formData.colorPalette}
-                          onChange={handleChange}
-                          placeholder="e.g. Sage Green, Terracotta & Warm Gold"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      {/* Ceremony details */}
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Ceremony Venue Name
-                        </label>
-                        <input
-                          type="text"
-                          name="ceremonyVenue"
-                          value={formData.ceremonyVenue}
-                          onChange={handleChange}
-                          placeholder="e.g. Church of the Nativity, Victoria Island"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Ceremony Time
-                        </label>
-                        <input
-                          type="text"
-                          name="ceremonyTime"
-                          value={formData.ceremonyTime}
-                          onChange={handleChange}
-                          placeholder="e.g. 10:00 AM"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Ceremony Physical Address & Google Maps Link
-                        </label>
-                        <input
-                          type="text"
-                          name="ceremonyAddress"
-                          value={formData.ceremonyAddress}
-                          onChange={handleChange}
-                          placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos (https://maps.app.goo.gl/...)"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      {/* Reception details */}
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Reception Venue Name
-                        </label>
-                        <input
-                          type="text"
-                          name="receptionVenue"
-                          value={formData.receptionVenue}
-                          onChange={handleChange}
-                          placeholder="e.g. Landmark Event Centre, Water Corporation Road"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Reception Time
-                        </label>
-                        <input
-                          type="text"
-                          name="receptionTime"
-                          value={formData.receptionTime}
-                          onChange={handleChange}
-                          placeholder="e.g. 1:30 PM"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div className="md:col-span-2">
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Reception Address & Maps Link
-                        </label>
-                        <input
-                          type="text"
-                          name="receptionAddress"
-                          value={formData.receptionAddress}
-                          onChange={handleChange}
-                          placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru, Victoria Island"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        />
-                      </div>
-
-                      <div className="md:col-span-2">
                         <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
                           Schedule Highlights / Day Timeline (Optional)
                         </label>
@@ -1583,7 +1961,7 @@ const WeddingPortal: React.FC = () => {
                           rows={3}
                           value={formData.scheduleNotes}
                           onChange={handleChange}
-                          placeholder="e.g. 10:00 AM - Church Ceremony, 1:00 PM - Cocktail Hour, 2:30 PM - Grand Entrance, 6:30 PM - After Party"
+                          placeholder="e.g. 10:00 AM - Church Ceremony, 1:00 PM - Cocktail Hour, 2:30 PM - Grand Entrance, 7:00 PM - After Party"
                           className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
                         />
                       </div>
@@ -1592,105 +1970,143 @@ const WeddingPortal: React.FC = () => {
                     /* 2. SEPARATE DAY EVENTS */
                     <div className="space-y-6">
                       {/* DAY 1: TRADITIONAL / ENGAGEMENT WEDDING */}
-                      <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-4">
+                      <div className={`p-5 sm:p-6 rounded-2xl border transition-all ${
+                        formData.separateHasTraditional
+                          ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
+                          : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                      }`}>
                         <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-center justify-between">
-                          <div>
-                            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 1</span>
-                            <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Traditional / Engagement Wedding</h3>
+                          <div className="flex items-center gap-2.5">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              formData.separateHasTraditional
+                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
+                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
+                            }`}>
+                              <Sparkles size={16} />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 1</span>
+                                <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Traditional / Engagement Wedding</h3>
+                                {formData.separateHasTraditional ? (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                    Included
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                    Toggled Off
+                                  </span>
+                                )}
+                              </div>
+                              <span className="text-[11px] text-neutral-500">Cultural celebration & introduction</span>
+                            </div>
                           </div>
-                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-neutral-200/80 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium">
-                            Cultural Celebration
-                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() => setFormData(prev => ({ ...prev, separateHasTraditional: !prev.separateHasTraditional }))}
+                            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                              formData.separateHasTraditional ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                            }`}
+                          >
+                            <span
+                              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                formData.separateHasTraditional ? 'translate-x-5' : 'translate-x-0'
+                              }`}
+                            />
+                          </button>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Traditional Wedding Date
-                            </label>
-                            <input
-                              type="date"
-                              name="traditionalDate"
-                              value={formData.traditionalDate}
-                              onChange={handleChange}
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
+                        {formData.separateHasTraditional ? (
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Wedding Date *
+                              </label>
+                              <input
+                                type="date"
+                                name="traditionalDate"
+                                value={formData.traditionalDate}
+                                onChange={handleChange}
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
 
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Traditional Event Time
-                            </label>
-                            <input
-                              type="text"
-                              name="traditionalTime"
-                              value={formData.traditionalTime}
-                              onChange={handleChange}
-                              placeholder="e.g. 11:00 AM"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Event Time
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalTime"
+                                value={formData.traditionalTime}
+                                onChange={handleChange}
+                                placeholder="e.g. 11:00 AM"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
 
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Traditional Venue Name
-                            </label>
-                            <input
-                              type="text"
-                              name="traditionalVenue"
-                              value={formData.traditionalVenue}
-                              onChange={handleChange}
-                              placeholder="e.g. The Dorchester Events Centre"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Venue Name
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalVenue"
+                                value={formData.traditionalVenue}
+                                onChange={handleChange}
+                                placeholder="e.g. The Dorchester Events Centre"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
 
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Traditional Attire / Aso-Ebi Colors (Optional)
-                            </label>
-                            <input
-                              type="text"
-                              name="traditionalDressCode"
-                              value={formData.traditionalDressCode}
-                              onChange={handleChange}
-                              placeholder="e.g. Emerald Green & Champagne Aso-Ebi / Agbada"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Attire / Aso-Ebi Colors (Optional)
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalDressCode"
+                                value={formData.traditionalDressCode}
+                                onChange={handleChange}
+                                placeholder="e.g. Emerald Green & Champagne Aso-Ebi / Agbada"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
 
-                          <div className="md:col-span-2">
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Traditional Venue Address & Google Maps Link
-                            </label>
-                            <input
-                              type="text"
-                              name="traditionalAddress"
-                              value={formData.traditionalAddress}
-                              onChange={handleChange}
-                              placeholder="e.g. Plot 5 Water Corporation Road, Oniru, Victoria Island (https://maps.app.goo.gl/...)"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Traditional Venue Address & Google Maps Link
+                              </label>
+                              <input
+                                type="text"
+                                name="traditionalAddress"
+                                value={formData.traditionalAddress}
+                                onChange={handleChange}
+                                placeholder="e.g. Plot 5 Water Corporation Road, Oniru, Victoria Island (https://maps.app.goo.gl/...)"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              />
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className="text-xs text-neutral-400 italic pt-3">
+                            Traditional event day is toggled off. Tap the switch to include.
+                          </div>
+                        )}
                       </div>
 
                       {/* DAY 2: MAIN / WHITE / CHURCH WEDDING */}
-                      <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-4">
-                        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-center justify-between">
-                          <div>
-                            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 2</span>
-                            <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Main / Church / White Wedding & Reception</h3>
-                          </div>
-                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-neutral-200/80 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium">
-                            White Wedding
-                          </span>
+                      <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-5">
+                        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                          <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 2</span>
+                          <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Main / White Wedding Day</h3>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Top Date, Attire & Palette */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Main Wedding Date
+                              Main Wedding Date *
                             </label>
                             <input
                               type="date"
@@ -1703,19 +2119,19 @@ const WeddingPortal: React.FC = () => {
 
                           <div>
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Dress Code / Attire
+                              White Wedding Dress Code
                             </label>
                             <input
                               type="text"
                               name="dressCode"
                               value={formData.dressCode}
                               onChange={handleChange}
-                              placeholder="e.g. Black Tie Formal / Suits & Evening Gowns"
+                              placeholder="e.g. Black Tie Formal"
                               className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                             />
                           </div>
 
-                          <div className="md:col-span-2">
+                          <div>
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
                               Custom Color Palette Name
                             </label>
@@ -1724,94 +2140,245 @@ const WeddingPortal: React.FC = () => {
                               name="colorPalette"
                               value={formData.colorPalette}
                               onChange={handleChange}
-                              placeholder="e.g. Sage Green, Terracotta & Warm Gold"
+                              placeholder="e.g. Emerald & Gold"
                               className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                             />
+                          </div>
+                        </div>
+
+                        <div className="text-xs font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider pt-2">
+                          Day 2 Events (Toggle on/off whichever apply)
+                        </div>
+
+                        {/* DAY 2: CHURCH / CEREMONY */}
+                        <div className={`p-4 rounded-xl border transition-all ${
+                          formData.separateHasCeremony
+                            ? 'bg-white dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700'
+                            : 'bg-neutral-100/40 dark:bg-neutral-900/40 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                        }`}>
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <Heart size={15} className="text-neutral-700 dark:text-neutral-300" />
+                              <span className="text-xs font-bold text-neutral-900 dark:text-white">Church / Solemnization Ceremony</span>
+                              {formData.separateHasCeremony ? (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                  Included
+                                </span>
+                              ) : (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                  Toggled Off
+                                </span>
+                              )}
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, separateHasCeremony: !prev.separateHasCeremony }))}
+                              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                formData.separateHasCeremony ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                  formData.separateHasCeremony ? 'translate-x-4' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
                           </div>
 
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Ceremony Venue Name
-                            </label>
-                            <input
-                              type="text"
-                              name="ceremonyVenue"
-                              value={formData.ceremonyVenue}
-                              onChange={handleChange}
-                              placeholder="e.g. Church of the Nativity, Victoria Island"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
+                          {formData.separateHasCeremony ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                              <div>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Ceremony Venue Name</label>
+                                <input
+                                  type="text"
+                                  name="ceremonyVenue"
+                                  value={formData.ceremonyVenue}
+                                  onChange={handleChange}
+                                  placeholder="e.g. Church of the Nativity"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Ceremony Time</label>
+                                <input
+                                  type="text"
+                                  name="ceremonyTime"
+                                  value={formData.ceremonyTime}
+                                  onChange={handleChange}
+                                  placeholder="e.g. 10:00 AM"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                              <div className="md:col-span-2">
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Ceremony Address & Maps Link</label>
+                                <input
+                                  type="text"
+                                  name="ceremonyAddress"
+                                  value={formData.ceremonyAddress}
+                                  onChange={handleChange}
+                                  placeholder="e.g. 14 Bishop Oluwole St, Victoria Island"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-[11px] text-neutral-400 italic">Ceremony toggled off.</div>
+                          )}
+                        </div>
+
+                        {/* DAY 2: RECEPTION */}
+                        <div className={`p-4 rounded-xl border transition-all ${
+                          formData.separateHasReception
+                            ? 'bg-white dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700'
+                            : 'bg-neutral-100/40 dark:bg-neutral-900/40 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                        }`}>
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <Gift size={15} className="text-neutral-700 dark:text-neutral-300" />
+                              <span className="text-xs font-bold text-neutral-900 dark:text-white">Wedding Reception</span>
+                              {formData.separateHasReception ? (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                  Included
+                                </span>
+                              ) : (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                  Toggled Off
+                                </span>
+                              )}
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, separateHasReception: !prev.separateHasReception }))}
+                              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                formData.separateHasReception ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                  formData.separateHasReception ? 'translate-x-4' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
                           </div>
 
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Ceremony Time
-                            </label>
-                            <input
-                              type="text"
-                              name="ceremonyTime"
-                              value={formData.ceremonyTime}
-                              onChange={handleChange}
-                              placeholder="e.g. 10:00 AM"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
+                          {formData.separateHasReception ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                              <div>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Reception Venue Name</label>
+                                <input
+                                  type="text"
+                                  name="receptionVenue"
+                                  value={formData.receptionVenue}
+                                  onChange={handleChange}
+                                  placeholder="e.g. Landmark Event Centre"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Reception Time</label>
+                                <input
+                                  type="text"
+                                  name="receptionTime"
+                                  value={formData.receptionTime}
+                                  onChange={handleChange}
+                                  placeholder="e.g. 2:00 PM"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                              <div className="md:col-span-2">
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Reception Address & Maps Link</label>
+                                <input
+                                  type="text"
+                                  name="receptionAddress"
+                                  value={formData.receptionAddress}
+                                  onChange={handleChange}
+                                  placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-[11px] text-neutral-400 italic">Reception toggled off.</div>
+                          )}
+                        </div>
+
+                        {/* DAY 2: AFTER-PARTY */}
+                        <div className={`p-4 rounded-xl border transition-all ${
+                          formData.separateHasAfterParty
+                            ? 'bg-white dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700'
+                            : 'bg-neutral-100/40 dark:bg-neutral-900/40 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
+                        }`}>
+                          <div className="flex items-center justify-between mb-3">
+                            <div className="flex items-center gap-2">
+                              <Music size={15} className="text-neutral-700 dark:text-neutral-300" />
+                              <span className="text-xs font-bold text-neutral-900 dark:text-white">After-Party Celebration</span>
+                              {formData.separateHasAfterParty ? (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                  Included
+                                </span>
+                              ) : (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                  Toggled Off
+                                </span>
+                              )}
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, separateHasAfterParty: !prev.separateHasAfterParty }))}
+                              className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                                formData.separateHasAfterParty ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-300 dark:bg-neutral-700'
+                              }`}
+                            >
+                              <span
+                                className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white dark:bg-neutral-900 shadow-md ring-0 transition duration-200 ease-in-out ${
+                                  formData.separateHasAfterParty ? 'translate-x-4' : 'translate-x-0'
+                                }`}
+                              />
+                            </button>
                           </div>
 
-                          <div className="md:col-span-2">
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Ceremony Address & Google Maps Link
-                            </label>
-                            <input
-                              type="text"
-                              name="ceremonyAddress"
-                              value={formData.ceremonyAddress}
-                              onChange={handleChange}
-                              placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Reception Venue Name
-                            </label>
-                            <input
-                              type="text"
-                              name="receptionVenue"
-                              value={formData.receptionVenue}
-                              onChange={handleChange}
-                              placeholder="e.g. Landmark Event Centre"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Reception Time
-                            </label>
-                            <input
-                              type="text"
-                              name="receptionTime"
-                              value={formData.receptionTime}
-                              onChange={handleChange}
-                              placeholder="e.g. 2:00 PM"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
-
-                          <div className="md:col-span-2">
-                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Reception Address & Maps Link
-                            </label>
-                            <input
-                              type="text"
-                              name="receptionAddress"
-                              value={formData.receptionAddress}
-                              onChange={handleChange}
-                              placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru, Victoria Island"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                            />
-                          </div>
+                          {formData.separateHasAfterParty ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                              <div>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">After-Party Venue Name</label>
+                                <input
+                                  type="text"
+                                  name="afterPartyVenue"
+                                  value={formData.afterPartyVenue}
+                                  onChange={handleChange}
+                                  placeholder="e.g. Landmark After-Dark Lounge"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                              <div>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">After-Party Time</label>
+                                <input
+                                  type="text"
+                                  name="afterPartyTime"
+                                  value={formData.afterPartyTime}
+                                  onChange={handleChange}
+                                  placeholder="e.g. 7:30 PM till late"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                              <div className="md:col-span-2">
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">After-Party Address & Maps Link</label>
+                                <input
+                                  type="text"
+                                  name="afterPartyAddress"
+                                  value={formData.afterPartyAddress}
+                                  onChange={handleChange}
+                                  placeholder="e.g. Landmark Centre, Oniru, Victoria Island"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white"
+                                />
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="text-[11px] text-neutral-400 italic">No after-party scheduled. Tap switch to include.</div>
+                          )}
                         </div>
                       </div>
 
@@ -2269,38 +2836,71 @@ const WeddingPortal: React.FC = () => {
                       <div className="text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider text-[11px]">
                         {formData.eventScheduleType === 'single' ? 'Dates & Venues (Single Day)' : 'Dates & Venues (Separate Events)'}
                       </div>
+
                       {formData.eventScheduleType === 'single' ? (
-                        <>
+                        <div className="space-y-1.5">
                           <div className="text-sm font-semibold text-neutral-900 dark:text-white">
                             {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'No date set'}
                           </div>
-                          <div className="text-neutral-600 dark:text-neutral-400">Palette: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.colorPalette}</span></div>
-                          <div className="text-neutral-600 dark:text-neutral-400">Dress Code: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.dressCode}</span></div>
-                          <div className="text-neutral-600 dark:text-neutral-400">Ceremony: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})</span></div>
-                          <div className="text-neutral-600 dark:text-neutral-400">Reception: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.receptionVenue || 'TBD'} ({formData.receptionTime})</span></div>
-                        </>
-                      ) : (
-                        <>
-                          <div className="space-y-1">
-                            <div className="text-neutral-800 dark:text-neutral-200 font-semibold text-[11px]">
-                              Day 1 (Traditional): {formData.traditionalDate ? new Date(formData.traditionalDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
-                            </div>
-                            <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
-                              Venue: {formData.traditionalVenue || 'TBD'} {formData.traditionalTime ? `(${formData.traditionalTime})` : ''}
-                            </div>
+                          <div className="text-neutral-600 dark:text-neutral-400">
+                            Palette: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.colorPalette}</span>
+                            {formData.dressCode && <> • Attire: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.dressCode}</span></>}
                           </div>
-                          <div className="space-y-1 pt-1 border-t border-neutral-200 dark:border-neutral-800">
-                            <div className="text-neutral-800 dark:text-neutral-200 font-semibold text-[11px]">
+                          
+                          {formData.singleHasTraditional && (
+                            <div className="pt-1 text-[11px]">
+                              <span className="font-semibold text-neutral-900 dark:text-white">Traditional:</span> {formData.traditionalVenue || 'TBD'} ({formData.traditionalTime || 'Morning'})
+                            </div>
+                          )}
+                          {formData.singleHasCeremony && (
+                            <div className="text-[11px]">
+                              <span className="font-semibold text-neutral-900 dark:text-white">Ceremony:</span> {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
+                            </div>
+                          )}
+                          {formData.singleHasReception && (
+                            <div className="text-[11px]">
+                              <span className="font-semibold text-neutral-900 dark:text-white">Reception:</span> {formData.receptionVenue || 'TBD'} ({formData.receptionTime})
+                            </div>
+                          )}
+                          {formData.singleHasAfterParty && (
+                            <div className="text-[11px]">
+                              <span className="font-semibold text-neutral-900 dark:text-white">After-Party:</span> {formData.afterPartyVenue || 'TBD'} ({formData.afterPartyTime || 'Night'})
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          {formData.separateHasTraditional && (
+                            <div className="space-y-0.5">
+                              <div className="text-neutral-900 dark:text-white font-semibold text-[11px]">
+                                Day 1 (Traditional): {formData.traditionalDate ? new Date(formData.traditionalDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
+                              </div>
+                              <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                                Venue: {formData.traditionalVenue || 'TBD'} ({formData.traditionalTime || 'TBD'})
+                              </div>
+                            </div>
+                          )}
+                          <div className="space-y-0.5 pt-1 border-t border-neutral-200 dark:border-neutral-800">
+                            <div className="text-neutral-900 dark:text-white font-semibold text-[11px]">
                               Day 2 (Main Wedding): {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
                             </div>
-                            <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
-                              Ceremony: {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
-                            </div>
-                            <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
-                              Reception: {formData.receptionVenue || 'TBD'} ({formData.receptionTime})
-                            </div>
+                            {formData.separateHasCeremony && (
+                              <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                                Ceremony: {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
+                              </div>
+                            )}
+                            {formData.separateHasReception && (
+                              <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                                Reception: {formData.receptionVenue || 'TBD'} ({formData.receptionTime})
+                              </div>
+                            )}
+                            {formData.separateHasAfterParty && (
+                              <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                                After-Party: {formData.afterPartyVenue || 'TBD'} ({formData.afterPartyTime || 'Night'})
+                              </div>
+                            )}
                           </div>
-                        </>
+                        </div>
                       )}
                     </div>
 

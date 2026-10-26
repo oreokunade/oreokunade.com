@@ -361,6 +361,10 @@ function fillClientSheetContent(sheet, d) {
     ["Reception Venue", d.receptionVenue || ""],
     ["Reception Time", d.receptionTime || ""],
     ["Reception Address & Map", d.receptionAddress || ""],
+    ["After-Party Venue", d.afterPartyVenue || "N/A"],
+    ["After-Party Time", d.afterPartyTime || "N/A"],
+    ["After-Party Address & Map", d.afterPartyAddress || "N/A"],
+    ["After-Party Notes", d.afterPartyNotes || "N/A"],
     ["Day-of Schedule Notes", d.scheduleNotes || ""],
     ["", ""],
 
@@ -438,6 +442,11 @@ function buildBriefText(coupleTitle, d, folderUrl) {
   b.push("   Ceremony Address: " + (d.ceremonyAddress || "N/A"));
   b.push("   Reception: " + (d.receptionVenue || "N/A") + " @ " + (d.receptionTime || "N/A"));
   b.push("   Reception Address: " + (d.receptionAddress || "N/A"));
+  if (d.singleHasAfterParty || d.separateHasAfterParty || d.afterPartyVenue) {
+    b.push("   After-Party: " + (d.afterPartyVenue || "N/A") + " @ " + (d.afterPartyTime || "N/A"));
+    b.push("   After-Party Address: " + (d.afterPartyAddress || "N/A"));
+    b.push("   After-Party Notes: " + (d.afterPartyNotes || "N/A"));
+  }
   b.push("   Schedule Notes: \n" + (d.scheduleNotes || "None") + "\n");
 
   b.push("3. OUR LOVE STORY");
