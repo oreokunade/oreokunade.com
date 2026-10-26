@@ -2541,20 +2541,6 @@ const WeddingPortal: React.FC = () => {
                       />
                     </div>
 
-                    <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        External Gift Registry Links (Amazon, Honeyfund, etc.)
-                      </label>
-                      <input
-                        type="text"
-                        name="registryLinks"
-                        value={formData.registryLinks}
-                        onChange={handleChange}
-                        placeholder="e.g. https://www.amazon.com/baby-reg/... or https://withjoy.com/..."
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
                     {/* Background Music Field */}
                     <div className="md:col-span-2 p-4 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800">
                       <div className="flex items-center gap-2 mb-1">
