@@ -133,7 +133,7 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   afterPartyNotes: '',
   scheduleNotes: '',
 
-  singleHasTraditional: false,
+  singleHasTraditional: true,
   singleHasCeremony: true,
   singleHasReception: true,
   singleHasAfterParty: false,
@@ -245,7 +245,7 @@ const MOCK_HERO_PHOTOS = [
 ];
 
 const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN-_Yg3t0pebr0k6AQ4VAP44dmgVvlTrfxyARClARuwlwbU3ImB9mWHi-rXP_tgYOx2Q/exec';
-const STORAGE_KEY = 'wedding_portal_draft_v1';
+const STORAGE_KEY = 'wedding_portal_draft_v2';
 
 
 export const generateWeddingAiPrompt = (data: WeddingFormData, domain: string): string => {
@@ -352,9 +352,18 @@ const WeddingPortal: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<WeddingFormData>(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        return { ...INITIAL_FORM_DATA, ...JSON.parse(saved) };
+      const v2 = localStorage.getItem(STORAGE_KEY);
+      if (v2) {
+        return { ...INITIAL_FORM_DATA, ...JSON.parse(v2) };
+      }
+      const v1 = localStorage.getItem('wedding_portal_draft_v1');
+      if (v1) {
+        const parsed = JSON.parse(v1);
+        return {
+          ...INITIAL_FORM_DATA,
+          ...parsed,
+          singleHasTraditional: true
+        };
       }
     } catch (e) {
       console.warn('Failed to load draft from localStorage', e);
