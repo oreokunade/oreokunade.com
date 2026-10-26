@@ -2,6 +2,8 @@ import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
+  Copy,
+  Check,
   Heart,
   Calendar,
   Sparkles,
@@ -245,6 +247,107 @@ const MOCK_HERO_PHOTOS = [
 const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN-_Yg3t0pebr0k6AQ4VAP44dmgVvlTrfxyARClARuwlwbU3ImB9mWHi-rXP_tgYOx2Q/exec';
 const STORAGE_KEY = 'wedding_portal_draft_v1';
 
+
+export const generateWeddingAiPrompt = (data: WeddingFormData, domain: string): string => {
+  const p1 = data.brideFirstName || data.partner1Name || 'Partner 1';
+  const p2 = data.groomFirstName || data.partner2Name || 'Partner 2';
+  const couple = `${p1} & ${p2}`;
+
+  const scheduleLines: string[] = [];
+  if (data.eventScheduleType === 'separate') {
+    scheduleLines.push(`- Schedule Format: Separate Day Events (Traditional & Main Wedding)`);
+    if (data.separateHasTraditional) {
+      scheduleLines.push(`- Day 1 (Traditional Wedding): ${data.traditionalDate || 'TBD'}`);
+      scheduleLines.push(`  Venue: ${data.traditionalVenue || 'TBD'} at ${data.traditionalTime || 'TBD'}`);
+      if (data.traditionalAddress) scheduleLines.push(`  Address / Location: ${data.traditionalAddress}`);
+      if (data.traditionalDressCode) scheduleLines.push(`  Attire / Aso-Ebi: ${data.traditionalDressCode}`);
+    }
+    scheduleLines.push(`- Day 2 (Main Wedding): ${data.weddingDate || 'TBD'}`);
+    if (data.colorPalette) scheduleLines.push(`  Colour of the Day: ${data.colorPalette}${data.paletteNotes ? ` (Notes: ${data.paletteNotes})` : ''}`);
+    if (data.dressCode) scheduleLines.push(`  Dress Code: ${data.dressCode}`);
+    if (data.separateHasCeremony) {
+      scheduleLines.push(`  Ceremony: ${data.ceremonyVenue || 'TBD'} at ${data.ceremonyTime || 'TBD'}${data.ceremonyAddress ? ` (${data.ceremonyAddress})` : ''}`);
+    }
+    if (data.separateHasReception) {
+      scheduleLines.push(`  Reception: ${data.receptionVenue || 'TBD'} at ${data.receptionTime || 'TBD'}${data.receptionAddress ? ` (${data.receptionAddress})` : ''}`);
+    }
+    if (data.separateHasAfterParty) {
+      scheduleLines.push(`  After-Party: ${data.afterPartyVenue || 'TBD'} at ${data.afterPartyTime || 'TBD'}${data.afterPartyAddress ? ` (${data.afterPartyAddress})` : ''}`);
+      if (data.afterPartyNotes) scheduleLines.push(`  After-Party Notes: ${data.afterPartyNotes}`);
+    }
+  } else {
+    scheduleLines.push(`- Schedule Format: Single Day Event`);
+    scheduleLines.push(`- Main Wedding Date: ${data.weddingDate || 'TBD'}`);
+    if (data.colorPalette) scheduleLines.push(`- Colour of the Day: ${data.colorPalette}${data.paletteNotes ? ` (Notes: ${data.paletteNotes})` : ''}`);
+    if (data.dressCode) scheduleLines.push(`- Dress Code: ${data.dressCode}`);
+    if (data.singleHasTraditional) {
+      scheduleLines.push(`- Traditional Wedding: ${data.traditionalVenue || 'TBD'} at ${data.traditionalTime || 'Morning'}${data.traditionalAddress ? ` (${data.traditionalAddress})` : ''}`);
+    }
+    if (data.singleHasCeremony) {
+      scheduleLines.push(`- Ceremony: ${data.ceremonyVenue || 'TBD'} at ${data.ceremonyTime || 'TBD'}${data.ceremonyAddress ? ` (${data.ceremonyAddress})` : ''}`);
+    }
+    if (data.singleHasReception) {
+      scheduleLines.push(`- Reception: ${data.receptionVenue || 'TBD'} at ${data.receptionTime || 'TBD'}${data.receptionAddress ? ` (${data.receptionAddress})` : ''}`);
+    }
+    if (data.singleHasAfterParty) {
+      scheduleLines.push(`- After-Party: ${data.afterPartyVenue || 'TBD'} at ${data.afterPartyTime || 'TBD'}${data.afterPartyAddress ? ` (${data.afterPartyAddress})` : ''}`);
+      if (data.afterPartyNotes) scheduleLines.push(`- After-Party Notes: ${data.afterPartyNotes}`);
+    }
+  }
+
+  return `You are an expert full-stack developer and luxury UI/UX designer. Build a complete, responsive, modern luxury wedding website for ${couple} using React, Tailwind CSS, and Framer Motion based on the following verified client specifications:
+
+==============================================
+1. THE COUPLE & WEBSITE IDENTITY
+==============================================
+- Couple: ${couple}
+- Bride / Partner 1: ${data.brideFirstName || data.partner1Name || 'Bride'}${data.brideNickname ? ` (Nickname: ${data.brideNickname})` : ''}
+- Groom / Partner 2: ${data.groomFirstName || data.partner2Name || 'Groom'}${data.groomNickname ? ` (Nickname: ${data.groomNickname})` : ''}
+- Official Wedding Hashtag: ${data.hashtag || 'None'}
+- Custom Domain: https://${domain}
+- Primary Email: ${data.email || 'N/A'}
+- WhatsApp / Phone: ${data.phone || 'N/A'}
+
+==============================================
+2. EVENT SCHEDULE & VENUES
+==============================================
+${scheduleLines.join('\n')}
+
+==============================================
+3. LOVE STORY & GUEST QUOTE
+==============================================
+- Guest Welcome Quote: "${data.coupleQuote || ''}"
+- How We Met: "${data.howWeMet || ''}"
+- The Proposal: "${data.theProposal || ''}"
+- Key Milestones: "${data.milestones || ''}"
+
+==============================================
+4. GUEST ATTENDANCE & REGISTRY
+==============================================
+- RSVP Deadline: ${data.rsvpDeadline || 'TBD'}
+- RSVP Guidelines / Policy: "${data.rsvpRules || 'Kindly RSVP by the deadline'}"
+- Bank Transfer / Cash Registry: ${data.bankDetails || 'N/A'}
+- External Registry Links: ${data.registryLinks || 'N/A'}
+
+==============================================
+5. AUDIO, ASSETS & SPECIAL REQUESTS
+==============================================
+- Signature Background Song: ${data.backgroundSong || 'Not specified'}
+- Photographer Cloud / Google Drive Album: ${data.driveFolderLink || 'None provided'}
+- Additional Custom Requests: "${data.additionalNotes || 'None'}"
+
+==============================================
+KEY DESIGN & FUNCTIONAL REQUIREMENTS:
+==============================================
+1. Luxury Hero Section: High-fashion typography, countdown timer to the wedding date, and wedding hashtag.
+2. Event Itinerary: Clear cards for each event with venue addresses, times, and dress code indications.
+3. Interactive Love Story: Beautiful timeline highlighting their journey from first meeting to engagement.
+4. RSVP Form / Modal: Seamless attendance confirmation adhering to the RSVP rules and deadline.
+5. Gift Registry: 1-click copy-to-clipboard for bank details and links to external wishlists.
+6. Ambient Music Player: Floating or fixed player playing "${data.backgroundSong || 'romantic background instrumental'}" with toggle controls.
+7. Mobile-First Luxury: Seamless responsiveness for iOS and Android devices with smooth, polished Framer Motion transitions.`;
+};
+
 const WeddingPortal: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<WeddingFormData>(() => {
@@ -480,7 +583,8 @@ const WeddingPortal: React.FC = () => {
             partner2Nickname: formData.groomNickname,
             domainType: '.online (Included)',
             computedDomain: computedDomainPreview,
-            driveFolderLink: formData.driveFolderLink || ''
+            driveFolderLink: formData.driveFolderLink || '',
+            aiPrompt: aiPromptText
           }
         })
       });
@@ -507,6 +611,10 @@ const WeddingPortal: React.FC = () => {
   const galleryPhotos = files.filter(f => f.category === 'gallery');
 
   const computedDomainPreview = `${formData.domainName || 'couple'}.online`;
+
+  const aiPromptText = useMemo(() => {
+    return generateWeddingAiPrompt(formData, computedDomainPreview);
+  }, [formData, computedDomainPreview]);
 
   return (
     <div className="min-h-screen w-full bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative pt-24 pb-20 px-4 md:px-8 transition-colors duration-300">
@@ -590,6 +698,39 @@ const WeddingPortal: React.FC = () => {
                 <div className="font-semibold text-neutral-900 dark:text-white text-sm mb-1">Domain & Launch</div>
                 <div className="text-xs text-neutral-600 dark:text-neutral-400">Configuring {computedDomainPreview} and taking your custom website live!</div>
               </div>
+            </div>
+
+                        {/* AI Prompt Box on Success Screen */}
+            <div className="p-5 rounded-2xl bg-neutral-900 text-white dark:bg-neutral-950 border border-neutral-800 text-left space-y-3 max-w-2xl mx-auto mb-8">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={16} className="text-amber-400 shrink-0" />
+                  <span className="font-bold text-xs uppercase tracking-wider text-neutral-200">
+                    AI Website Builder Prompt
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    navigator.clipboard.writeText(aiPromptText);
+                    setCopiedPrompt(true);
+                    setTimeout(() => setCopiedPrompt(false), 2500);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-neutral-900 hover:bg-neutral-200 text-xs font-bold transition-all shrink-0 self-start sm:self-center"
+                >
+                  {copiedPrompt ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
+                  <span>{copiedPrompt ? 'Copied!' : 'Copy AI Prompt'}</span>
+                </button>
+              </div>
+              <p className="text-[11px] text-neutral-400">
+                Copy and paste this prompt directly into an AI coding assistant (like Antigravity, Claude, or Cursor) to build the custom wedding website with all provided information.
+              </p>
+              <textarea
+                readOnly
+                rows={6}
+                value={aiPromptText}
+                className="w-full p-3 rounded-xl bg-black/60 border border-neutral-800 text-neutral-300 font-mono text-[11px] leading-relaxed resize-y focus:outline-none"
+              />
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
@@ -2887,6 +3028,41 @@ const WeddingPortal: React.FC = () => {
                         </div>
                       )}
                     </div>
+                  </div>
+
+                                    {/* AI WEBSITE BUILDER PROMPT FIELD */}
+                  <div className="p-4 sm:p-5 rounded-2xl bg-neutral-900 text-white dark:bg-neutral-950 border border-neutral-800 space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Sparkles size={16} className="text-amber-400 shrink-0" />
+                        <div>
+                          <div className="font-bold text-xs uppercase tracking-wider text-neutral-200">
+                            AI Website Builder Prompt (Auto-Generated)
+                          </div>
+                          <div className="text-[11px] text-neutral-400">
+                            Pre-configured prompt with all submitted wedding details, ready to build the site.
+                          </div>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(aiPromptText);
+                          setCopiedPrompt(true);
+                          setTimeout(() => setCopiedPrompt(false), 2500);
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-neutral-900 hover:bg-neutral-200 text-xs font-bold transition-all shrink-0 self-start sm:self-center shadow-sm"
+                      >
+                        {copiedPrompt ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
+                        <span>{copiedPrompt ? 'Copied Prompt!' : 'Copy AI Prompt'}</span>
+                      </button>
+                    </div>
+                    <textarea
+                      readOnly
+                      rows={6}
+                      value={aiPromptText}
+                      className="w-full p-3.5 rounded-xl bg-black/60 border border-neutral-800 text-neutral-300 font-mono text-[11px] leading-relaxed resize-y focus:outline-none focus:border-neutral-700"
+                    />
                   </div>
 
                   {/* UPLOADING PROGRESS OVERLAY / BAR */}

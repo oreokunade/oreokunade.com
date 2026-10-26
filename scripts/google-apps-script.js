@@ -289,6 +289,10 @@ function handleFinalize(data) {
   var briefText = buildBriefText(coupleTitle, details, masterFolder.getUrl());
   var briefFile = masterFolder.createFile("Wedding_Website_Creative_Brief.txt", briefText, "text/plain");
 
+  // Generate & save ready-to-run AI Website Builder Prompt in Google Drive
+  var aiPrompt = details.aiPrompt || briefText;
+  masterFolder.createFile("AI_WEBSITE_BUILDER_PROMPT.txt", aiPrompt, "text/plain");
+
   // 3. Update Overview Sheet Row Status
   try {
     var overviewSheet = ss.getSheetByName("Overview") || ss.getSheets()[0];
@@ -338,6 +342,7 @@ function handleFinalize(data) {
         + "</table>"
         + "</div>"
         + (details.driveFolderLink ? "<div style='margin-bottom:16px;padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;'><div style='font-size:12px;font-weight:700;color:#1e40af;margin-bottom:4px;'>📸 PHOTOGRAPHER CLOUD / DRIVE LINK PROVIDED</div><a href='" + details.driveFolderLink + "' target='_blank' style='word-break:break-all;color:#2563eb;font-weight:600;font-size:13px;'>" + details.driveFolderLink + "</a></div>" : "")
+        + (details.aiPrompt ? "<div style='margin-top:20px;border-top:1px solid #e2e8f0;padding-top:16px;'><div style='font-size:13px;font-weight:700;color:#0f172a;margin-bottom:6px;'>⚡ AI WEBSITE BUILDER PROMPT (COPY & PASTE TO BUILD):</div><pre style='background:#0f172a;color:#f8fafc;padding:14px;border-radius:8px;font-family:monospace;font-size:11px;white-space:pre-wrap;max-height:300px;overflow-y:auto;border:1px solid #334155;line-height:1.5;'>" + details.aiPrompt.replace(/</g, "&lt;").replace(/>/g, "&gt;") + "</pre></div>" : "")
         + "<div style='text-align:center;margin:24px 0 12px;'>"
         + "<a href='" + masterFolder.getUrl() + "' target='_blank' style='display:inline-block;background:#0f172a;color:#ffffff;padding:12px 24px;border-radius:9999px;font-weight:600;font-size:13px;text-decoration:none;'>📁 Open Google Drive Vault</a>"
         + "</div>"
@@ -417,7 +422,11 @@ function fillClientSheetContent(sheet, d) {
     ["Cash Gift / Bank Info", d.bankDetails || ""],
     ["External Registry Links", d.registryLinks || ""],
     ["Background Song Choice", d.backgroundSong || "Not specified"],
-    ["Additional Requests", d.additionalNotes || ""]
+    ["Additional Requests", d.additionalNotes || ""],
+    ["", ""],
+
+    ["SECTION: AI WEBSITE BUILDER PROMPT (COPY-PASTE READY)", ""],
+    ["AI Website Prompt", d.aiPrompt || "N/A"]
   ];
 
   var startRow = 6;
