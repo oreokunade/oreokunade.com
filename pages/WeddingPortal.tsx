@@ -40,6 +40,11 @@ interface WeddingFormData {
   partner1Name?: string;
   partner2Name?: string;
 
+  // Custom Event Titles
+  day1EventName: string;
+  day2EventName: string;
+  ceremonyEventName: string;
+
   // 1. The Couple & Custom Domain (First Names only)
   brideFirstName: string;
   brideNickname: string;
@@ -116,6 +121,9 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   driveFolderLink: '',
 
   eventScheduleType: 'single',
+  day1EventName: '',
+  day2EventName: '',
+  ceremonyEventName: '',
   weddingDate: '',
   traditionalDate: '',
   traditionalVenue: '',
@@ -258,19 +266,23 @@ export const generateWeddingAiPrompt = (data: WeddingFormData, domain: string): 
   const couple = `${p1} & ${p2}`;
 
   const scheduleLines: string[] = [];
+  const day1Label = data.day1EventName || (data.eventScheduleType === 'separate' ? 'Day 1 Event (Cultural / Traditional)' : 'Traditional / Segment 1');
+  const day2Label = data.day2EventName || 'Main Wedding Celebration';
+  const ceremonyLabel = data.ceremonyEventName || 'Solemnization / Ceremony';
+
   if (data.eventScheduleType === 'separate') {
-    scheduleLines.push(`- Schedule Format: Separate Day Events (Traditional & Main Wedding)`);
+    scheduleLines.push(`- Schedule Format: Separate Day Events`);
     if (data.separateHasTraditional) {
-      scheduleLines.push(`- Day 1 (Traditional Wedding): ${data.traditionalDate || 'TBD'}`);
+      scheduleLines.push(`- Day 1: ${day1Label} - ${data.traditionalDate || 'TBD'}`);
       scheduleLines.push(`  Venue: ${data.traditionalVenue || 'TBD'} at ${data.traditionalTime || 'TBD'}`);
       if (data.traditionalAddress) scheduleLines.push(`  Address / Location: ${data.traditionalAddress}`);
-      if (data.traditionalDressCode) scheduleLines.push(`  Attire / Aso-Ebi: ${data.traditionalDressCode}`);
+      if (data.traditionalDressCode) scheduleLines.push(`  Attire / Dress Code: ${data.traditionalDressCode}`);
     }
-    scheduleLines.push(`- Day 2 (Main Wedding): ${data.weddingDate || 'TBD'}`);
+    scheduleLines.push(`- Day 2: ${day2Label} - ${data.weddingDate || 'TBD'}`);
     if (data.colorPalette) scheduleLines.push(`  Colour of the Day: ${data.colorPalette}${data.paletteNotes ? ` (Notes: ${data.paletteNotes})` : ''}`);
     if (data.dressCode) scheduleLines.push(`  Dress Code: ${data.dressCode}`);
     if (data.separateHasCeremony) {
-      scheduleLines.push(`  Ceremony: ${data.ceremonyVenue || 'TBD'} at ${data.ceremonyTime || 'TBD'}${data.ceremonyAddress ? ` (${data.ceremonyAddress})` : ''}`);
+      scheduleLines.push(`  ${ceremonyLabel}: ${data.ceremonyVenue || 'TBD'} at ${data.ceremonyTime || 'TBD'}${data.ceremonyAddress ? ` (${data.ceremonyAddress})` : ''}`);
     }
     if (data.separateHasReception) {
       scheduleLines.push(`  Reception: ${data.receptionVenue || 'TBD'} at ${data.receptionTime || 'TBD'}${data.receptionAddress ? ` (${data.receptionAddress})` : ''}`);
@@ -285,10 +297,10 @@ export const generateWeddingAiPrompt = (data: WeddingFormData, domain: string): 
     if (data.colorPalette) scheduleLines.push(`- Colour of the Day: ${data.colorPalette}${data.paletteNotes ? ` (Notes: ${data.paletteNotes})` : ''}`);
     if (data.dressCode) scheduleLines.push(`- Dress Code: ${data.dressCode}`);
     if (data.singleHasTraditional) {
-      scheduleLines.push(`- Traditional Wedding: ${data.traditionalVenue || 'TBD'} at ${data.traditionalTime || 'Morning'}${data.traditionalAddress ? ` (${data.traditionalAddress})` : ''}`);
+      scheduleLines.push(`- ${day1Label}: ${data.traditionalVenue || 'TBD'} at ${data.traditionalTime || 'Morning'}${data.traditionalAddress ? ` (${data.traditionalAddress})` : ''}`);
     }
     if (data.singleHasCeremony) {
-      scheduleLines.push(`- Ceremony: ${data.ceremonyVenue || 'TBD'} at ${data.ceremonyTime || 'TBD'}${data.ceremonyAddress ? ` (${data.ceremonyAddress})` : ''}`);
+      scheduleLines.push(`- ${ceremonyLabel}: ${data.ceremonyVenue || 'TBD'} at ${data.ceremonyTime || 'TBD'}${data.ceremonyAddress ? ` (${data.ceremonyAddress})` : ''}`);
     }
     if (data.singleHasReception) {
       scheduleLines.push(`- Reception: ${data.receptionVenue || 'TBD'} at ${data.receptionTime || 'TBD'}${data.receptionAddress ? ` (${data.receptionAddress})` : ''}`);
@@ -1638,27 +1650,27 @@ const WeddingPortal: React.FC = () => {
                         </p>
                       </div>
 
-                      {/* EVENT 1: TRADITIONAL WEDDING / ENGAGEMENT (SINGLE DAY) */}
+                      {/* EVENT 1: CUSTOMIZABLE EVENT (DEFAULT: TRADITIONAL / CEREMONY) */}
                       <div className={`p-5 rounded-2xl border transition-all ${
                         formData.singleHasTraditional
                           ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
-                        <div className="flex items-center justify-between mb-3">
-                          <div>
-                            <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                              <span>1. Traditional Wedding / Engagement</span>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2 flex-wrap">
+                              <span>1. {formData.day1EventName.trim() || 'Traditional Wedding / Engagement'}</span>
                                 {formData.singleHasTraditional ? (
-                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono shrink-0">
                                     Included
                                   </span>
                                 ) : (
-                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono shrink-0">
                                     Toggled Off
                                   </span>
                                 )}
                               </div>
-                              <div className="text-[11px] text-neutral-500">Traditional rites / engagement ceremony on the same day</div>
+                              <div className="text-[11px] text-neutral-500">Cultural celebration, engagement rites, or morning event</div>
                           </div>
 
                           <button
@@ -1678,9 +1690,23 @@ const WeddingPortal: React.FC = () => {
 
                         {formData.singleHasTraditional ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-neutral-200 dark:border-neutral-800">
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Event 1 Name / Title (Optional)
+                              </label>
+                              <input
+                                type="text"
+                                name="day1EventName"
+                                value={formData.day1EventName}
+                                onChange={handleChange}
+                                placeholder="e.g. Traditional Wedding, Engagement Ceremony, Nikkah, Tea Ceremony"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
+                              />
+                            </div>
+
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Ceremony Time
+                                Event Time
                               </label>
                               <input
                                 type="text"
@@ -1688,13 +1714,13 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalTime}
                                 onChange={handleChange}
                                 placeholder="e.g. 8:30 AM"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Venue Name
+                                Venue Name
                               </label>
                               <input
                                 type="text"
@@ -1702,13 +1728,13 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalVenue}
                                 onChange={handleChange}
                                 placeholder="e.g. Landmark Grand Hall A / Bride's Residence"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Attire / Aso-Ebi Colors (Optional)
+                                Attire / Dress Code / Aso-Ebi (Optional)
                               </label>
                               <input
                                 type="text"
@@ -1716,13 +1742,13 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalDressCode}
                                 onChange={handleChange}
                                 placeholder="e.g. Champagne Gold & Wine Aso-Ebi"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Venue Address
+                                Venue Address
                               </label>
                               <input
                                 type="text"
@@ -1730,13 +1756,13 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalAddress}
                                 onChange={handleChange}
                                 placeholder="e.g. Plot 5 Water Corporation Dr, Oniru, Victoria Island"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
                           </div>
                         ) : (
                           <div className="text-xs text-neutral-400 italic pt-1">
-                            Traditional ceremony is toggled off. Tap the switch to include if holding traditional rites on the same day.
+                            This event segment is toggled off. Tap the switch to include.
                           </div>
                         )}
                       </div>
@@ -2027,28 +2053,30 @@ const WeddingPortal: React.FC = () => {
                   ) : (
                     /* 2. SEPARATE DAY EVENTS */
                     <div className="space-y-6">
-                      {/* DAY 1: TRADITIONAL / ENGAGEMENT WEDDING */}
+                      {/* DAY 1: CUSTOMIZABLE DAY 1 EVENT */}
                       <div className={`p-5 sm:p-6 rounded-2xl border transition-all ${
                         formData.separateHasTraditional
                           ? 'bg-neutral-100/60 dark:bg-neutral-950/80 border-neutral-300 dark:border-neutral-700'
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
-                        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-center justify-between">
-                          <div>
-                            <div className="flex items-center gap-2">
+                        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-start justify-between gap-3">
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-center gap-2 flex-wrap">
                               <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 1</span>
-                              <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Traditional / Engagement Wedding</h3>
-                                {formData.separateHasTraditional ? (
-                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
-                                    Included
-                                  </span>
-                                ) : (
-                                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
-                                    Toggled Off
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-[11px] text-neutral-500 block mt-0.5">Cultural celebration & introduction</span>
+                              <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">
+                                {formData.day1EventName.trim() || 'Day 1: Cultural / Traditional Celebration'}
+                              </h3>
+                              {formData.separateHasTraditional ? (
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono shrink-0">
+                                  Included
+                                </span>
+                              ) : (
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono shrink-0">
+                                  Toggled Off
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[11px] text-neutral-500 block mt-0.5">Custom cultural, religious, or welcome celebration</span>
                           </div>
 
                           <button
@@ -2068,22 +2096,36 @@ const WeddingPortal: React.FC = () => {
 
                         {formData.separateHasTraditional ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                            <div className="md:col-span-2">
+                              <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                                Day 1 Event Name / Title
+                              </label>
+                              <input
+                                type="text"
+                                name="day1EventName"
+                                value={formData.day1EventName}
+                                onChange={handleChange}
+                                placeholder="e.g. Traditional Wedding, Engagement Ceremony, Nikkah, Welcome Dinner, Mehndi"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
+                              />
+                            </div>
+
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Wedding Date *
+                                Day 1 Event Date *
                               </label>
                               <input
                                 type="date"
                                 name="traditionalDate"
                                 value={formData.traditionalDate}
                                 onChange={handleChange}
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Event Time
+                                Day 1 Event Time
                               </label>
                               <input
                                 type="text"
@@ -2091,27 +2133,27 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalTime}
                                 onChange={handleChange}
                                 placeholder="e.g. 11:00 AM"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Venue Name
+                                Day 1 Venue Name
                               </label>
                               <input
                                 type="text"
                                 name="traditionalVenue"
                                 value={formData.traditionalVenue}
                                 onChange={handleChange}
-                                placeholder="e.g. The Dorchester Events Centre"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                placeholder="e.g. The Dorchester Events Centre / Bride's Residence"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Attire / Aso-Ebi Colors (Optional)
+                                Day 1 Attire / Dress Code / Aso-Ebi (Optional)
                               </label>
                               <input
                                 type="text"
@@ -2119,13 +2161,13 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalDressCode}
                                 onChange={handleChange}
                                 placeholder="e.g. Emerald Green & Champagne Aso-Ebi / Agbada"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
 
                             <div className="md:col-span-2">
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Venue Address
+                                Day 1 Venue Address
                               </label>
                               <input
                                 type="text"
@@ -2133,43 +2175,59 @@ const WeddingPortal: React.FC = () => {
                                 value={formData.traditionalAddress}
                                 onChange={handleChange}
                                 placeholder="e.g. Plot 5 Water Corporation Road, Oniru, Victoria Island"
-                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                                className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                               />
                             </div>
                           </div>
                         ) : (
                           <div className="text-xs text-neutral-400 italic pt-3">
-                            Traditional event day is toggled off. Tap the switch to include.
+                            Day 1 celebration is toggled off. Tap the switch to include.
                           </div>
                         )}
                       </div>
 
-                      {/* DAY 2: MAIN / WHITE / CHURCH WEDDING */}
+                      {/* DAY 2: MAIN EVENT & FESTIVITIES */}
                       <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-5">
                         <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3">
                           <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 2</span>
-                          <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Main / White Wedding & Festivities</h3>
-                          <p className="text-xs text-neutral-500 mt-0.5">Details for your church solemnization, grand reception, and after-party.</p>
+                          <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">
+                            {formData.day2EventName.trim() || 'Day 2: Main Wedding & Festivities'}
+                          </h3>
+                          <p className="text-xs text-neutral-500 mt-0.5">Details for your ceremony, reception, and after-party.</p>
                         </div>
 
-                        {/* Top Date, Attire & Palette */}
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Top Event Name, Date, Attire & Palette */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="md:col-span-2">
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Day 2 Event Name / Title
+                            </label>
+                            <input
+                              type="text"
+                              name="day2EventName"
+                              value={formData.day2EventName}
+                              onChange={handleChange}
+                              placeholder="e.g. White Wedding, Church Blessing, Main Wedding & Grand Reception"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
+                            />
+                          </div>
+
                           <div>
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Main Wedding Date *
+                              Day 2 Event Date *
                             </label>
                             <input
                               type="date"
                               name="weddingDate"
                               value={formData.weddingDate}
                               onChange={handleChange}
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                             />
                           </div>
 
                           <div>
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              White Wedding Dress Code
+                              Day 2 Dress Code
                             </label>
                             <input
                               type="text"
@@ -2177,11 +2235,11 @@ const WeddingPortal: React.FC = () => {
                               value={formData.dressCode}
                               onChange={handleChange}
                               placeholder="e.g. Black Tie Formal"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                             />
                           </div>
 
-                          <div>
+                          <div className="md:col-span-2">
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
                               Colour of the Day (Optional)
                             </label>
@@ -2191,7 +2249,7 @@ const WeddingPortal: React.FC = () => {
                               value={formData.colorPalette}
                               onChange={handleChange}
                               placeholder="e.g. Classic Ivory & Noir, Sage Green & Gold"
-                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-base md:text-sm"
                             />
                           </div>
                         </div>
@@ -2200,7 +2258,7 @@ const WeddingPortal: React.FC = () => {
                           Day 2 Events (Toggle on/off whichever apply)
                         </div>
 
-                        {/* DAY 2: CHURCH / CEREMONY */}
+                        {/* DAY 2: CEREMONY */}
                         <div className={`p-4 rounded-xl border transition-all ${
                           formData.separateHasCeremony
                             ? 'bg-white dark:bg-neutral-900 border-neutral-300 dark:border-neutral-700'
@@ -2208,14 +2266,16 @@ const WeddingPortal: React.FC = () => {
                         }`}>
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                              <Heart size={15} className="text-neutral-700 dark:text-neutral-300" />
-                              <span className="text-xs font-bold text-neutral-900 dark:text-white">Church / Solemnization Ceremony</span>
+                              <Heart size={15} className="text-neutral-700 dark:text-neutral-300 shrink-0" />
+                              <span className="text-xs font-bold text-neutral-900 dark:text-white">
+                                {formData.ceremonyEventName.trim() || 'Solemnization / Ceremony'}
+                              </span>
                               {formData.separateHasCeremony ? (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono shrink-0">
                                   Included
                                 </span>
                               ) : (
-                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono">
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-500 font-mono shrink-0">
                                   Toggled Off
                                 </span>
                               )}
@@ -2238,6 +2298,19 @@ const WeddingPortal: React.FC = () => {
 
                           {formData.separateHasCeremony ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                              <div className="md:col-span-2">
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">
+                                  Ceremony / Solemnization Name (Optional)
+                                </label>
+                                <input
+                                  type="text"
+                                  name="ceremonyEventName"
+                                  value={formData.ceremonyEventName}
+                                  onChange={handleChange}
+                                  placeholder="e.g. Church Ceremony, Mosque Nikkah, Garden Vows, Blessing"
+                                  className="w-full px-3 py-2 rounded-lg bg-neutral-50 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-xs text-neutral-900 dark:text-white text-base md:text-xs"
+                                />
+                              </div>
                               <div>
                                 <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Ceremony Venue Name</label>
                                 <input
@@ -2929,12 +3002,12 @@ const WeddingPortal: React.FC = () => {
                           
                           {formData.singleHasTraditional && (
                             <div className="pt-1 text-[11px]">
-                              <span className="font-semibold text-neutral-900 dark:text-white">Traditional:</span> {formData.traditionalVenue || 'TBD'} ({formData.traditionalTime || 'Morning'})
+                              <span className="font-semibold text-neutral-900 dark:text-white">{formData.day1EventName.trim() || 'Traditional / Event 1'}:</span> {formData.traditionalVenue || 'TBD'} ({formData.traditionalTime || 'Morning'})
                             </div>
                           )}
                           {formData.singleHasCeremony && (
                             <div className="text-[11px]">
-                              <span className="font-semibold text-neutral-900 dark:text-white">Ceremony:</span> {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
+                              <span className="font-semibold text-neutral-900 dark:text-white">{formData.ceremonyEventName.trim() || 'Ceremony'}:</span> {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
                             </div>
                           )}
                           {formData.singleHasReception && (
@@ -2953,7 +3026,7 @@ const WeddingPortal: React.FC = () => {
                           {formData.separateHasTraditional && (
                             <div className="space-y-0.5">
                               <div className="text-neutral-900 dark:text-white font-semibold text-[11px]">
-                                Day 1 (Traditional): {formData.traditionalDate ? new Date(formData.traditionalDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
+                                Day 1 ({formData.day1EventName.trim() || 'Day 1 Celebration'}): {formData.traditionalDate ? new Date(formData.traditionalDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
                               </div>
                               <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
                                 Venue: {formData.traditionalVenue || 'TBD'} ({formData.traditionalTime || 'TBD'})
@@ -2962,11 +3035,11 @@ const WeddingPortal: React.FC = () => {
                           )}
                           <div className="space-y-0.5 pt-1 border-t border-neutral-200 dark:border-neutral-800">
                             <div className="text-neutral-900 dark:text-white font-semibold text-[11px]">
-                              Day 2 (Main Wedding): {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
+                              Day 2 ({formData.day2EventName.trim() || 'Main Wedding & Festivities'}): {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
                             </div>
                             {formData.separateHasCeremony && (
                               <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
-                                Ceremony: {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
+                                {formData.ceremonyEventName.trim() || 'Ceremony'}: {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
                               </div>
                             )}
                             {formData.separateHasReception && (

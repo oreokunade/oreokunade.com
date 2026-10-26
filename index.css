@@ -66,3 +66,12 @@ h1, h2, h3, h4, h5, h6 {
 * {
   scrollbar-width: thin;
 }
+
+/* Prevent iOS Safari & mobile Chrome auto-zoom on input focus */
+@media screen and (max-width: 768px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
