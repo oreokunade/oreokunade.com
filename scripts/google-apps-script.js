@@ -85,8 +85,8 @@ function doPost(e) {
  * and creates a dedicated tab for the couple.
  */
 function handleInit(data) {
-  var p1 = data.brideFirstName || data.brideFullName || data.partner1Name || "Bride";
-  var p2 = data.groomFirstName || data.groomFullName || data.partner2Name || "Groom";
+  var p1 = data.brideNickname || data.brideFirstName || data.partner1Name || "Bride";
+  var p2 = data.groomNickname || data.groomFirstName || data.partner2Name || "Groom";
   var weddingDate = data.weddingDate || "Upcoming";
   var email = data.email || "";
   var phone = data.phone || "";
@@ -332,8 +332,8 @@ function handleFinalize(data) {
  * Fills the client's dedicated tab with clean sections
  */
 function fillClientSheetContent(sheet, d) {
-  var brideVal = (d.brideFullName || d.partner1Name || "") + (d.brideFirstName ? " (" + d.brideFirstName + ")" : "");
-  var groomVal = (d.groomFullName || d.partner2Name || "") + (d.groomFirstName ? " (" + d.groomFirstName + ")" : "");
+  var brideVal = (d.brideFirstName || d.partner1Name || "") + (d.brideNickname ? " (Nickname: " + d.brideNickname + ")" : "");
+  var groomVal = (d.groomFirstName || d.partner2Name || "") + (d.groomNickname ? " (Nickname: " + d.groomNickname + ")" : "");
   var sections = [
     ["SECTION: CONTACT & BASICS", ""],
     ["Bride", brideVal],
