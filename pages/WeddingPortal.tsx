@@ -12,6 +12,8 @@ import {
   Music,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
+  ChevronUp,
   Palette,
   AlertCircle,
   Loader2,
@@ -255,6 +257,7 @@ const WeddingPortal: React.FC = () => {
   // Preview Device & Mock Photo State
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
   const [selectedMockPhotoIndex, setSelectedMockPhotoIndex] = useState<number>(0);
+  const [expandedPalette, setExpandedPalette] = useState<string | null>(null);
 
   // Input file references
   const heroInputRef = useRef<HTMLInputElement>(null);
@@ -882,7 +885,218 @@ const WeddingPortal: React.FC = () => {
                       <Palette size={14} className="text-neutral-700 dark:text-neutral-300" />
                       Quick Color Palette Suggestions (Click to apply)
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
+                    {/* MOBILE VIEW PALETTES: EXPANDABLE ACCORDIONS */}
+                    <div className="space-y-3 mb-5 md:hidden">
+                      {SUGGESTED_PALETTES.map(p => {
+                        const isExpanded = expandedPalette === p.name;
+                        const isSelected = formData.colorPalette === p.name;
+
+                        return (
+                          <div
+                            key={p.name}
+                            className={`rounded-2xl border transition-all overflow-hidden ${
+                              isSelected
+                                ? 'border-neutral-900 dark:border-white bg-white dark:bg-neutral-900 shadow-sm'
+                                : 'border-neutral-200 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/40 hover:border-neutral-300'
+                            }`}
+                          >
+                            {/* Palette Header Button */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  colorPalette: p.name,
+                                  paletteNotes: p.hexes.join(', ')
+                                }));
+                                setExpandedPalette(prev => (prev === p.name ? null : p.name));
+                              }}
+                              className="w-full p-4 flex items-center justify-between text-left"
+                            >
+                              <div className="flex flex-col gap-0.5">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs font-bold text-neutral-900 dark:text-neutral-100">{p.name}</span>
+                                  {isSelected && (
+                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold">
+                                      Active
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-[10px] text-neutral-500">
+                                  {isExpanded ? 'Tap to contract example ▲' : 'Tap to expand & preview example ▼'}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-3">
+                                <div className="flex gap-1.5 shrink-0">
+                                  {p.hexes.map(hex => (
+                                    <span
+                                      key={hex}
+                                      className="w-4 h-4 rounded-full border border-black/20 shadow-xs"
+                                      style={{ backgroundColor: hex }}
+                                    />
+                                  ))}
+                                </div>
+                                <div className="p-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                                  {isExpanded ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+                                </div>
+                              </div>
+                            </button>
+
+                            {/* EXPANDED EXAMPLE PREVIEW (Animated Accordion) */}
+                            <AnimatePresence>
+                              {isExpanded && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: 'auto' }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  transition={{ duration: 0.25, ease: 'easeInOut' }}
+                                  className="border-t border-neutral-200 dark:border-neutral-800 p-4 bg-neutral-50/90 dark:bg-neutral-950/90"
+                                >
+                                  {/* Mock photo selector pills */}
+                                  <div className="flex items-center justify-between gap-2 mb-3">
+                                    <span className="text-[11px] font-semibold text-neutral-500 shrink-0">Photo:</span>
+                                    <div className="flex gap-1 overflow-x-auto pb-1 scrollbar-none">
+                                      {MOCK_HERO_PHOTOS.map((photo, pIdx) => (
+                                        <button
+                                          key={photo.id}
+                                          type="button"
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setSelectedMockPhotoIndex(pIdx);
+                                          }}
+                                          className={`px-2 py-1 rounded-full text-[10px] font-medium border shrink-0 transition-all ${
+                                            selectedMockPhotoIndex === pIdx
+                                              ? 'border-neutral-900 dark:border-white bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-bold'
+                                              : 'border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300'
+                                          }`}
+                                        >
+                                          {photo.label.split(' ')[0]}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  </div>
+
+                                  {/* Mobile phone mockup preview */}
+                                  <div className="w-full max-w-[310px] mx-auto rounded-[36px] border-[6px] border-neutral-800 dark:border-neutral-700 shadow-2xl overflow-hidden bg-neutral-900 mb-3">
+                                    {/* Phone status bar */}
+                                    <div className="px-5 pt-2.5 pb-1 bg-neutral-950 flex items-center justify-between text-[10px] text-neutral-400 font-medium">
+                                      <span>9:41</span>
+                                      <div className="w-16 h-3 bg-black rounded-full" />
+                                      <span>5G</span>
+                                    </div>
+
+                                    {/* Mockup Hero Frame */}
+                                    <div className="relative min-h-[370px] flex flex-col items-center justify-between text-center p-5 overflow-hidden">
+                                      {/* Background Photo */}
+                                      <div
+                                        className="absolute inset-0 bg-cover bg-center transition-all duration-500"
+                                        style={{ backgroundImage: `url("${activeHeroPhotoUrl}")` }}
+                                      />
+                                      {/* Gradient Overlay using this palette's bg color */}
+                                      <div
+                                        className="absolute inset-0 transition-colors duration-500"
+                                        style={{
+                                          background: `linear-gradient(180deg, ${p.bg}B3 0%, ${p.bg}F0 100%)`
+                                        }}
+                                      />
+
+                                      {/* Domain Bar */}
+                                      <div className="relative z-10 w-full flex items-center justify-between text-[10px] pb-1.5 border-b border-white/10 text-neutral-300 font-mono">
+                                        <span className="truncate max-w-[130px]">{computedDomainPreview}</span>
+                                        <span>MENU ☰</span>
+                                      </div>
+
+                                      {/* Hero Content */}
+                                      <div className="relative z-10 w-full my-auto flex flex-col items-center py-4">
+                                        {/* Monogram / Hashtag */}
+                                        <div
+                                          style={{
+                                            borderColor: p.accentColor + '50',
+                                            color: p.accentColor,
+                                            backgroundColor: p.bg + '80'
+                                          }}
+                                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full border text-[9px] uppercase tracking-wider mb-3 font-mono font-medium backdrop-blur-xs"
+                                        >
+                                          <span>✦</span>
+                                          <span className="truncate max-w-[170px]">{formData.hashtag || 'The Wedding'}</span>
+                                          <span>✦</span>
+                                        </div>
+
+                                        {/* Couple Names */}
+                                        <h4
+                                          style={{ color: p.textColor }}
+                                          className="text-3xl font-serif font-normal tracking-tight mb-2 drop-shadow-xs"
+                                        >
+                                          {brideDisplay} &amp; {groomDisplay}
+                                        </h4>
+
+                                        {/* Date & Venue */}
+                                        <p
+                                          style={{ color: p.subtextColor }}
+                                          className="text-[11px] tracking-wider uppercase mb-5 font-sans font-medium"
+                                        >
+                                          {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'December 18, 2026'}
+                                          {formData.ceremonyVenue ? ` • ${formData.ceremonyVenue}` : ' • Lagos, Nigeria'}
+                                        </p>
+
+                                        {/* Action buttons */}
+                                        <div className="flex flex-col gap-2 w-full max-w-[190px]">
+                                          <div
+                                            style={{
+                                              backgroundColor: p.buttonBg,
+                                              color: p.buttonText
+                                            }}
+                                            className="w-full py-2 rounded-full text-[11px] font-bold shadow-md text-center"
+                                          >
+                                            RSVP to Attend
+                                          </div>
+                                          <div
+                                            style={{
+                                              borderColor: p.accentColor + '70',
+                                              color: p.textColor,
+                                              backgroundColor: 'rgba(0,0,0,0.2)'
+                                            }}
+                                            className="w-full py-1.5 rounded-full text-[10px] font-medium border backdrop-blur-xs text-center"
+                                          >
+                                            Our Love Story
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      {/* Home bar */}
+                                      <div className="relative z-10 w-20 h-1 bg-white/40 rounded-full mx-auto mt-2" />
+                                    </div>
+                                  </div>
+
+                                  {/* Bottom bar inside expanded accordion */}
+                                  <div className="flex items-center justify-between pt-1">
+                                    <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
+                                      <CheckCircle2 size={13} />
+                                      <span>{p.name}</span>
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setExpandedPalette(null);
+                                      }}
+                                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white bg-neutral-200/80 dark:bg-neutral-800 transition-colors"
+                                    >
+                                      <ChevronUp size={14} />
+                                      <span>Contract Example</span>
+                                    </button>
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* DESKTOP VIEW PALETTES GRID */}
+                    <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
                       {SUGGESTED_PALETTES.map(p => (
                         <button
                           key={p.name}
@@ -914,8 +1128,8 @@ const WeddingPortal: React.FC = () => {
                       ))}
                     </div>
 
-                    {/* LIVE HERO SECTION MOCKUP / PREVIEW */}
-                    <div className="mt-6 pt-5 border-t border-neutral-200 dark:border-neutral-800">
+                    {/* LIVE HERO SECTION MOCKUP / PREVIEW (Desktop view) */}
+                    <div className="mt-6 pt-5 border-t border-neutral-200 dark:border-neutral-800 hidden md:block">
                       
                       {/* Controls Header: View Toggle & Photo Switcher */}
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
