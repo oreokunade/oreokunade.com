@@ -140,11 +140,20 @@ function handleInit(data) {
       "Drive Folder Link",
       "Client Sheet Tab",
       "Status",
-      "Folder ID"
+      "Folder ID",
+      "AI Website Build Prompt"
     ]);
-    var headerRange = overviewSheet.getRange(1, 1, 1, 11);
+    var headerRange = overviewSheet.getRange(1, 1, 1, 12);
     headerRange.setFontWeight("bold").setBackground("#1e293b").setFontColor("#f8fafc");
     overviewSheet.setFrozenRows(1);
+  } else {
+    // Ensure column 12 header exists if sheet was created earlier
+    if (overviewSheet.getLastColumn() < 12 || overviewSheet.getRange(1, 12).getValue() === "") {
+      overviewSheet.getRange(1, 12).setValue("AI Website Build Prompt")
+        .setFontWeight("bold")
+        .setBackground("#1e293b")
+        .setFontColor("#f8fafc");
+    }
   }
 
   // 2. Create or Get Dedicated Tab for this Couple
@@ -173,7 +182,8 @@ function handleInit(data) {
     masterFolderUrl,
     clientTabName,
     "Uploading Assets...",
-    masterFolderId
+    masterFolderId,
+    "" // AI Website Build Prompt (populated upon finalize)
   ];
   overviewSheet.appendRow(row);
   var rowIndex = overviewSheet.getLastRow();
@@ -196,8 +206,8 @@ function handleInit(data) {
  * Setup visual layout for the couple's dedicated sheet tab
  */
 function setupClientSheetHeader(sheet, p1, p2, weddingDate, folderUrl, domainName, domainType) {
-  sheet.setColumnWidth(1, 200);
-  sheet.setColumnWidth(2, 500);
+  sheet.setColumnWidth(1, 220);
+  sheet.setColumnWidth(2, 650);
 
   // Title Banner
   sheet.getRange("A1:B1").merge()
@@ -276,31 +286,35 @@ function handleFinalize(data) {
 
   var ss = SpreadsheetApp.getActiveSpreadsheet();
 
-  // 1. Populate the Couple's Dedicated Tab
+  var masterFolder = DriveApp.getFolderById(folderId);
+
+  // Generate complete, all-inclusive AI Website Builder Prompt
+  var aiPrompt = details.aiPrompt && details.aiPrompt.trim().length > 50
+    ? details.aiPrompt
+    : generateAIPrompt(coupleTitle, details, masterFolder.getUrl());
+
+  // 1. Populate the Couple's Dedicated Tab with structured details & prominent AI Prompt
   if (clientTabName) {
     var sheet = ss.getSheetByName(clientTabName);
     if (sheet) {
-      fillClientSheetContent(sheet, details);
+      fillClientSheetContent(sheet, details, aiPrompt);
     }
   }
 
-  // 2. Generate Creative Brief .txt file inside Drive Folder
-  var masterFolder = DriveApp.getFolderById(folderId);
-  var briefText = buildBriefText(coupleTitle, details, masterFolder.getUrl());
-  var briefFile = masterFolder.createFile("Wedding_Website_Creative_Brief.txt", briefText, "text/plain");
-
-  // Generate & save ready-to-run AI Website Builder Prompt in Google Drive
-  var aiPrompt = details.aiPrompt || briefText;
+  // 2. Save Creative Brief and AI Prompt .txt files inside Google Drive Vault
+  var briefText = buildBriefText(coupleTitle, details, masterFolder.getUrl(), aiPrompt);
+  masterFolder.createFile("Wedding_Website_Creative_Brief.txt", briefText, "text/plain");
   masterFolder.createFile("AI_WEBSITE_BUILDER_PROMPT.txt", aiPrompt, "text/plain");
 
-  // 3. Update Overview Sheet Row Status
+  // 3. Update Overview Sheet Row Status and populate AI Prompt field (Column 12)
   try {
     var overviewSheet = ss.getSheetByName("Overview") || ss.getSheets()[0];
     if (rowIndex && rowIndex <= overviewSheet.getLastRow()) {
       overviewSheet.getRange(rowIndex, 10).setValue("Completed (Photos Synced)").setBackground("#dcfce7").setFontColor("#15803d");
+      overviewSheet.getRange(rowIndex, 12).setValue(aiPrompt).setWrap(true);
     }
   } catch (sheetErr) {
-    // Non-fatal
+    Logger.log("Overview update error: " + sheetErr.toString());
   }
 
   // 4. Send Rich HTML Email Notification
@@ -372,9 +386,36 @@ function handleFinalize(data) {
 /**
  * Fills the client's dedicated tab with clean sections
  */
-function fillClientSheetContent(sheet, d) {
+function fillClientSheetContent(sheet, d, aiPromptText) {
   var brideVal = (d.brideFirstName || d.partner1Name || "") + (d.brideNickname ? " (Nickname: " + d.brideNickname + ")" : "");
   var groomVal = (d.groomFirstName || d.partner2Name || "") + (d.groomNickname ? " (Nickname: " + d.groomNickname + ")" : "");
+  var aiPrompt = aiPromptText || d.aiPrompt || "Prompt not available";
+
+  // Prominent AI Prompt Card at Top of Client Sheet
+  sheet.getRange("A5:B5").merge()
+    .setValue("⚡ 1-CLICK AI WEBSITE BUILDER PROMPT (COPY CELL B6 TO BUILD SITE INSTANTLY)")
+    .setFontWeight("bold")
+    .setFontSize(11)
+    .setBackground("#0f172a")
+    .setFontColor("#38bdf8")
+    .setHorizontalAlignment("center");
+
+  sheet.getRange("A6").setValue("AI Build Prompt (All Data Included)")
+    .setFontWeight("bold")
+    .setFontSize(10)
+    .setBackground("#1e293b")
+    .setFontColor("#f8fafc")
+    .setVerticalAlignment("top");
+
+  sheet.getRange("B6").setValue(aiPrompt)
+    .setFontSize(10)
+    .setBackground("#f8fafc")
+    .setFontColor("#0f172a")
+    .setWrap(true)
+    .setVerticalAlignment("top");
+
+  sheet.getRange("A7:B7").setValues([["", ""]]);
+
   var sections = [
     ["SECTION: CONTACT & BASICS", ""],
     ["Bride", brideVal],
@@ -429,7 +470,7 @@ function fillClientSheetContent(sheet, d) {
     ["AI Website Prompt", d.aiPrompt || "N/A"]
   ];
 
-  var startRow = 6;
+  var startRow = 8;
   sheet.getRange(startRow, 1, sections.length, 2).setValues(sections);
 
   // Style section headers
@@ -550,4 +591,92 @@ function testEmailNotification() {
     htmlBody: htmlBody
   });
   Logger.log("✅ Test email successfully sent to " + email);
+}
+
+/**
+ * Generates an exhaustive, high-converting AI Prompt with every piece of wedding information
+ * Ready to be copied into Cursor, Claude, ChatGPT, v0, etc. to build the website instantly!
+ */
+function generateAIPrompt(coupleTitle, d, folderUrl) {
+  var p1 = (d.brideFirstName || d.partner1Name || "Bride") + (d.brideNickname ? " (Nickname: " + d.brideNickname + ")" : "");
+  var p2 = (d.groomFirstName || d.partner2Name || "Groom") + (d.groomNickname ? " (Nickname: " + d.groomNickname + ")" : "");
+  var domain = d.domainName ? d.domainName + ".online" : "couple.online";
+  var isSeparate = d.eventScheduleType === "separate";
+
+  var p = [];
+  p.push("ACT AS A WORLD-CLASS LUXURY WEDDING WEBSITE DESIGNER & DEVELOPER.");
+  p.push("Build a complete, responsive, modern, and romantic luxury wedding website for " + coupleTitle + " using React (or Next.js/Vite) with Tailwind CSS and Framer Motion animations based on the following verified client specifications:");
+  p.push("");
+  p.push("==============================================");
+  p.push("1. THE COUPLE & WEBSITE IDENTITY");
+  p.push("==============================================");
+  p.push("- Couple: " + coupleTitle);
+  p.push("- Bride / Partner 1: " + p1);
+  p.push("- Groom / Partner 2: " + p2);
+  p.push("- Official Wedding Hashtag: " + (d.hashtag || "None"));
+  p.push("- Custom Domain: https://" + domain);
+  p.push("- Primary Email: " + (d.email || "N/A"));
+  p.push("- WhatsApp / Phone: " + (d.phone || "N/A"));
+  p.push("");
+  p.push("==============================================");
+  p.push("2. EVENT SCHEDULE & VENUES");
+  p.push("==============================================");
+  p.push("- Schedule Format: " + (isSeparate ? "Two-Day Celebration (Traditional Wedding & Main Wedding)" : "Single Day Event"));
+  if (isSeparate) {
+    p.push("[DAY 1: TRADITIONAL WEDDING]");
+    p.push("  - Date: " + (d.traditionalDate || "TBD"));
+    p.push("  - Venue: " + (d.traditionalVenue || "TBD") + " at " + (d.traditionalTime || "TBD"));
+    if (d.traditionalAddress) p.push("  - Address / Location: " + d.traditionalAddress);
+    if (d.traditionalDressCode) p.push("  - Attire / Aso-Ebi: " + d.traditionalDressCode);
+    p.push("");
+    p.push("[DAY 2: MAIN WEDDING]");
+  }
+  p.push("  - Main Wedding Date: " + (d.weddingDate || "TBD"));
+  if (d.colorPalette) p.push("  - Colour of the Day: " + d.colorPalette + (d.paletteNotes ? " (" + d.paletteNotes + ")" : ""));
+  if (d.dressCode) p.push("  - Dress Code: " + d.dressCode);
+  p.push("  - Ceremony: " + (d.ceremonyVenue || "TBD") + " at " + (d.ceremonyTime || "TBD") + (d.ceremonyAddress ? " (" + d.ceremonyAddress + ")" : ""));
+  p.push("  - Reception: " + (d.receptionVenue || "TBD") + " at " + (d.receptionTime || "TBD") + (d.receptionAddress ? " (" + d.receptionAddress + ")" : ""));
+  if (d.singleHasAfterParty || d.separateHasAfterParty || d.afterPartyVenue) {
+    p.push("  - After-Party: " + (d.afterPartyVenue || "TBD") + " at " + (d.afterPartyTime || "TBD") + (d.afterPartyAddress ? " (" + d.afterPartyAddress + ")" : ""));
+    if (d.afterPartyNotes) p.push("  - After-Party Notes: " + d.afterPartyNotes);
+  }
+  p.push("");
+  p.push("==============================================");
+  p.push("3. LOVE STORY & GUEST QUOTE");
+  p.push("==============================================");
+  p.push("- Guest Welcome Quote: \"" + (d.coupleQuote || "Together is a beautiful place to be.") + "\"");
+  p.push("- How We Met: \"" + (d.howWeMet || "N/A") + "\"");
+  p.push("- The Proposal: \"" + (d.theProposal || "N/A") + "\"");
+  p.push("- Key Milestones: \"" + (d.milestones || "N/A") + "\"");
+  p.push("");
+  p.push("==============================================");
+  p.push("4. GUEST ATTENDANCE & REGISTRY");
+  p.push("==============================================");
+  p.push("- RSVP Deadline: " + (d.rsvpDeadline || "TBD"));
+  p.push("- RSVP Guidelines / Policy: \"" + (d.rsvpRules || "Kindly RSVP by the deadline.") + "\"");
+  p.push("- Bank Transfer / Cash Registry:\n" + (d.bankDetails || "Details available upon request."));
+  p.push("- External Registry Links: " + (d.registryLinks || "None"));
+  p.push("");
+  p.push("==============================================");
+  p.push("5. AUDIO, ASSETS & SPECIAL REQUESTS");
+  p.push("==============================================");
+  p.push("- Signature Background Song: " + (d.backgroundSong || "Not specified"));
+  p.push("- Google Drive Assets Vault: " + folderUrl);
+  p.push("- Photographer Cloud / Drive Album: " + (d.driveFolderLink || "None provided"));
+  p.push("- Additional Custom Requests: \"" + (d.additionalNotes || "None") + "\"");
+  p.push("");
+  p.push("==============================================");
+  p.push("KEY DESIGN & FUNCTIONAL REQUIREMENTS:");
+  p.push("==============================================");
+  p.push("1. Luxury Hero Section: High-fashion typography, live countdown timer ticking down to the wedding date, and couple hashtag.");
+  p.push("2. Event Itinerary: Polished cards for each event with venue addresses, times, dress codes, and Google Maps directions link.");
+  p.push("3. Interactive Love Story: Beautiful timeline highlighting their journey from first meeting to engagement.");
+  p.push("4. RSVP Form / Modal: Seamless attendance confirmation adhering to the RSVP rules and deadline.");
+  p.push("5. Gift Registry: 1-click copy-to-clipboard for bank details and links to external wishlists.");
+  p.push("6. Ambient Music Player: Floating audio control button playing " + (d.backgroundSong || "the couple's signature track") + " with play/pause controls.");
+  p.push("7. Add-to-Calendar: 1-click Google Calendar & Apple iCal button for the wedding date.");
+  p.push("8. Mobile-First Luxury: Seamless responsiveness for iOS and Android with smooth Framer Motion transitions.");
+  p.push("9. Footer Credit: 'Built with love by Ore Okunade'.");
+
+  return p.join("\n");
 }
