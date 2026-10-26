@@ -17,7 +17,9 @@ import {
   Loader2,
   Gift,
   Send,
-  Globe
+  Globe,
+  Monitor,
+  Smartphone
 } from 'lucide-react';
 
 interface UploadItem {
@@ -173,6 +175,29 @@ const SUGGESTED_PALETTES: PalettePreset[] = [
   }
 ];
 
+const MOCK_HERO_PHOTOS = [
+  {
+    id: 'sunset',
+    label: 'Sunset Portrait',
+    url: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop'
+  },
+  {
+    id: 'studio',
+    label: 'Studio Romance',
+    url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200&auto=format&fit=crop'
+  },
+  {
+    id: 'luxe',
+    label: 'Luxe Celebration',
+    url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=1200&auto=format&fit=crop'
+  },
+  {
+    id: 'classic',
+    label: 'Classic Black-Tie',
+    url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=1200&auto=format&fit=crop'
+  }
+];
+
 const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN-_Yg3t0pebr0k6AQ4VAP44dmgVvlTrfxyARClARuwlwbU3ImB9mWHi-rXP_tgYOx2Q/exec';
 
 const WeddingPortal: React.FC = () => {
@@ -184,6 +209,10 @@ const WeddingPortal: React.FC = () => {
   const [progressStatusText, setProgressStatusText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Preview Device & Mock Photo State
+  const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
+  const [selectedMockPhotoIndex, setSelectedMockPhotoIndex] = useState<number>(0);
 
   // Input file references
   const heroInputRef = useRef<HTMLInputElement>(null);
@@ -267,6 +296,16 @@ const WeddingPortal: React.FC = () => {
       buttonText: '#121212'
     };
   }, [formData.colorPalette]);
+
+  // Active hero background image
+  const activeHeroPhotoUrl = useMemo(() => {
+    const uploadedHero = files.find(f => f.category === 'hero');
+    if (selectedMockPhotoIndex === -1 && uploadedHero) {
+      return uploadedHero.previewUrl;
+    }
+    const idx = selectedMockPhotoIndex >= 0 ? selectedMockPhotoIndex : 0;
+    return MOCK_HERO_PHOTOS[idx]?.url || MOCK_HERO_PHOTOS[0].url;
+  }, [files, selectedMockPhotoIndex]);
 
   // Submission handler
   const handleSubmitAll = async () => {
@@ -849,99 +888,289 @@ const WeddingPortal: React.FC = () => {
                     </div>
 
                     {/* LIVE HERO SECTION MOCKUP / PREVIEW */}
-                    <div className="mt-4 pt-4 border-t border-neutral-200 dark:border-neutral-800">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-bold text-neutral-700 dark:text-neutral-300 flex items-center gap-1.5">
-                          <Sparkles size={13} />
-                          Live Website Hero Preview
-                        </span>
-                        <span className="text-[11px] font-mono text-neutral-500">
-                          {currentPalettePreset.name}
-                        </span>
-                      </div>
-
-                      {/* Mock Browser Frame */}
-                      <div className="rounded-2xl overflow-hidden border border-neutral-300 dark:border-neutral-700 shadow-md">
-                        {/* Browser Top Bar */}
-                        <div className="px-4 py-2 bg-neutral-200/80 dark:bg-neutral-900 border-b border-neutral-300 dark:border-neutral-800 flex items-center justify-between text-xs text-neutral-500">
-                          <div className="flex items-center gap-1.5">
-                            <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block opacity-80" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block opacity-80" />
-                            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block opacity-80" />
-                            <span className="ml-3 font-mono text-[11px] text-neutral-600 dark:text-neutral-400">
-                              https://{computedDomainPreview}
-                            </span>
-                          </div>
-                          <span className="text-[10px] uppercase font-mono tracking-wider text-neutral-500 hidden sm:inline">
-                            Desktop Preview
+                    <div className="mt-6 pt-5 border-t border-neutral-200 dark:border-neutral-800">
+                      
+                      {/* Controls Header: View Toggle & Photo Switcher */}
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                        <div>
+                          <span className="text-xs font-bold text-neutral-800 dark:text-neutral-200 flex items-center gap-1.5">
+                            <Sparkles size={14} className="text-neutral-700 dark:text-neutral-300" />
+                            Live Website Hero Preview
+                          </span>
+                          <span className="text-[11px] text-neutral-500">
+                            See your names &amp; palette on real wedding photography
                           </span>
                         </div>
 
-                        {/* Hero Section Container with Applied Palette */}
-                        <motion.div
-                          key={currentPalettePreset.name}
-                          initial={{ opacity: 0.8 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                          style={{
-                            backgroundColor: currentPalettePreset.bg,
-                            color: currentPalettePreset.textColor
-                          }}
-                          className="p-8 md:p-12 text-center relative overflow-hidden"
-                        >
-                          {/* Top Badge */}
-                          <div
-                            style={{
-                              borderColor: currentPalettePreset.accentColor + '50',
-                              color: currentPalettePreset.accentColor
-                            }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] uppercase tracking-widest mb-4 font-mono font-medium"
+                        {/* Device Switcher (Desktop / Mobile) */}
+                        <div className="flex items-center gap-1 p-1 rounded-xl bg-neutral-200/80 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 self-start sm:self-auto">
+                          <button
+                            type="button"
+                            onClick={() => setPreviewDevice('desktop')}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                              previewDevice === 'desktop'
+                                ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs font-semibold'
+                                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                            }`}
                           >
-                            <span>✦</span>
-                            <span>{formData.hashtag || 'The Wedding Celebration'}</span>
-                            <span>✦</span>
-                          </div>
-
-                          {/* Couple Names (Using dynamically filled names/nicknames) */}
-                          <h3
-                            style={{ color: currentPalettePreset.textColor }}
-                            className="text-3xl md:text-5xl font-serif font-normal tracking-tight mb-3"
+                            <Monitor size={13} />
+                            <span>Desktop</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPreviewDevice('mobile')}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                              previewDevice === 'mobile'
+                                ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs font-semibold'
+                                : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                            }`}
                           >
-                            {brideDisplay} &amp; {groomDisplay}
-                          </h3>
-
-                          {/* Wedding Date / Location */}
-                          <p
-                            style={{ color: currentPalettePreset.subtextColor }}
-                            className="text-xs md:text-sm tracking-widest uppercase mb-6 font-sans"
-                          >
-                            {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'December 18, 2026'}
-                            {formData.ceremonyVenue ? ` • ${formData.ceremonyVenue}` : ' • Lagos, Nigeria'}
-                          </p>
-
-                          {/* Call To Action Buttons */}
-                          <div className="flex items-center justify-center gap-3">
-                            <div
-                              style={{
-                                backgroundColor: currentPalettePreset.buttonBg,
-                                color: currentPalettePreset.buttonText
-                              }}
-                              className="px-5 py-2 rounded-full text-xs font-bold shadow-sm"
-                            >
-                              RSVP to Attend
-                            </div>
-                            <div
-                              style={{
-                                borderColor: currentPalettePreset.accentColor + '60',
-                                color: currentPalettePreset.textColor
-                              }}
-                              className="px-5 py-2 rounded-full text-xs font-medium border"
-                            >
-                              Our Story
-                            </div>
-                          </div>
-                        </motion.div>
+                            <Smartphone size={13} />
+                            <span>Mobile</span>
+                          </button>
+                        </div>
                       </div>
+
+                      {/* Mock Photos Selector */}
+                      <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-4 scrollbar-none">
+                        <span className="text-[11px] font-medium text-neutral-500 shrink-0">Mock Photo:</span>
+                        {MOCK_HERO_PHOTOS.map((photo, idx) => (
+                          <button
+                            key={photo.id}
+                            type="button"
+                            onClick={() => setSelectedMockPhotoIndex(idx)}
+                            className={`px-3 py-1.5 rounded-full text-[11px] font-medium transition-all shrink-0 border ${
+                              selectedMockPhotoIndex === idx
+                                ? 'border-neutral-900 dark:border-white bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-semibold'
+                                : 'border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400 hover:border-neutral-400'
+                            }`}
+                          >
+                            {photo.label}
+                          </button>
+                        ))}
+                        {files.some(f => f.category === 'hero') && (
+                          <button
+                            type="button"
+                            onClick={() => setSelectedMockPhotoIndex(-1)}
+                            className={`px-3 py-1.5 rounded-full text-[11px] font-medium transition-all shrink-0 border ${
+                              selectedMockPhotoIndex === -1
+                                ? 'border-neutral-900 dark:border-white bg-neutral-900 text-white dark:bg-white dark:text-neutral-950 font-semibold'
+                                : 'border-neutral-200 dark:border-neutral-800 bg-white/80 dark:bg-neutral-900/60 text-neutral-600 dark:text-neutral-400'
+                            }`}
+                          >
+                            📷 Your Uploaded Photo
+                          </button>
+                        )}
+                      </div>
+
+                      {/* DESKTOP PREVIEW FRAME */}
+                      {previewDevice === 'desktop' && (
+                        <div className="rounded-2xl overflow-hidden border border-neutral-300 dark:border-neutral-700 shadow-xl transition-all">
+                          {/* Desktop Browser Bar */}
+                          <div className="px-4 py-2.5 bg-neutral-200/90 dark:bg-neutral-900 border-b border-neutral-300 dark:border-neutral-800 flex items-center justify-between text-xs text-neutral-500">
+                            <div className="flex items-center gap-2">
+                              <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block opacity-80" />
+                              <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block opacity-80" />
+                              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block opacity-80" />
+                              <span className="ml-3 font-mono text-[11px] text-neutral-700 dark:text-neutral-300 flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-white/80 dark:bg-neutral-800">
+                                <span>🔒</span>
+                                <span>https://{computedDomainPreview}</span>
+                              </span>
+                            </div>
+                            <span className="text-[10px] uppercase font-mono tracking-wider text-neutral-500 hidden sm:inline">
+                              Desktop View
+                            </span>
+                          </div>
+
+                          {/* Desktop Hero Body with Background Image & Palette Tint */}
+                          <div className="relative min-h-[420px] md:min-h-[460px] flex flex-col items-center justify-center text-center p-8 md:p-14 overflow-hidden">
+                            {/* Background Photo */}
+                            <div
+                              className="absolute inset-0 bg-cover bg-center transition-all duration-700 transform scale-105"
+                              style={{ backgroundImage: `url("${activeHeroPhotoUrl}")` }}
+                            />
+                            {/* Palette Gradient Tint Overlay */}
+                            <div
+                              className="absolute inset-0 transition-colors duration-500"
+                              style={{
+                                background: `linear-gradient(180deg, ${currentPalettePreset.bg}B3 0%, ${currentPalettePreset.bg}E6 100%)`
+                              }}
+                            />
+
+                            {/* Content Aligned Vertically & Horizontally */}
+                            <motion.div
+                              key={`${currentPalettePreset.name}-${selectedMockPhotoIndex}-desktop`}
+                              initial={{ opacity: 0.8, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="relative z-10 max-w-xl mx-auto flex flex-col items-center"
+                            >
+                              {/* Top Monogram / Badge */}
+                              <div
+                                style={{
+                                  borderColor: currentPalettePreset.accentColor + '50',
+                                  color: currentPalettePreset.accentColor,
+                                  backgroundColor: currentPalettePreset.bg + '80'
+                                }}
+                                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-[11px] uppercase tracking-widest mb-5 font-mono font-medium backdrop-blur-xs"
+                              >
+                                <span>✦</span>
+                                <span>{formData.hashtag || 'The Wedding Celebration'}</span>
+                                <span>✦</span>
+                              </div>
+
+                              {/* Couple Names */}
+                              <h3
+                                style={{ color: currentPalettePreset.textColor }}
+                                className="text-4xl md:text-6xl font-serif font-normal tracking-tight mb-4 drop-shadow-xs"
+                              >
+                                {brideDisplay} &amp; {groomDisplay}
+                              </h3>
+
+                              {/* Wedding Date / Venue */}
+                              <p
+                                style={{ color: currentPalettePreset.subtextColor }}
+                                className="text-xs md:text-sm tracking-widest uppercase mb-8 font-sans font-medium"
+                              >
+                                {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'December 18, 2026'}
+                                {formData.ceremonyVenue ? ` • ${formData.ceremonyVenue}` : ' • Lagos, Nigeria'}
+                              </p>
+
+                              {/* Action Buttons */}
+                              <div className="flex items-center justify-center gap-3">
+                                <div
+                                  style={{
+                                    backgroundColor: currentPalettePreset.buttonBg,
+                                    color: currentPalettePreset.buttonText
+                                  }}
+                                  className="px-6 py-2.5 rounded-full text-xs font-bold shadow-md cursor-pointer hover:opacity-90 transition-opacity"
+                                >
+                                  RSVP to Attend
+                                </div>
+                                <div
+                                  style={{
+                                    borderColor: currentPalettePreset.accentColor + '70',
+                                    color: currentPalettePreset.textColor,
+                                    backgroundColor: 'rgba(0,0,0,0.2)'
+                                  }}
+                                  className="px-6 py-2.5 rounded-full text-xs font-medium border backdrop-blur-xs cursor-pointer hover:bg-white/10 transition-colors"
+                                >
+                                  Our Love Story
+                                </div>
+                              </div>
+                            </motion.div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* MOBILE PREVIEW FRAME */}
+                      {previewDevice === 'mobile' && (
+                        <div className="w-full max-w-[340px] mx-auto rounded-[42px] border-[7px] border-neutral-800 dark:border-neutral-700 shadow-2xl overflow-hidden bg-neutral-900 transition-all">
+                          {/* Mobile Dynamic Island / Status Bar */}
+                          <div className="px-5 pt-3 pb-2 bg-neutral-950 flex items-center justify-between text-[11px] text-neutral-400 font-medium select-none">
+                            <span>9:41</span>
+                            {/* Dynamic Island Pill */}
+                            <div className="w-20 h-4 bg-black rounded-full flex items-center justify-center">
+                              <span className="w-2 h-2 rounded-full bg-neutral-900" />
+                            </div>
+                            <div className="flex items-center gap-1.5 text-[10px]">
+                              <span>5G</span>
+                              <span className="w-3.5 h-2 rounded-xs border border-neutral-400 inline-block p-0.5"><span className="w-full h-full bg-neutral-400 block rounded-xs" /></span>
+                            </div>
+                          </div>
+
+                          {/* Mobile Hero Body */}
+                          <div className="relative min-h-[460px] flex flex-col items-center justify-between text-center p-6 pb-8 overflow-hidden">
+                            {/* Background Photo */}
+                            <div
+                              className="absolute inset-0 bg-cover bg-center transition-all duration-700 transform scale-105"
+                              style={{ backgroundImage: `url("${activeHeroPhotoUrl}")` }}
+                            />
+                            {/* Palette Gradient Tint Overlay */}
+                            <div
+                              className="absolute inset-0 transition-colors duration-500"
+                              style={{
+                                background: `linear-gradient(180deg, ${currentPalettePreset.bg}B3 0%, ${currentPalettePreset.bg}F0 100%)`
+                              }}
+                            />
+
+                            {/* Mobile Top Small Header */}
+                            <div className="relative z-10 w-full flex items-center justify-between text-[10px] pb-2 border-b border-white/10 text-neutral-300">
+                              <span className="font-mono truncate max-w-[140px]">{computedDomainPreview}</span>
+                              <span className="font-mono">MENU ☰</span>
+                            </div>
+
+                            {/* Mobile Centered Content */}
+                            <motion.div
+                              key={`${currentPalettePreset.name}-${selectedMockPhotoIndex}-mobile`}
+                              initial={{ opacity: 0.8, y: 5 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="relative z-10 w-full my-auto flex flex-col items-center"
+                            >
+                              {/* Top Badge */}
+                              <div
+                                style={{
+                                  borderColor: currentPalettePreset.accentColor + '50',
+                                  color: currentPalettePreset.accentColor,
+                                  backgroundColor: currentPalettePreset.bg + '80'
+                                }}
+                                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border text-[10px] uppercase tracking-wider mb-4 font-mono font-medium backdrop-blur-xs"
+                              >
+                                <span>✦</span>
+                                <span className="truncate max-w-[200px]">{formData.hashtag || 'The Wedding'}</span>
+                                <span>✦</span>
+                              </div>
+
+                              {/* Names */}
+                              <h3
+                                style={{ color: currentPalettePreset.textColor }}
+                                className="text-3xl font-serif font-normal tracking-tight mb-2.5 leading-tight"
+                              >
+                                {brideDisplay} <br />
+                                <span className="text-2xl font-sans italic opacity-80">&amp;</span> <br />
+                                {groomDisplay}
+                              </h3>
+
+                              {/* Date */}
+                              <p
+                                style={{ color: currentPalettePreset.subtextColor }}
+                                className="text-[11px] tracking-wider uppercase mb-6 font-sans font-medium"
+                              >
+                                {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Dec 18, 2026'}
+                                {formData.ceremonyVenue ? ` • ${formData.ceremonyVenue}` : ''}
+                              </p>
+
+                              {/* Mobile Stacked Buttons */}
+                              <div className="w-full flex flex-col gap-2">
+                                <div
+                                  style={{
+                                    backgroundColor: currentPalettePreset.buttonBg,
+                                    color: currentPalettePreset.buttonText
+                                  }}
+                                  className="w-full py-2.5 rounded-full text-xs font-bold shadow-md text-center"
+                                >
+                                  RSVP to Attend
+                                </div>
+                                <div
+                                  style={{
+                                    borderColor: currentPalettePreset.accentColor + '60',
+                                    color: currentPalettePreset.textColor,
+                                    backgroundColor: 'rgba(0,0,0,0.2)'
+                                  }}
+                                  className="w-full py-2 rounded-full text-xs font-medium border text-center backdrop-blur-xs"
+                                >
+                                  Our Story
+                                </div>
+                              </div>
+                            </motion.div>
+
+                            {/* Mobile Bottom Home Bar Indicator */}
+                            <div className="relative z-10 w-24 h-1 bg-white/40 rounded-full mx-auto mt-2" />
+                          </div>
+                        </div>
+                      )}
+
                     </div>
                   </div>
 
