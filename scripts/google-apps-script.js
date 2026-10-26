@@ -345,11 +345,16 @@ function fillClientSheetContent(sheet, d) {
     ["", ""],
 
     ["SECTION: DATES & VENUES", ""],
+    ["Schedule Format", d.eventScheduleType === "separate" ? "Separate Day Events (Traditional & Main)" : "Single Day Event"],
     ["Main Wedding Date", d.weddingDate || ""],
     ["Traditional Wedding Date", d.traditionalDate || "N/A"],
+    ["Traditional Venue", d.traditionalVenue || "N/A"],
+    ["Traditional Time", d.traditionalTime || "N/A"],
+    ["Traditional Address & Map", d.traditionalAddress || "N/A"],
+    ["Traditional Attire / Aso-Ebi", d.traditionalDressCode || "N/A"],
     ["Color Palette", d.colorPalette || ""],
     ["Palette Hex / Notes", d.paletteNotes || ""],
-    ["Dress Code", d.dressCode || ""],
+    ["Dress Code (Main Wedding)", d.dressCode || ""],
     ["Ceremony Venue", d.ceremonyVenue || ""],
     ["Ceremony Time", d.ceremonyTime || ""],
     ["Ceremony Address & Map", d.ceremonyAddress || ""],
@@ -416,8 +421,16 @@ function buildBriefText(coupleTitle, d, folderUrl) {
   b.push("   Domain Preference: " + (d.domainName || "N/A") + " [" + (d.domainType || "") + "]\n");
 
   b.push("2. DATES, VENUES & SCHEDULE");
+  b.push("   Schedule Type: " + (d.eventScheduleType === "separate" ? "Separate Day Events (Traditional & Main)" : "Single Day Event"));
+  if (d.eventScheduleType === "separate") {
+    b.push("   [DAY 1: TRADITIONAL WEDDING]");
+    b.push("   Date: " + (d.traditionalDate || "N/A"));
+    b.push("   Venue: " + (d.traditionalVenue || "N/A") + " @ " + (d.traditionalTime || "N/A"));
+    b.push("   Address: " + (d.traditionalAddress || "N/A"));
+    b.push("   Attire / Aso-Ebi: " + (d.traditionalDressCode || "N/A") + "\n");
+    b.push("   [DAY 2: MAIN WEDDING]");
+  }
   b.push("   Main Wedding Date: " + (d.weddingDate || "N/A"));
-  b.push("   Traditional Date: " + (d.traditionalDate || "N/A"));
   b.push("   Color Palette: " + (d.colorPalette || "N/A"));
   b.push("   Palette Hex/Notes: " + (d.paletteNotes || "N/A"));
   b.push("   Dress Code: " + (d.dressCode || "N/A"));

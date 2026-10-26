@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -44,8 +44,13 @@ interface WeddingFormData {
   domainType: '.online' | '.com' | 'custom';
 
   // 2. Schedule & Venues
+  eventScheduleType: 'single' | 'separate';
   weddingDate: string;
   traditionalDate: string;
+  traditionalVenue: string;
+  traditionalAddress: string;
+  traditionalTime: string;
+  traditionalDressCode: string;
   colorPalette: string;
   paletteNotes: string;
   dressCode: string;
@@ -84,8 +89,13 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   domainName: '',
   domainType: '.online',
 
+  eventScheduleType: 'single',
   weddingDate: '',
   traditionalDate: '',
+  traditionalVenue: '',
+  traditionalAddress: '',
+  traditionalTime: '',
+  traditionalDressCode: '',
   colorPalette: 'Emerald & Champagne Gold',
   paletteNotes: '#0B4F3A, #D4AF37, #FAF7F2',
   dressCode: 'Black Tie / Modern Luxury Traditional',
@@ -199,16 +209,48 @@ const MOCK_HERO_PHOTOS = [
 ];
 
 const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN-_Yg3t0pebr0k6AQ4VAP44dmgVvlTrfxyARClARuwlwbU3ImB9mWHi-rXP_tgYOx2Q/exec';
+const STORAGE_KEY = 'wedding_portal_draft_v1';
 
 const WeddingPortal: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<WeddingFormData>(INITIAL_FORM_DATA);
+  const [formData, setFormData] = useState<WeddingFormData>(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return { ...INITIAL_FORM_DATA, ...JSON.parse(saved) };
+      }
+    } catch (e) {
+      console.warn('Failed to load draft from localStorage', e);
+    }
+    return INITIAL_FORM_DATA;
+  });
+
   const [files, setFiles] = useState<UploadItem[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionProgress, setSubmissionProgress] = useState(0);
   const [progressStatusText, setProgressStatusText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Auto-save form draft to localStorage on any input change
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+    } catch (e) {
+      // Ignore private browsing or quota limits
+    }
+  }, [formData]);
+
+  const handleClearDraft = () => {
+    if (window.confirm("Are you sure you want to clear your saved draft and reset the form?")) {
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (e) {}
+      setFormData(INITIAL_FORM_DATA);
+      setFiles([]);
+      setCurrentStep(1);
+    }
+  };
 
   // Preview Device & Mock Photo State
   const [previewDevice, setPreviewDevice] = useState<'desktop' | 'mobile'>('desktop');
@@ -317,10 +359,6 @@ const WeddingPortal: React.FC = () => {
       setErrorMsg("Please enter the Groom's First Name (in Step 1) before submitting.");
       return;
     }
-    if (!formData.email.trim()) {
-      setErrorMsg("Please provide your primary email address (in Step 1) before submitting.");
-      return;
-    }
 
     setIsSubmitting(true);
     setErrorMsg(null);
@@ -337,8 +375,8 @@ const WeddingPortal: React.FC = () => {
         groomFirstName: formData.groomFirstName,
         groomNickname: formData.groomNickname,
         weddingDate: formData.weddingDate,
-        email: formData.email,
-        phone: formData.phone,
+        email: formData.email || '',
+        phone: formData.phone || '',
         hashtag: formData.hashtag,
         domainName: formData.domainName,
         domainType: formData.domainType === '.online' ? '.online (Included)' : formData.domainType === '.com' ? '.com (+₦15,000 Add-on)' : 'Custom domain'
@@ -412,6 +450,9 @@ const WeddingPortal: React.FC = () => {
 
       setSubmissionProgress(100);
       setProgressStatusText('Submitted successfully!');
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch (e) {}
       setTimeout(() => {
         setIsSubmitting(false);
         setIsSubmitted(true);
@@ -438,7 +479,7 @@ const WeddingPortal: React.FC = () => {
       
       <div className="max-w-4xl mx-auto relative z-10">
 
-        {/* Top bar with back button */}
+        {/* Top bar with back button and draft indicator */}
         <div className="flex items-center justify-between mb-8 pb-4 border-b border-neutral-200 dark:border-neutral-800">
           <Link
             to="/"
@@ -447,6 +488,21 @@ const WeddingPortal: React.FC = () => {
             <ChevronLeft size={16} />
             <span>Back to oreokunade.com</span>
           </Link>
+
+          <div className="flex items-center gap-3 text-xs">
+            <span className="inline-flex items-center gap-1.5 text-neutral-500 dark:text-neutral-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              Draft saved
+            </span>
+            <button
+              type="button"
+              onClick={handleClearDraft}
+              className="text-neutral-400 hover:text-rose-500 transition-colors underline decoration-dotted"
+              title="Reset saved form inputs"
+            >
+              Reset
+            </button>
+          </div>
         </div>
 
         {/* Header Section */}
@@ -677,35 +733,6 @@ const WeddingPortal: React.FC = () => {
                         value={formData.groomNickname}
                         onChange={handleChange}
                         placeholder="e.g. Tunde (used on website if filled)"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Primary Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="e.g. tolaandbabatunde@gmail.com"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        WhatsApp / Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="e.g. +234 812 345 6789"
                         className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                       />
                     </div>
@@ -1174,161 +1201,422 @@ const WeddingPortal: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Main Wedding Date
-                      </label>
-                      <input
-                        type="date"
-                        name="weddingDate"
-                        value={formData.weddingDate}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
+                  {/* SCHEDULE TYPE TOGGLE: Main Event vs Separate Day Event */}
+                  <div className="p-1.5 rounded-2xl bg-neutral-200/70 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 grid grid-cols-2 gap-2 mb-6">
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, eventScheduleType: 'single' }))}
+                      className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 text-center ${
+                        formData.eventScheduleType === 'single'
+                          ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm font-bold'
+                          : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <Calendar size={15} />
+                      <span>Main Event (Single Day)</span>
+                    </button>
 
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Traditional Wedding Date (If separate day)
-                      </label>
-                      <input
-                        type="date"
-                        name="traditionalDate"
-                        value={formData.traditionalDate}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Your Custom Color Palette Name
-                      </label>
-                      <input
-                        type="text"
-                        name="colorPalette"
-                        value={formData.colorPalette}
-                        onChange={handleChange}
-                        placeholder="e.g. Sage Green, Terracotta & Warm Gold"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Dress Code / Attire
-                      </label>
-                      <input
-                        type="text"
-                        name="dressCode"
-                        value={formData.dressCode}
-                        onChange={handleChange}
-                        placeholder="e.g. Black Tie Formal / Traditional Elegance"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    {/* Ceremony details */}
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Ceremony Venue Name
-                      </label>
-                      <input
-                        type="text"
-                        name="ceremonyVenue"
-                        value={formData.ceremonyVenue}
-                        onChange={handleChange}
-                        placeholder="e.g. Church of the Nativity, Victoria Island"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Ceremony Time
-                      </label>
-                      <input
-                        type="text"
-                        name="ceremonyTime"
-                        value={formData.ceremonyTime}
-                        onChange={handleChange}
-                        placeholder="e.g. 10:00 AM"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Ceremony Physical Address & Google Maps Link
-                      </label>
-                      <input
-                        type="text"
-                        name="ceremonyAddress"
-                        value={formData.ceremonyAddress}
-                        onChange={handleChange}
-                        placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos (https://maps.app.goo.gl/...)"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    {/* Reception details */}
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Reception Venue Name
-                      </label>
-                      <input
-                        type="text"
-                        name="receptionVenue"
-                        value={formData.receptionVenue}
-                        onChange={handleChange}
-                        placeholder="e.g. Landmark Event Centre, Water Corporation Road"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Reception Time
-                      </label>
-                      <input
-                        type="text"
-                        name="receptionTime"
-                        value={formData.receptionTime}
-                        onChange={handleChange}
-                        placeholder="e.g. 1:30 PM"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Reception Address & Maps Link
-                      </label>
-                      <input
-                        type="text"
-                        name="receptionAddress"
-                        value={formData.receptionAddress}
-                        onChange={handleChange}
-                        placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru, Victoria Island"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      />
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Schedule Highlights / Day Timeline (Optional)
-                      </label>
-                      <textarea
-                        name="scheduleNotes"
-                        rows={3}
-                        value={formData.scheduleNotes}
-                        onChange={handleChange}
-                        placeholder="e.g. 10:00 AM - Church Ceremony, 1:00 PM - Cocktail Hour, 2:30 PM - Grand Entrance, 6:30 PM - After Party"
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
-                      />
-                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, eventScheduleType: 'separate' }))}
+                      className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 text-center ${
+                        formData.eventScheduleType === 'separate'
+                          ? 'bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-sm font-bold'
+                          : 'text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white'
+                      }`}
+                    >
+                      <Sparkles size={15} />
+                      <span>Separate Day Event</span>
+                    </button>
                   </div>
+
+                  {formData.eventScheduleType === 'single' ? (
+                    /* 1. SINGLE DAY CELEBRATION */
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Main Wedding Date
+                        </label>
+                        <input
+                          type="date"
+                          name="weddingDate"
+                          value={formData.weddingDate}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Dress Code / Attire
+                        </label>
+                        <input
+                          type="text"
+                          name="dressCode"
+                          value={formData.dressCode}
+                          onChange={handleChange}
+                          placeholder="e.g. Black Tie Formal / Modern Luxury"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Your Custom Color Palette Name
+                        </label>
+                        <input
+                          type="text"
+                          name="colorPalette"
+                          value={formData.colorPalette}
+                          onChange={handleChange}
+                          placeholder="e.g. Sage Green, Terracotta & Warm Gold"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      {/* Ceremony details */}
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Ceremony Venue Name
+                        </label>
+                        <input
+                          type="text"
+                          name="ceremonyVenue"
+                          value={formData.ceremonyVenue}
+                          onChange={handleChange}
+                          placeholder="e.g. Church of the Nativity, Victoria Island"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Ceremony Time
+                        </label>
+                        <input
+                          type="text"
+                          name="ceremonyTime"
+                          value={formData.ceremonyTime}
+                          onChange={handleChange}
+                          placeholder="e.g. 10:00 AM"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Ceremony Physical Address & Google Maps Link
+                        </label>
+                        <input
+                          type="text"
+                          name="ceremonyAddress"
+                          value={formData.ceremonyAddress}
+                          onChange={handleChange}
+                          placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos (https://maps.app.goo.gl/...)"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      {/* Reception details */}
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Reception Venue Name
+                        </label>
+                        <input
+                          type="text"
+                          name="receptionVenue"
+                          value={formData.receptionVenue}
+                          onChange={handleChange}
+                          placeholder="e.g. Landmark Event Centre, Water Corporation Road"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Reception Time
+                        </label>
+                        <input
+                          type="text"
+                          name="receptionTime"
+                          value={formData.receptionTime}
+                          onChange={handleChange}
+                          placeholder="e.g. 1:30 PM"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Reception Address & Maps Link
+                        </label>
+                        <input
+                          type="text"
+                          name="receptionAddress"
+                          value={formData.receptionAddress}
+                          onChange={handleChange}
+                          placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru, Victoria Island"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                        />
+                      </div>
+
+                      <div className="md:col-span-2">
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Schedule Highlights / Day Timeline (Optional)
+                        </label>
+                        <textarea
+                          name="scheduleNotes"
+                          rows={3}
+                          value={formData.scheduleNotes}
+                          onChange={handleChange}
+                          placeholder="e.g. 10:00 AM - Church Ceremony, 1:00 PM - Cocktail Hour, 2:30 PM - Grand Entrance, 6:30 PM - After Party"
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    /* 2. SEPARATE DAY EVENTS */
+                    <div className="space-y-6">
+                      {/* DAY 1: TRADITIONAL / ENGAGEMENT WEDDING */}
+                      <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-4">
+                        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-center justify-between">
+                          <div>
+                            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 1</span>
+                            <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Traditional / Engagement Wedding</h3>
+                          </div>
+                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-neutral-200/80 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium">
+                            Cultural Celebration
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Traditional Wedding Date
+                            </label>
+                            <input
+                              type="date"
+                              name="traditionalDate"
+                              value={formData.traditionalDate}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Traditional Event Time
+                            </label>
+                            <input
+                              type="text"
+                              name="traditionalTime"
+                              value={formData.traditionalTime}
+                              onChange={handleChange}
+                              placeholder="e.g. 11:00 AM"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Traditional Venue Name
+                            </label>
+                            <input
+                              type="text"
+                              name="traditionalVenue"
+                              value={formData.traditionalVenue}
+                              onChange={handleChange}
+                              placeholder="e.g. The Dorchester Events Centre"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Traditional Attire / Aso-Ebi Colors (Optional)
+                            </label>
+                            <input
+                              type="text"
+                              name="traditionalDressCode"
+                              value={formData.traditionalDressCode}
+                              onChange={handleChange}
+                              placeholder="e.g. Emerald Green & Champagne Aso-Ebi / Agbada"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Traditional Venue Address & Google Maps Link
+                            </label>
+                            <input
+                              type="text"
+                              name="traditionalAddress"
+                              value={formData.traditionalAddress}
+                              onChange={handleChange}
+                              placeholder="e.g. Plot 5 Water Corporation Road, Oniru, Victoria Island (https://maps.app.goo.gl/...)"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* DAY 2: MAIN / WHITE / CHURCH WEDDING */}
+                      <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-4">
+                        <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-center justify-between">
+                          <div>
+                            <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 2</span>
+                            <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Main / Church / White Wedding & Reception</h3>
+                          </div>
+                          <span className="text-[11px] px-2.5 py-1 rounded-full bg-neutral-200/80 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-medium">
+                            White Wedding
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Main Wedding Date
+                            </label>
+                            <input
+                              type="date"
+                              name="weddingDate"
+                              value={formData.weddingDate}
+                              onChange={handleChange}
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Dress Code / Attire
+                            </label>
+                            <input
+                              type="text"
+                              name="dressCode"
+                              value={formData.dressCode}
+                              onChange={handleChange}
+                              placeholder="e.g. Black Tie Formal / Suits & Evening Gowns"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Custom Color Palette Name
+                            </label>
+                            <input
+                              type="text"
+                              name="colorPalette"
+                              value={formData.colorPalette}
+                              onChange={handleChange}
+                              placeholder="e.g. Sage Green, Terracotta & Warm Gold"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Ceremony Venue Name
+                            </label>
+                            <input
+                              type="text"
+                              name="ceremonyVenue"
+                              value={formData.ceremonyVenue}
+                              onChange={handleChange}
+                              placeholder="e.g. Church of the Nativity, Victoria Island"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Ceremony Time
+                            </label>
+                            <input
+                              type="text"
+                              name="ceremonyTime"
+                              value={formData.ceremonyTime}
+                              onChange={handleChange}
+                              placeholder="e.g. 10:00 AM"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Ceremony Address & Google Maps Link
+                            </label>
+                            <input
+                              type="text"
+                              name="ceremonyAddress"
+                              value={formData.ceremonyAddress}
+                              onChange={handleChange}
+                              placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Reception Venue Name
+                            </label>
+                            <input
+                              type="text"
+                              name="receptionVenue"
+                              value={formData.receptionVenue}
+                              onChange={handleChange}
+                              placeholder="e.g. Landmark Event Centre"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Reception Time
+                            </label>
+                            <input
+                              type="text"
+                              name="receptionTime"
+                              value={formData.receptionTime}
+                              onChange={handleChange}
+                              placeholder="e.g. 2:00 PM"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                              Reception Address & Maps Link
+                            </label>
+                            <input
+                              type="text"
+                              name="receptionAddress"
+                              value={formData.receptionAddress}
+                              onChange={handleChange}
+                              placeholder="e.g. Landmark Centre, Plot 2&3 Water Corporation Dr, Oniru, Victoria Island"
+                              className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Multi-Day Timeline Highlights */}
+                      <div>
+                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
+                          Multi-Day Schedule Highlights / Timeline (Optional)
+                        </label>
+                        <textarea
+                          name="scheduleNotes"
+                          rows={3}
+                          value={formData.scheduleNotes}
+                          onChange={handleChange}
+                          placeholder="e.g. Day 1: Traditional introduction & cultural blessings. Day 2: 10:00 AM Church Ceremony, 2:00 PM Grand Reception & After-Party."
+                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
 
@@ -1757,8 +2045,6 @@ const WeddingPortal: React.FC = () => {
                       <div className="text-sm font-semibold text-neutral-900 dark:text-white">
                         {brideDisplay} & {groomDisplay}
                       </div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Email: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.email || 'N/A'}</span></div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Phone: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.phone || 'N/A'}</span></div>
                       <div className="text-neutral-600 dark:text-neutral-400">Hashtag: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.hashtag || 'None'}</span></div>
                       <div className="text-neutral-600 dark:text-neutral-400 font-mono">
                         Domain: <span className="text-neutral-900 dark:text-white font-bold">{computedDomainPreview}</span> ({formData.domainType === '.online' ? 'Included' : formData.domainType === '.com' ? '+₦15k Add-on' : 'Custom'})
@@ -1766,14 +2052,42 @@ const WeddingPortal: React.FC = () => {
                     </div>
 
                     <div className="p-4 rounded-2xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
-                      <div className="text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider text-[11px]">Dates & Venues</div>
-                      <div className="text-sm font-semibold text-neutral-900 dark:text-white">
-                        {formData.weddingDate || 'No date set'}
+                      <div className="text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider text-[11px]">
+                        {formData.eventScheduleType === 'single' ? 'Dates & Venues (Single Day)' : 'Dates & Venues (Separate Events)'}
                       </div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Palette: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.colorPalette}</span></div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Dress Code: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.dressCode}</span></div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Ceremony: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})</span></div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Reception: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.receptionVenue || 'TBD'} ({formData.receptionTime})</span></div>
+                      {formData.eventScheduleType === 'single' ? (
+                        <>
+                          <div className="text-sm font-semibold text-neutral-900 dark:text-white">
+                            {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'No date set'}
+                          </div>
+                          <div className="text-neutral-600 dark:text-neutral-400">Palette: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.colorPalette}</span></div>
+                          <div className="text-neutral-600 dark:text-neutral-400">Dress Code: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.dressCode}</span></div>
+                          <div className="text-neutral-600 dark:text-neutral-400">Ceremony: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})</span></div>
+                          <div className="text-neutral-600 dark:text-neutral-400">Reception: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.receptionVenue || 'TBD'} ({formData.receptionTime})</span></div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="space-y-1">
+                            <div className="text-neutral-800 dark:text-neutral-200 font-semibold text-[11px]">
+                              Day 1 (Traditional): {formData.traditionalDate ? new Date(formData.traditionalDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
+                            </div>
+                            <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                              Venue: {formData.traditionalVenue || 'TBD'} {formData.traditionalTime ? `(${formData.traditionalTime})` : ''}
+                            </div>
+                          </div>
+                          <div className="space-y-1 pt-1 border-t border-neutral-200 dark:border-neutral-800">
+                            <div className="text-neutral-800 dark:text-neutral-200 font-semibold text-[11px]">
+                              Day 2 (Main Wedding): {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'TBD'}
+                            </div>
+                            <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                              Ceremony: {formData.ceremonyVenue || 'TBD'} ({formData.ceremonyTime})
+                            </div>
+                            <div className="text-neutral-600 dark:text-neutral-400 pl-2 text-[11px]">
+                              Reception: {formData.receptionVenue || 'TBD'} ({formData.receptionTime})
+                            </div>
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     <div className="p-4 rounded-2xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
