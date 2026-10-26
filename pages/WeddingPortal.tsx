@@ -93,6 +93,7 @@ interface WeddingFormData {
   registryLinks: string;
   backgroundSong: string;
   designStyle: string;
+  driveFolderLink: string;
   additionalNotes: string;
 }
 
@@ -106,6 +107,7 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   hashtag: '',
   domainName: '',
   domainType: '.online',
+  driveFolderLink: '',
 
   eventScheduleType: 'single',
   weddingDate: '',
@@ -476,7 +478,9 @@ const WeddingPortal: React.FC = () => {
             partner2Name: groomDisplay,
             partner1Nickname: formData.brideNickname,
             partner2Nickname: formData.groomNickname,
-            domainType: formData.domainType === '.online' ? '.online (Included)' : formData.domainType === '.com' ? '.com (+₦15,000 Add-on)' : 'Custom domain'
+            domainType: '.online (Included)',
+            computedDomain: computedDomainPreview,
+            driveFolderLink: formData.driveFolderLink || ''
           }
         })
       });
@@ -502,10 +506,7 @@ const WeddingPortal: React.FC = () => {
   const storyPhotos = files.filter(f => f.category === 'story');
   const galleryPhotos = files.filter(f => f.category === 'gallery');
 
-  const computedDomainPreview =
-    formData.domainType === 'custom'
-      ? (formData.domainName || 'yourcustomdomain.com')
-      : `${formData.domainName || 'couple'}${formData.domainType}`;
+  const computedDomainPreview = `${formData.domainName || 'couple'}.online`;
 
   return (
     <div className="min-h-screen w-full bg-neutral-50 dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 font-sans selection:bg-neutral-900 selection:text-white dark:selection:bg-white dark:selection:text-black relative pt-24 pb-20 px-4 md:px-8 transition-colors duration-300">
@@ -711,6 +712,17 @@ const WeddingPortal: React.FC = () => {
                     </p>
                   </div>
 
+                  {/* SECTION 1: COUPLE'S NAMES & HASHTAG */}
+                  <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2 mb-4">
+                    <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                      <Heart size={16} className="text-neutral-700 dark:text-neutral-300" />
+                      <span>Couple's Names & Identity</span>
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Enter first names and optional preferred nicknames for headings and hero displays.
+                    </p>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
@@ -784,104 +796,44 @@ const WeddingPortal: React.FC = () => {
                       />
                     </div>
 
-                    {/* CUSTOM DOMAIN SELECTOR */}
+                    {/* SECTION 2: WEDDING WEBSITE DOMAIN (.online only) */}
                     <div className="md:col-span-2 p-5 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Globe size={16} className="text-neutral-700 dark:text-neutral-300" />
-                        <span className="text-sm font-bold text-neutral-900 dark:text-white">Your Wedding Website Domain</span>
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <Globe size={16} className="text-neutral-700 dark:text-neutral-300" />
+                          <span className="text-sm font-bold text-neutral-900 dark:text-white">Your Wedding Website Domain</span>
+                        </div>
+                        <span className="text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-mono">
+                          Included Free (.online)
+                        </span>
                       </div>
                       <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-4 leading-relaxed">
-                        Choose how guests will visit your website. A <strong className="text-neutral-900 dark:text-white font-semibold">.online</strong> domain is 100% included in your package. A <strong className="text-neutral-900 dark:text-white font-semibold">.com</strong> domain is billed separately.
+                        Your custom wedding website is published on your dedicated <strong className="text-neutral-900 dark:text-white font-semibold">.online</strong> address, included 100% free with your package.
                       </p>
-
-                      {/* Domain Type Selection Radio Cards */}
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-                        <div
-                          onClick={() => setFormData(prev => ({ ...prev, domainType: '.online' }))}
-                          className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
-                            formData.domainType === '.online'
-                              ? 'border-neutral-900 dark:border-white bg-neutral-200/60 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
-                              : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 bg-white dark:bg-neutral-900/40 text-neutral-500'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-sm text-neutral-900 dark:text-white font-mono">.online</span>
-                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-300">
-                              Included Free
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-neutral-500 dark:text-neutral-400">
-                            Included with your build package
-                          </div>
-                        </div>
-
-                        <div
-                          onClick={() => setFormData(prev => ({ ...prev, domainType: '.com' }))}
-                          className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
-                            formData.domainType === '.com'
-                              ? 'border-neutral-900 dark:border-white bg-neutral-200/60 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
-                              : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 bg-white dark:bg-neutral-900/40 text-neutral-500'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-sm text-neutral-900 dark:text-white font-mono">.com</span>
-                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-800 dark:text-neutral-200 font-medium">
-                              +₦15,000 / $15
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-neutral-500 dark:text-neutral-400">
-                            Premium international extension
-                          </div>
-                        </div>
-
-                        <div
-                          onClick={() => setFormData(prev => ({ ...prev, domainType: 'custom' }))}
-                          className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
-                            formData.domainType === 'custom'
-                              ? 'border-neutral-900 dark:border-white bg-neutral-200/60 dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-xs'
-                              : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700 bg-white dark:bg-neutral-900/40 text-neutral-500'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="font-bold text-sm text-neutral-900 dark:text-white">Own Domain</span>
-                            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
-                              BYO Domain
-                            </span>
-                          </div>
-                          <div className="text-[11px] text-neutral-500 dark:text-neutral-400">
-                            You already bought a domain
-                          </div>
-                        </div>
-                      </div>
 
                       {/* Domain Input Field */}
                       <div>
                         <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          {formData.domainType === 'custom' ? 'Your Existing Domain Name' : 'Desired Domain Name (e.g. tolatunde26)'}
+                          Desired Domain Name
                         </label>
                         <div className="flex items-center rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 overflow-hidden focus-within:border-neutral-900 dark:focus-within:border-white transition-colors">
-                          <span className="pl-4 pr-1 text-xs text-neutral-400 select-none">https://</span>
+                          <span className="pl-4 pr-1 text-xs text-neutral-400 select-none font-mono">https://</span>
                           <input
                             type="text"
                             value={formData.domainName}
                             onChange={e => handleDomainNameChange(e.target.value)}
-                            placeholder={formData.domainType === 'custom' ? 'ourtolalove.ng' : 'tolatunde26'}
+                            placeholder="tolatunde26"
                             className="flex-1 py-3 bg-transparent text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none text-sm font-mono"
                           />
-                          {formData.domainType !== 'custom' && (
-                            <span className="pr-4 pl-1 font-mono text-xs font-bold text-neutral-700 dark:text-neutral-300 select-none">
-                              {formData.domainType}
-                            </span>
-                          )}
+                          <span className="pr-4 pl-1 font-mono text-xs font-bold text-neutral-700 dark:text-neutral-300 select-none">
+                            .online
+                          </span>
                         </div>
 
                         {formData.domainName && (
                           <div className="mt-2 text-xs text-neutral-600 dark:text-neutral-400 flex items-center gap-1.5 font-mono">
                             <Sparkles size={12} className="text-neutral-600 dark:text-neutral-400" />
                             <span>Preview: <strong className="text-neutral-900 dark:text-white">https://{computedDomainPreview}</strong></span>
-                            {formData.domainType === '.com' && (
-                              <span className="text-neutral-500 text-[11px] ml-2 font-sans">(₦15,000 separate domain billing)</span>
-                            )}
                           </div>
                         )}
                       </div>
@@ -902,10 +854,21 @@ const WeddingPortal: React.FC = () => {
                   <div className="border-b border-neutral-200 dark:border-neutral-800 pb-4">
                     <h2 className="text-xl font-bold text-neutral-900 dark:text-white flex items-center gap-2">
                       <Calendar size={20} className="text-neutral-700 dark:text-neutral-300" />
-                      Step 2: Dates, Venues & Color Palette
+                      Step 2: Dates, Venues & Colour Schemes
                     </h2>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
-                      Pick your color palette below to see an instant live preview applied to your website hero section!
+                      Configure your schedule structure, venue addresses, and choose your live website design aesthetic.
+                    </p>
+                  </div>
+
+                  {/* SECTION 1: THEME & LIVE PALETTE PREVIEW */}
+                  <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                    <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                      <Palette size={16} className="text-neutral-700 dark:text-neutral-300" />
+                      <span>Website Theme & Live Palette Preview</span>
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Select an aesthetic colour scheme below to preview your live mobile and desktop design instantly.
                     </p>
                   </div>
 
@@ -913,7 +876,7 @@ const WeddingPortal: React.FC = () => {
                   <div className="p-5 rounded-2xl bg-neutral-100/70 dark:bg-neutral-950/70 border border-neutral-200 dark:border-neutral-800">
                     <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-3 flex items-center gap-2">
                       <Palette size={14} className="text-neutral-700 dark:text-neutral-300" />
-                      Quick Color Palette Suggestions (Click to apply)
+                      Aesthetic Colour Schemes (Click to apply & preview)
                     </label>
                     {/* MOBILE VIEW PALETTES: EXPANDABLE ACCORDIONS */}
                     <div className="space-y-3 mb-5 md:hidden">
@@ -1445,6 +1408,17 @@ const WeddingPortal: React.FC = () => {
                     </div>
                   </div>
 
+                  {/* SECTION 2: SCHEDULE FORMAT STRUCTURE */}
+                  <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2 pt-2">
+                    <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                      <Calendar size={16} className="text-neutral-700 dark:text-neutral-300" />
+                      <span>Event Schedule Format</span>
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Choose whether your wedding festivities happen all on a Single Main Day or across Separate Days.
+                    </p>
+                  </div>
+
                   {/* SCHEDULE TYPE TOGGLE: Main Event vs Separate Day Event */}
                   <div className="p-1.5 rounded-2xl bg-neutral-200/70 dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-800 grid grid-cols-2 gap-2 mb-6">
                     <button
@@ -1477,6 +1451,17 @@ const WeddingPortal: React.FC = () => {
                   {formData.eventScheduleType === 'single' ? (
                     /* 1. SINGLE DAY CELEBRATION */
                     <div className="space-y-6">
+                      {/* SECTION 3A: MAIN DATE & THEME DETAILS */}
+                      <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                        <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                          <Calendar size={16} className="text-neutral-700 dark:text-neutral-300" />
+                          <span>Main Wedding Date & Theme Details</span>
+                        </h3>
+                        <p className="text-xs text-neutral-500 mt-0.5">
+                          Specify your celebration date, guest attire guidelines, and color of the day.
+                        </p>
+                      </div>
+
                       {/* Top Date & Palette */}
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-5 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800">
                         <div>
@@ -1508,26 +1493,27 @@ const WeddingPortal: React.FC = () => {
 
                         <div>
                           <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                            Color Palette Name
+                            Colour of the Day (Optional)
                           </label>
                           <input
                             type="text"
                             name="colorPalette"
                             value={formData.colorPalette}
                             onChange={handleChange}
-                            placeholder="e.g. Sage Green & Gold"
+                            placeholder="e.g. Sage Green & Gold, Champagne & Wine"
                             className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                           />
                         </div>
                       </div>
 
+                      {/* SECTION 4A: ORDER OF EVENTS */}
                       <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2">
                         <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                          <Calendar size={16} />
-                          <span>Order of Events (Toggle on/off whichever apply to your day)</span>
+                          <Calendar size={16} className="text-neutral-700 dark:text-neutral-300" />
+                          <span>Order of Events (Custom Day Flow)</span>
                         </h3>
                         <p className="text-xs text-neutral-500 mt-0.5">
-                          Customize your event flow. You can toggle off any event your wedding does not have.
+                          Toggle on or off any events that apply to your wedding day.
                         </p>
                       </div>
 
@@ -1538,17 +1524,9 @@ const WeddingPortal: React.FC = () => {
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
                         <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              formData.singleHasTraditional
-                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
-                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
-                            }`}>
-                              <Sparkles size={16} />
-                            </div>
-                            <div>
-                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                                <span>1. Traditional Wedding / Engagement</span>
+                          <div>
+                            <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                              <span>1. Traditional Wedding / Engagement</span>
                                 {formData.singleHasTraditional ? (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
                                     Included
@@ -1560,7 +1538,6 @@ const WeddingPortal: React.FC = () => {
                                 )}
                               </div>
                               <div className="text-[11px] text-neutral-500">Traditional rites / engagement ceremony on the same day</div>
-                            </div>
                           </div>
 
                           <button
@@ -1624,14 +1601,14 @@ const WeddingPortal: React.FC = () => {
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Venue Address & Maps Link
+                                Traditional Venue Address
                               </label>
                               <input
                                 type="text"
                                 name="traditionalAddress"
                                 value={formData.traditionalAddress}
                                 onChange={handleChange}
-                                placeholder="e.g. Plot 5 Water Corporation Dr, Oniru (https://maps.app.goo.gl/...)"
+                                placeholder="e.g. Plot 5 Water Corporation Dr, Oniru, Victoria Island"
                                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                               />
                             </div>
@@ -1650,17 +1627,9 @@ const WeddingPortal: React.FC = () => {
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
                         <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              formData.singleHasCeremony
-                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
-                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
-                            }`}>
-                              <Heart size={16} />
-                            </div>
-                            <div>
-                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                                <span>2. Church / Solemnization Ceremony</span>
+                          <div>
+                            <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                              <span>2. Church / Solemnization Ceremony</span>
                                 {formData.singleHasCeremony ? (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
                                     Included
@@ -1672,7 +1641,6 @@ const WeddingPortal: React.FC = () => {
                                 )}
                               </div>
                               <div className="text-[11px] text-neutral-500">Religious or civil wedding solemnization</div>
-                            </div>
                           </div>
 
                           <button
@@ -1722,14 +1690,14 @@ const WeddingPortal: React.FC = () => {
 
                             <div className="md:col-span-2">
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Ceremony Physical Address & Maps Link
+                                Ceremony Physical Address
                               </label>
                               <input
                                 type="text"
                                 name="ceremonyAddress"
                                 value={formData.ceremonyAddress}
                                 onChange={handleChange}
-                                placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos (https://maps.app.goo.gl/...)"
+                                placeholder="e.g. 14 Bishop Oluwole St, Victoria Island, Lagos"
                                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                               />
                             </div>
@@ -1748,17 +1716,9 @@ const WeddingPortal: React.FC = () => {
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
                         <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              formData.singleHasReception
-                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
-                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
-                            }`}>
-                              <Gift size={16} />
-                            </div>
-                            <div>
-                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                                <span>3. Wedding Reception</span>
+                          <div>
+                            <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                              <span>3. Wedding Reception</span>
                                 {formData.singleHasReception ? (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
                                     Included
@@ -1770,7 +1730,6 @@ const WeddingPortal: React.FC = () => {
                                 )}
                               </div>
                               <div className="text-[11px] text-neutral-500">Banquet, dining, speeches and celebrations</div>
-                            </div>
                           </div>
 
                           <button
@@ -1820,7 +1779,7 @@ const WeddingPortal: React.FC = () => {
 
                             <div className="md:col-span-2">
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Reception Address & Maps Link
+                                Reception Venue Address
                               </label>
                               <input
                                 type="text"
@@ -1846,17 +1805,9 @@ const WeddingPortal: React.FC = () => {
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
                         <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              formData.singleHasAfterParty
-                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
-                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
-                            }`}>
-                              <Music size={16} />
-                            </div>
-                            <div>
-                              <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
-                                <span>4. After-Party / Late Night Celebration</span>
+                          <div>
+                            <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                              <span>4. After-Party / Late Night Celebration</span>
                                 {formData.singleHasAfterParty ? (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
                                     Included
@@ -1868,7 +1819,6 @@ const WeddingPortal: React.FC = () => {
                                 )}
                               </div>
                               <div className="text-[11px] text-neutral-500">Late night dancing, DJ sets, casual lounge vibes</div>
-                            </div>
                           </div>
 
                           <button
@@ -1918,7 +1868,7 @@ const WeddingPortal: React.FC = () => {
 
                             <div>
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                After-Party Address & Maps Link
+                                After-Party Venue Address
                               </label>
                               <input
                                 type="text"
@@ -1951,20 +1901,7 @@ const WeddingPortal: React.FC = () => {
                         )}
                       </div>
 
-                      {/* Day Highlights / Timeline */}
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Schedule Highlights / Day Timeline (Optional)
-                        </label>
-                        <textarea
-                          name="scheduleNotes"
-                          rows={3}
-                          value={formData.scheduleNotes}
-                          onChange={handleChange}
-                          placeholder="e.g. 10:00 AM - Church Ceremony, 1:00 PM - Cocktail Hour, 2:30 PM - Grand Entrance, 7:00 PM - After Party"
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
-                        />
-                      </div>
+
                     </div>
                   ) : (
                     /* 2. SEPARATE DAY EVENTS */
@@ -1976,18 +1913,10 @@ const WeddingPortal: React.FC = () => {
                           : 'bg-neutral-100/30 dark:bg-neutral-950/30 border-dashed border-neutral-300 dark:border-neutral-800 opacity-80'
                       }`}>
                         <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3 flex items-center justify-between">
-                          <div className="flex items-center gap-2.5">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                              formData.separateHasTraditional
-                                ? 'bg-neutral-900 text-white dark:bg-white dark:text-neutral-950'
-                                : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500'
-                            }`}>
-                              <Sparkles size={16} />
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 1</span>
-                                <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Traditional / Engagement Wedding</h3>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 1</span>
+                              <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Traditional / Engagement Wedding</h3>
                                 {formData.separateHasTraditional ? (
                                   <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold font-mono">
                                     Included
@@ -1998,8 +1927,7 @@ const WeddingPortal: React.FC = () => {
                                   </span>
                                 )}
                               </div>
-                              <span className="text-[11px] text-neutral-500">Cultural celebration & introduction</span>
-                            </div>
+                              <span className="text-[11px] text-neutral-500 block mt-0.5">Cultural celebration & introduction</span>
                           </div>
 
                           <button
@@ -2076,14 +2004,14 @@ const WeddingPortal: React.FC = () => {
 
                             <div className="md:col-span-2">
                               <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                                Traditional Venue Address & Google Maps Link
+                                Traditional Venue Address
                               </label>
                               <input
                                 type="text"
                                 name="traditionalAddress"
                                 value={formData.traditionalAddress}
                                 onChange={handleChange}
-                                placeholder="e.g. Plot 5 Water Corporation Road, Oniru, Victoria Island (https://maps.app.goo.gl/...)"
+                                placeholder="e.g. Plot 5 Water Corporation Road, Oniru, Victoria Island"
                                 className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                               />
                             </div>
@@ -2099,7 +2027,8 @@ const WeddingPortal: React.FC = () => {
                       <div className="p-5 sm:p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-5">
                         <div className="border-b border-neutral-200 dark:border-neutral-800 pb-3">
                           <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 dark:text-neutral-400 font-mono">Day 2</span>
-                          <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Main / White Wedding Day</h3>
+                          <h3 className="text-sm sm:text-base font-bold text-neutral-900 dark:text-white">Main / White Wedding & Festivities</h3>
+                          <p className="text-xs text-neutral-500 mt-0.5">Details for your church solemnization, grand reception, and after-party.</p>
                         </div>
 
                         {/* Top Date, Attire & Palette */}
@@ -2133,14 +2062,14 @@ const WeddingPortal: React.FC = () => {
 
                           <div>
                             <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                              Custom Color Palette Name
+                              Colour of the Day (Optional)
                             </label>
                             <input
                               type="text"
                               name="colorPalette"
                               value={formData.colorPalette}
                               onChange={handleChange}
-                              placeholder="e.g. Emerald & Gold"
+                              placeholder="e.g. Classic Ivory & Noir, Sage Green & Gold"
                               className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
                             />
                           </div>
@@ -2211,7 +2140,7 @@ const WeddingPortal: React.FC = () => {
                                 />
                               </div>
                               <div className="md:col-span-2">
-                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Ceremony Address & Maps Link</label>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Ceremony Physical Address</label>
                                 <input
                                   type="text"
                                   name="ceremonyAddress"
@@ -2288,7 +2217,7 @@ const WeddingPortal: React.FC = () => {
                                 />
                               </div>
                               <div className="md:col-span-2">
-                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Reception Address & Maps Link</label>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">Reception Venue Address</label>
                                 <input
                                   type="text"
                                   name="receptionAddress"
@@ -2365,7 +2294,7 @@ const WeddingPortal: React.FC = () => {
                                 />
                               </div>
                               <div className="md:col-span-2">
-                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">After-Party Address & Maps Link</label>
+                                <label className="block text-[11px] font-semibold text-neutral-600 dark:text-neutral-400 mb-1">After-Party Venue Address</label>
                                 <input
                                   type="text"
                                   name="afterPartyAddress"
@@ -2382,20 +2311,7 @@ const WeddingPortal: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Multi-Day Timeline Highlights */}
-                      <div>
-                        <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                          Multi-Day Schedule Highlights / Timeline (Optional)
-                        </label>
-                        <textarea
-                          name="scheduleNotes"
-                          rows={3}
-                          value={formData.scheduleNotes}
-                          onChange={handleChange}
-                          placeholder="e.g. Day 1: Traditional introduction & cultural blessings. Day 2: 10:00 AM Church Ceremony, 2:00 PM Grand Reception & After-Party."
-                          className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
-                        />
-                      </div>
+
                     </div>
                   )}
                 </motion.div>
@@ -2417,6 +2333,17 @@ const WeddingPortal: React.FC = () => {
                     </h2>
                     <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-1">
                       Share the moments that brought you two together. Your guests love reading your story!
+                    </p>
+                  </div>
+
+                  {/* SECTION: OUR LOVE STORY & JOURNEY */}
+                  <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                    <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                      <Sparkles size={16} className="text-neutral-700 dark:text-neutral-300" />
+                      <span>Our Love Story & Journey</span>
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Share the milestones and memories that celebrate your journey together.
                     </p>
                   </div>
 
@@ -2499,6 +2426,17 @@ const WeddingPortal: React.FC = () => {
                     </p>
                   </div>
 
+                  {/* SECTION 1: RSVPS & GUIDELINES */}
+                  <div className="border-b border-neutral-200 dark:border-neutral-800 pb-2">
+                    <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                      <Gift size={16} className="text-neutral-700 dark:text-neutral-300" />
+                      <span>Guest Attendance & RSVP Guidelines</span>
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-0.5">
+                      Set your guest RSVP confirmation deadline and attendance rules.
+                    </p>
+                  </div>
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
@@ -2527,6 +2465,17 @@ const WeddingPortal: React.FC = () => {
                       />
                     </div>
 
+                    {/* SECTION 2: REGISTRY & GIFTS */}
+                    <div className="md:col-span-2 border-b border-neutral-200 dark:border-neutral-800 pb-2 pt-2">
+                      <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                        <Gift size={16} className="text-neutral-700 dark:text-neutral-300" />
+                        <span>Gift Registry & Bank Details</span>
+                      </h3>
+                      <p className="text-xs text-neutral-500 mt-0.5">
+                        Optional cash gift account for guests who wish to bless the couple.
+                      </p>
+                    </div>
+
                     <div className="md:col-span-2">
                       <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
                         Cash Gift / Bank Account Details (Optional)
@@ -2539,6 +2488,17 @@ const WeddingPortal: React.FC = () => {
                         placeholder="e.g. Bank: GTBank | Account Number: 0123456789 | Account Name: Adetola & Babatunde (For our honeymoon fund)"
                         className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors resize-y text-sm"
                       />
+                    </div>
+
+                    {/* SECTION 3: ATMOSPHERE & BACKGROUND MUSIC */}
+                    <div className="md:col-span-2 border-b border-neutral-200 dark:border-neutral-800 pb-2 pt-2">
+                      <h3 className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                        <Music size={16} className="text-neutral-700 dark:text-neutral-300" />
+                        <span>Atmosphere & Signature Background Music</span>
+                      </h3>
+                      <p className="text-xs text-neutral-500 mt-0.5">
+                        Your signature song plays softly when guests open your wedding website.
+                      </p>
                     </div>
 
                     {/* Background Music Field */}
@@ -2562,30 +2522,13 @@ const WeddingPortal: React.FC = () => {
                       />
                     </div>
 
-                    <div>
+                    <div className="md:col-span-2">
                       <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Website Design Aesthetic
-                      </label>
-                      <select
-                        name="designStyle"
-                        value={formData.designStyle}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-800 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm"
-                      >
-                        <option value="Romantic Modern Luxury">Romantic Modern Luxury (Warm, editorial, serif typography)</option>
-                        <option value="Editorial Minimalist">Editorial Minimalist (Sleek, black & white, magazine style)</option>
-                        <option value="Afro-Cultural Luxe">Afro-Cultural Luxe (Vibrant rich tones, traditional majesty)</option>
-                        <option value="Classic European Elegance">Classic European Elegance (Delicate, floral, timeless)</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-semibold text-neutral-700 dark:text-neutral-300 uppercase tracking-wider mb-2">
-                        Additional Notes / Special Requests
+                        Additional Notes / Special Requests (Optional)
                       </label>
                       <textarea
                         name="additionalNotes"
-                        rows={2}
+                        rows={3}
                         value={formData.additionalNotes}
                         onChange={handleChange}
                         placeholder="e.g. countdown timer, interactive RSVP table arrangement, hotel accommodation suggestions"
@@ -2783,6 +2726,36 @@ const WeddingPortal: React.FC = () => {
                       </button>
                     </div>
                   </div>
+
+                  {/* 4. OPTIONAL PHOTOGRAPHER CLOUD DRIVE / DROPBOX LINK */}
+                  <div className="p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <Globe size={16} className="text-neutral-700 dark:text-neutral-300" />
+                        <span className="text-sm font-bold text-neutral-900 dark:text-white">
+                          Photographer's Google Drive / Cloud Album (Optional)
+                        </span>
+                      </div>
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-mono">
+                        Direct 4K Photos
+                      </span>
+                    </div>
+                    <p className="text-xs text-neutral-600 dark:text-neutral-400 mb-3 leading-relaxed">
+                      Prefer not to upload photos individually from your phone? Paste your photographer's Google Drive, Dropbox, or iCloud link below — we will extract and curate the highest resolution images directly.
+                    </p>
+                    <input
+                      type="url"
+                      name="driveFolderLink"
+                      value={formData.driveFolderLink}
+                      onChange={handleChange}
+                      placeholder="e.g. https://drive.google.com/drive/folders/... or https://www.dropbox.com/..."
+                      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white transition-colors text-sm font-mono"
+                    />
+                    <div className="mt-2 text-[11px] text-neutral-500 flex items-center gap-1.5">
+                      <span>💡</span>
+                      <span>Please ensure link sharing permissions are set to <strong>"Anyone with the link can view"</strong>.</span>
+                    </div>
+                  </div>
                 </motion.div>
               )}
 
@@ -2814,7 +2787,7 @@ const WeddingPortal: React.FC = () => {
                       </div>
                       <div className="text-neutral-600 dark:text-neutral-400">Hashtag: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.hashtag || 'None'}</span></div>
                       <div className="text-neutral-600 dark:text-neutral-400 font-mono">
-                        Domain: <span className="text-neutral-900 dark:text-white font-bold">{computedDomainPreview}</span> ({formData.domainType === '.online' ? 'Included' : formData.domainType === '.com' ? '+₦15k Add-on' : 'Custom'})
+                        Domain: <span className="text-neutral-900 dark:text-white font-bold">{computedDomainPreview}</span> (Included Free)
                       </div>
                     </div>
 
@@ -2896,7 +2869,6 @@ const WeddingPortal: React.FC = () => {
                         "{formData.howWeMet || 'Story to be provided'}"
                       </div>
                       <div className="text-neutral-600 dark:text-neutral-400">Song Choice: <span className="text-neutral-900 dark:text-white font-medium">{formData.backgroundSong || 'None specified'}</span></div>
-                      <div className="text-neutral-600 dark:text-neutral-400">Design Aesthetic: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.designStyle}</span></div>
                     </div>
 
                     <div className="p-4 rounded-2xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
@@ -2909,6 +2881,11 @@ const WeddingPortal: React.FC = () => {
                       <div className="pt-2 text-neutral-500 font-mono text-[10px]">
                         Total photo size: {(files.reduce((acc, f) => acc + f.size, 0) / (1024 * 1024)).toFixed(1)} MB
                       </div>
+                      {formData.driveFolderLink && (
+                        <div className="text-[11px] text-emerald-700 dark:text-emerald-400 font-mono truncate pt-1">
+                          Cloud Drive: {formData.driveFolderLink}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -2943,7 +2920,7 @@ const WeddingPortal: React.FC = () => {
             </AnimatePresence>
 
             {/* ACTION BUTTONS: Smooth free progression */}
-            <div className="mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-4">
+            <div className="mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex items-center justify-between gap-3 sm:gap-4">
               {currentStep > 1 ? (
                 <button
                   type="button"
@@ -2952,9 +2929,9 @@ const WeddingPortal: React.FC = () => {
                     setCurrentStep(prev => prev - 1);
                   }}
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-semibold transition-colors disabled:opacity-50"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-neutral-100 dark:bg-neutral-800 hover:bg-neutral-200 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 text-xs font-semibold whitespace-nowrap shrink-0 transition-colors disabled:opacity-50"
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={15} />
                   <span>Previous</span>
                 </button>
               ) : <div />}
@@ -2966,26 +2943,26 @@ const WeddingPortal: React.FC = () => {
                     setErrorMsg(null);
                     setCurrentStep(prev => prev + 1);
                   }}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-neutral-950 text-xs font-bold transition-all shadow-md hover:scale-105"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-neutral-950 text-xs font-bold whitespace-nowrap shrink-0 transition-all shadow-md hover:scale-105"
                 >
                   <span>Continue</span>
-                  <ChevronRight size={16} />
+                  <ChevronRight size={15} />
                 </button>
               ) : (
                 <button
                   type="button"
                   onClick={handleSubmitAll}
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-neutral-950 text-sm font-bold transition-all shadow-lg disabled:opacity-50"
+                  className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-4 sm:px-6 py-2 sm:py-2.5 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white dark:bg-white dark:hover:bg-neutral-200 dark:text-neutral-950 text-xs sm:text-sm font-bold whitespace-nowrap shrink-0 transition-all shadow-md disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <>
-                      <Loader2 size={16} className="animate-spin" />
+                      <Loader2 size={15} className="animate-spin shrink-0" />
                       <span>Submitting ({submissionProgress}%)...</span>
                     </>
                   ) : (
                     <>
-                      <Send size={16} />
+                      <Send size={14} className="shrink-0" />
                       <span>Submit Wedding Details</span>
                     </>
                   )}

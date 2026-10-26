@@ -299,25 +299,61 @@ function handleFinalize(data) {
     // Non-fatal
   }
 
-  // 4. Send Email Notification
+  // 4. Send Rich HTML Email Notification
   try {
     if (NOTIFICATION_EMAIL && NOTIFICATION_EMAIL.indexOf("@") !== -1) {
       var subject = "🎉 New Wedding Website Client: " + coupleTitle;
+      var formattedDomain = details.domainName ? details.domainName + ".online" : "Pending";
+
       var body = "Hi Ore,\n\n"
         + "A new couple has submitted their wedding website onboarding details and assets!\n\n"
         + "Couple: " + coupleTitle + "\n"
         + "Email: " + (details.email || "N/A") + "\n"
         + "Phone: " + (details.phone || "N/A") + "\n"
         + "Wedding Date: " + (details.weddingDate || "N/A") + "\n"
-        + "Domain Preference: " + (details.domainName || "N/A") + " (" + (details.domainType || "") + ")\n"
-        + "Song Choice: " + (details.backgroundSong || "N/A") + "\n\n"
-        + "👉 Dedicated Google Sheet Tab: '" + clientTabName + "' in your Master Spreadsheet\n"
-        + "👉 Google Drive Folder: " + masterFolder.getUrl() + "\n\n"
+        + "Domain: " + formattedDomain + "\n"
+        + "Song Choice: " + (details.backgroundSong || "N/A") + "\n"
+        + (details.driveFolderLink ? "Photographer Drive/Cloud Link: " + details.driveFolderLink + "\n" : "")
+        + "\n👉 Google Drive Vault: " + masterFolder.getUrl() + "\n"
+        + "👉 Dedicated Google Sheet Tab: '" + clientTabName + "' in your Master Spreadsheet\n\n"
         + "Happy building!\n- Ore Okunade Wedding Portal";
-      MailApp.sendEmail(NOTIFICATION_EMAIL, subject, body);
+
+      var htmlBody = "<div style='font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;'>"
+        + "<div style='background:#0f172a;padding:24px;text-align:center;color:#ffffff;'>"
+        + "<h1 style='margin:0;font-size:20px;font-weight:700;letter-spacing:-0.5px;'>💍 New Wedding Client Submission</h1>"
+        + "<p style='margin:6px 0 0;font-size:14px;color:#94a3b8;'>" + coupleTitle + "</p>"
+        + "</div>"
+        + "<div style='padding:24px;color:#334155;font-size:14px;line-height:1.6;'>"
+        + "<p style='margin-top:0;'>Hi Ore,</p>"
+        + "<p>A new couple has completed their onboarding form on your wedding portal. Here is their executive summary:</p>"
+        + "<div style='background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:16px 0;'>"
+        + "<table style='width:100%;font-size:13px;border-collapse:collapse;'>"
+        + "<tr><td style='padding:6px 0;color:#64748b;width:40%;'>Couple:</td><td style='padding:6px 0;font-weight:600;color:#0f172a;'>" + coupleTitle + "</td></tr>"
+        + "<tr><td style='padding:6px 0;color:#64748b;'>Wedding Date:</td><td style='padding:6px 0;font-weight:600;color:#0f172a;'>" + (details.weddingDate || "N/A") + "</td></tr>"
+        + "<tr><td style='padding:6px 0;color:#64748b;'>Domain:</td><td style='padding:6px 0;font-weight:600;color:#2563eb;'><a href='https://" + formattedDomain + "' target='_blank' style='color:#2563eb;text-decoration:none;'>" + formattedDomain + "</a></td></tr>"
+        + "<tr><td style='padding:6px 0;color:#64748b;'>Email:</td><td style='padding:6px 0;font-weight:600;color:#0f172a;'><a href='mailto:" + (details.email || "") + "' style='color:#0f172a;'>" + (details.email || "N/A") + "</a></td></tr>"
+        + "<tr><td style='padding:6px 0;color:#64748b;'>Phone / WhatsApp:</td><td style='padding:6px 0;font-weight:600;color:#0f172a;'>" + (details.phone || "N/A") + "</td></tr>"
+        + "<tr><td style='padding:6px 0;color:#64748b;'>Background Song:</td><td style='padding:6px 0;font-weight:600;color:#0f172a;'>" + (details.backgroundSong || "Not specified") + "</td></tr>"
+        + (details.colorPalette ? "<tr><td style='padding:6px 0;color:#64748b;'>Colour of the Day:</td><td style='padding:6px 0;font-weight:600;color:#0f172a;'>" + details.colorPalette + "</td></tr>" : "")
+        + "</table>"
+        + "</div>"
+        + (details.driveFolderLink ? "<div style='margin-bottom:16px;padding:12px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;'><div style='font-size:12px;font-weight:700;color:#1e40af;margin-bottom:4px;'>📸 PHOTOGRAPHER CLOUD / DRIVE LINK PROVIDED</div><a href='" + details.driveFolderLink + "' target='_blank' style='word-break:break-all;color:#2563eb;font-weight:600;font-size:13px;'>" + details.driveFolderLink + "</a></div>" : "")
+        + "<div style='text-align:center;margin:24px 0 12px;'>"
+        + "<a href='" + masterFolder.getUrl() + "' target='_blank' style='display:inline-block;background:#0f172a;color:#ffffff;padding:12px 24px;border-radius:9999px;font-weight:600;font-size:13px;text-decoration:none;'>📁 Open Google Drive Vault</a>"
+        + "</div>"
+        + "<p style='font-size:12px;color:#94a3b8;text-align:center;margin-top:16px;'>Dedicated Tab <strong>" + clientTabName + "</strong> has been created in your Master Spreadsheet.</p>"
+        + "</div>"
+        + "</div>";
+
+      MailApp.sendEmail({
+        to: NOTIFICATION_EMAIL,
+        subject: subject,
+        body: body,
+        htmlBody: htmlBody
+      });
     }
   } catch (mailErr) {
-    // Non-fatal
+    Logger.log("Email notification error: " + mailErr.toString());
   }
 
   return responseJSON({
@@ -350,22 +386,21 @@ function fillClientSheetContent(sheet, d) {
     ["Traditional Wedding Date", d.traditionalDate || "N/A"],
     ["Traditional Venue", d.traditionalVenue || "N/A"],
     ["Traditional Time", d.traditionalTime || "N/A"],
-    ["Traditional Address & Map", d.traditionalAddress || "N/A"],
+    ["Traditional Address / Location", d.traditionalAddress || "N/A"],
     ["Traditional Attire / Aso-Ebi", d.traditionalDressCode || "N/A"],
-    ["Color Palette", d.colorPalette || ""],
+    ["Colour of the Day (Optional)", d.colorPalette || ""],
     ["Palette Hex / Notes", d.paletteNotes || ""],
     ["Dress Code (Main Wedding)", d.dressCode || ""],
     ["Ceremony Venue", d.ceremonyVenue || ""],
     ["Ceremony Time", d.ceremonyTime || ""],
-    ["Ceremony Address & Map", d.ceremonyAddress || ""],
+    ["Ceremony Address / Location", d.ceremonyAddress || ""],
     ["Reception Venue", d.receptionVenue || ""],
     ["Reception Time", d.receptionTime || ""],
-    ["Reception Address & Map", d.receptionAddress || ""],
+    ["Reception Address / Location", d.receptionAddress || ""],
     ["After-Party Venue", d.afterPartyVenue || "N/A"],
     ["After-Party Time", d.afterPartyTime || "N/A"],
-    ["After-Party Address & Map", d.afterPartyAddress || "N/A"],
+    ["After-Party Address / Location", d.afterPartyAddress || "N/A"],
     ["After-Party Notes", d.afterPartyNotes || "N/A"],
-    ["Day-of Schedule Notes", d.scheduleNotes || ""],
     ["", ""],
 
     ["SECTION: LOVE STORY & QUOTE", ""],
@@ -375,13 +410,13 @@ function fillClientSheetContent(sheet, d) {
     ["Guest Welcome Quote", d.coupleQuote || ""],
     ["", ""],
 
-    ["SECTION: REGISTRY, MUSIC & DESIGN", ""],
+    ["SECTION: ASSETS, REGISTRY & MUSIC", ""],
+    ["Photographer Drive / Cloud Album", d.driveFolderLink || "N/A"],
     ["RSVP Deadline", d.rsvpDeadline || ""],
     ["RSVP Rules / Policy", d.rsvpRules || ""],
     ["Cash Gift / Bank Info", d.bankDetails || ""],
     ["External Registry Links", d.registryLinks || ""],
     ["Background Song Choice", d.backgroundSong || "Not specified"],
-    ["Design Aesthetic", d.designStyle || ""],
     ["Additional Requests", d.additionalNotes || ""]
   ];
 
@@ -461,10 +496,10 @@ function buildBriefText(coupleTitle, d, folderUrl) {
   b.push("   Cash Bank Registry:\n   " + (d.bankDetails || "N/A") + "\n");
   b.push("   External Links: " + (d.registryLinks || "N/A") + "\n");
 
-  b.push("5. MUSIC & DESIGN");
+  b.push("5. ASSETS, MUSIC & REGISTRY");
+  b.push("   Photographer Drive/Cloud Link: " + (d.driveFolderLink || "N/A"));
   b.push("   Song Choice (Title & Artist): " + (d.backgroundSong || "Not specified"));
   b.push("   (Note: Audio file will be sourced and mastered directly by Ore)\n");
-  b.push("   Design Style: " + (d.designStyle || "Romantic Modern Luxury"));
   b.push("   Additional Notes: " + (d.additionalNotes || "None"));
 
   return b.join("\n");
@@ -474,4 +509,36 @@ function responseJSON(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+
+/**
+ * AUTHORIZATION HELPER:
+ * Run this function manually inside the Google Apps Script Editor once:
+ * 1. In the toolbar above, select "testEmailNotification"
+ * 2. Click "Run" (▶️)
+ * 3. Google will show "Authorization Required" -> Click "Review Permissions"
+ * 4. Select your Google account (scalewithoreo@gmail.com) -> Advanced -> Go to script (unsafe) -> Click "Allow"
+ * 5. A test email will immediately arrive in scalewithoreo@gmail.com!
+ * 6. Once authorized, click Deploy -> Manage Deployments -> Edit -> Version: New version -> Deploy.
+ */
+function testEmailNotification() {
+  var email = NOTIFICATION_EMAIL || "scalewithoreo@gmail.com";
+  var subject = "✅ Ore Okunade Wedding Portal: Email Authorization Active";
+  var htmlBody = "<div style='font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;max-width:540px;margin:20px auto;padding:24px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;'>"
+    + "<h2 style='color:#0f172a;margin-top:0;'>Email Notifications Authorized! 🎉</h2>"
+    + "<p style='color:#334155;font-size:14px;line-height:1.6;'>Your Google Apps Script is now authorized to send instant email alerts whenever a couple completes their wedding website onboarding form.</p>"
+    + "<div style='background:#ffffff;border:1px solid #cbd5e1;border-radius:8px;padding:12px 16px;margin:16px 0;'>"
+    + "<span style='font-size:12px;color:#64748b;'>Destination: </span>"
+    + "<strong style='color:#0f172a;font-size:14px;'>" + email + "</strong>"
+    + "</div>"
+    + "<p style='color:#64748b;font-size:12px;margin-bottom:0;'>Ore Okunade Wedding Client Portal</p>"
+    + "</div>";
+
+  MailApp.sendEmail({
+    to: email,
+    subject: subject,
+    htmlBody: htmlBody
+  });
+  Logger.log("✅ Test email successfully sent to " + email);
 }
