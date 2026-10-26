@@ -122,6 +122,8 @@ const SUGGESTED_PALETTES = [
   { name: 'Classic Ivory & Noir', hexes: ['#121212', '#E5E0D8', '#997950'] }
 ];
 
+const DEFAULT_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxN-_Yg3t0pebr0k6AQ4VAP44dmgVvlTrfxyARClARuwlwbU3ImB9mWHi-rXP_tgYOx2Q/exec';
+
 const WeddingPortal: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<WeddingFormData>(INITIAL_FORM_DATA);
@@ -138,7 +140,7 @@ const WeddingPortal: React.FC = () => {
   const [appsScriptUrl, setAppsScriptUrl] = useState<string>(() => {
     return localStorage.getItem('wedding_apps_script_url') ||
       (import.meta.env.VITE_WEDDING_APPS_SCRIPT_URL as string) ||
-      '';
+      DEFAULT_APPS_SCRIPT_URL;
   });
   const [showConfigModal, setShowConfigModal] = useState(false);
   const [isTestingPing, setIsTestingPing] = useState(false);
