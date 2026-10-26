@@ -381,7 +381,6 @@ const WeddingPortal: React.FC = () => {
   const [progressStatusText, setProgressStatusText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const [copiedPrompt, setCopiedPrompt] = useState(false);
 
   // Auto-save form draft to localStorage on any input change
   useEffect(() => {
@@ -712,39 +711,6 @@ const WeddingPortal: React.FC = () => {
                 <div className="font-semibold text-neutral-900 dark:text-white text-sm mb-1">Domain & Launch</div>
                 <div className="text-xs text-neutral-600 dark:text-neutral-400">Configuring {computedDomainPreview} and taking your custom website live!</div>
               </div>
-            </div>
-
-                        {/* AI Prompt Box on Success Screen */}
-            <div className="p-5 rounded-2xl bg-neutral-900 text-white dark:bg-neutral-950 border border-neutral-800 text-left space-y-3 max-w-2xl mx-auto mb-8">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <Sparkles size={16} className="text-amber-400 shrink-0" />
-                  <span className="font-bold text-xs uppercase tracking-wider text-neutral-200">
-                    AI Website Builder Prompt
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    navigator.clipboard.writeText(aiPromptText);
-                    setCopiedPrompt(true);
-                    setTimeout(() => setCopiedPrompt(false), 2500);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-neutral-900 hover:bg-neutral-200 text-xs font-bold transition-all shrink-0 self-start sm:self-center"
-                >
-                  {copiedPrompt ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
-                  <span>{copiedPrompt ? 'Copied!' : 'Copy AI Prompt'}</span>
-                </button>
-              </div>
-              <p className="text-[11px] text-neutral-400">
-                Copy and paste this prompt directly into an AI coding assistant (like Antigravity, Claude, or Cursor) to build the custom wedding website with all provided information.
-              </p>
-              <textarea
-                readOnly
-                rows={6}
-                value={aiPromptText}
-                className="w-full p-3 rounded-xl bg-black/60 border border-neutral-800 text-neutral-300 font-mono text-[11px] leading-relaxed resize-y focus:outline-none"
-              />
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
@@ -3042,41 +3008,6 @@ const WeddingPortal: React.FC = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-
-                                    {/* AI WEBSITE BUILDER PROMPT FIELD */}
-                  <div className="p-4 sm:p-5 rounded-2xl bg-neutral-900 text-white dark:bg-neutral-950 border border-neutral-800 space-y-3">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <Sparkles size={16} className="text-amber-400 shrink-0" />
-                        <div>
-                          <div className="font-bold text-xs uppercase tracking-wider text-neutral-200">
-                            AI Website Builder Prompt (Auto-Generated)
-                          </div>
-                          <div className="text-[11px] text-neutral-400">
-                            Pre-configured prompt with all submitted wedding details, ready to build the site.
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          navigator.clipboard.writeText(aiPromptText);
-                          setCopiedPrompt(true);
-                          setTimeout(() => setCopiedPrompt(false), 2500);
-                        }}
-                        className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white text-neutral-900 hover:bg-neutral-200 text-xs font-bold transition-all shrink-0 self-start sm:self-center shadow-sm"
-                      >
-                        {copiedPrompt ? <Check size={14} className="text-emerald-600" /> : <Copy size={14} />}
-                        <span>{copiedPrompt ? 'Copied Prompt!' : 'Copy AI Prompt'}</span>
-                      </button>
-                    </div>
-                    <textarea
-                      readOnly
-                      rows={6}
-                      value={aiPromptText}
-                      className="w-full p-3.5 rounded-xl bg-black/60 border border-neutral-800 text-neutral-300 font-mono text-[11px] leading-relaxed resize-y focus:outline-none focus:border-neutral-700"
-                    />
                   </div>
 
                   {/* UPLOADING PROGRESS OVERLAY / BAR */}
