@@ -140,19 +140,19 @@ function handleInit(data) {
       "Drive Folder Link",
       "Client Sheet Tab",
       "Status",
-      "Folder ID",
-      "AI Website Build Prompt"
+      "Folder ID"
     ]);
-    var headerRange = overviewSheet.getRange(1, 1, 1, 12);
+    var headerRange = overviewSheet.getRange(1, 1, 1, 11);
     headerRange.setFontWeight("bold").setBackground("#1e293b").setFontColor("#f8fafc");
     overviewSheet.setFrozenRows(1);
   } else {
-    // Ensure column 12 header exists if sheet was created earlier
-    if (overviewSheet.getLastColumn() < 12 || overviewSheet.getRange(1, 12).getValue() === "") {
-      overviewSheet.getRange(1, 12).setValue("AI Website Build Prompt")
-        .setFontWeight("bold")
-        .setBackground("#1e293b")
-        .setFontColor("#f8fafc");
+    // If a prompt column was previously added to Overview, clean it up so Overview stays clean
+    if (overviewSheet.getLastColumn() >= 12 && overviewSheet.getRange(1, 12).getValue().toString().indexOf("Prompt") !== -1) {
+      try {
+        overviewSheet.deleteColumn(12);
+      } catch (colErr) {
+        Logger.log("Could not delete column 12: " + colErr);
+      }
     }
   }
 
@@ -170,7 +170,7 @@ function handleInit(data) {
   // Setup Client Sheet initial layout
   setupClientSheetHeader(clientSheet, p1, p2, weddingDate, masterFolderUrl, domainName, domainType);
 
-  // Log into Overview Sheet
+  // Log into Overview Sheet (clean 11 columns, no multi-line prompt column)
   var row = [
     new Date(),
     p1 + " & " + p2,
@@ -182,8 +182,7 @@ function handleInit(data) {
     masterFolderUrl,
     clientTabName,
     "Uploading Assets...",
-    masterFolderId,
-    "" // AI Website Build Prompt (populated upon finalize)
+    masterFolderId
   ];
   overviewSheet.appendRow(row);
   var rowIndex = overviewSheet.getLastRow();
@@ -306,12 +305,11 @@ function handleFinalize(data) {
   masterFolder.createFile("Wedding_Website_Creative_Brief.txt", briefText, "text/plain");
   masterFolder.createFile("AI_WEBSITE_BUILDER_PROMPT.txt", aiPrompt, "text/plain");
 
-  // 3. Update Overview Sheet Row Status and populate AI Prompt field (Column 12)
+  // 3. Update Overview Sheet Row Status (Keeping Overview clean and concise)
   try {
     var overviewSheet = ss.getSheetByName("Overview") || ss.getSheets()[0];
     if (rowIndex && rowIndex <= overviewSheet.getLastRow()) {
       overviewSheet.getRange(rowIndex, 10).setValue("Completed (Photos Synced)").setBackground("#dcfce7").setFontColor("#15803d");
-      overviewSheet.getRange(rowIndex, 12).setValue(aiPrompt).setWrap(true);
     }
   } catch (sheetErr) {
     Logger.log("Overview update error: " + sheetErr.toString());
@@ -426,6 +424,12 @@ function fillClientSheetContent(sheet, d, aiPromptText) {
     ["Domain Selection", (d.domainName || "") + "  [" + (d.domainType || "") + "]"],
     ["", ""],
 
+    ["SECTION: ADMIN & GUEST LIST ACCESS", ""],
+    ["Bride Master Admin PIN", d.brideAdminPin || "Auto-assign"],
+    ["Groom Master Admin PIN", d.groomAdminPin || "Auto-assign"],
+    ["Sub-Admins Summary", d.subAdminsSummary || "None added (Couple handles all invite codes)"],
+    ["", ""],
+
     ["SECTION: DATES & VENUES", ""],
     ["Schedule Format", d.eventScheduleType === "separate" ? "Separate Day Events" : "Single Day Event"],
     ["Day 1 Event Title", d.day1EventName || "Traditional / Cultural Event"],
@@ -436,8 +440,8 @@ function fillClientSheetContent(sheet, d, aiPromptText) {
     ["Day 1 Attire / Aso-Ebi", d.traditionalDressCode || "N/A"],
     ["Day 2 Event Title", d.day2EventName || "Main Wedding Celebration"],
     ["Main Wedding Date", d.weddingDate || ""],
-    ["Colour of the Day (Optional)", d.colorPalette || ""],
-    ["Palette Hex / Notes", d.paletteNotes || ""],
+    ["Colour of the Day", d.colorPalette || ""],
+    ["Palette Details", d.colorPalette === "Custom 3 Colours" ? ("Custom 3 Colours: " + (d.customColor1 || "") + ", " + (d.customColor2 || "") + ", " + (d.customColor3 || "")) : (d.paletteNotes || "")],
     ["Dress Code", d.dressCode || ""],
     ["Ceremony Event Title", d.ceremonyEventName || "Ceremony / Solemnization"],
     ["Ceremony Venue", d.ceremonyVenue || ""],
@@ -460,6 +464,7 @@ function fillClientSheetContent(sheet, d, aiPromptText) {
     ["", ""],
 
     ["SECTION: ASSETS, REGISTRY & MUSIC", ""],
+    ["Wedding Logo / Monogram", d.hasWeddingLogo ? "Uploaded to Drive Vault" : "None provided"],
     ["Photographer Drive / Cloud Album", d.driveFolderLink || "N/A"],
     ["RSVP Deadline", d.rsvpDeadline || ""],
     ["RSVP Rules / Policy", d.rsvpRules || ""],
