@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/weddings",
+      "destination": "/weddings/index.html"
+    },
+    {
+      "source": "/weddings/(.*)",
+      "destination": "/weddings/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
