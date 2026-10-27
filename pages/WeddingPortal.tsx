@@ -23,7 +23,13 @@ import {
   Send,
   Globe,
   Monitor,
-  Smartphone
+  Smartphone,
+  Shield,
+  Key,
+  Users,
+  Lock,
+  Plus,
+  Trash2
 } from 'lucide-react';
 
 interface UploadItem {
@@ -33,6 +39,14 @@ interface UploadItem {
   category: 'hero' | 'story' | 'gallery';
   name: string;
   size: number;
+}
+
+export interface SubAdminMember {
+  id: string;
+  name: string;
+  role: string;
+  pin: string;
+  allocatedGuests?: string;
 }
 
 interface WeddingFormData {
@@ -55,6 +69,11 @@ interface WeddingFormData {
   hashtag: string;
   domainName: string;
   domainType: '.online' | '.com' | 'custom';
+
+  // Admin & Portal Access
+  brideAdminPin: string;
+  groomAdminPin: string;
+  subAdmins: SubAdminMember[];
 
   // 2. Schedule & Venues
   eventScheduleType: 'single' | 'separate';
@@ -119,6 +138,10 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   domainName: '',
   domainType: '.online',
   driveFolderLink: '',
+
+  brideAdminPin: '',
+  groomAdminPin: '',
+  subAdmins: [],
 
   eventScheduleType: 'single',
   day1EventName: '',
@@ -353,6 +376,17 @@ ${scheduleLines.join('\n')}
 - Additional Custom Requests: "${data.additionalNotes || 'None'}"
 
 ==============================================
+6. ADMIN & GUEST LIST MANAGEMENT (ROLE-BASED ACCESS)
+==============================================
+- Master Admins (Full Dashboard Oversight & Master Guest List):
+  * Bride: ${data.brideFirstName || 'Bride'} (PIN: ${data.brideAdminPin || 'Auto-generate'})
+  * Groom: ${data.groomFirstName || 'Groom'} (PIN: ${data.groomAdminPin || 'Auto-generate'})
+- Sub-Admins (Scoped strictly to their assigned guest list & generating invite codes):
+${data.subAdmins && data.subAdmins.length > 0
+  ? data.subAdmins.map((sa, idx) => `  ${idx + 1}. ${sa.name || 'Sub-Admin'} (${sa.role || 'Guest Lead'}) - PIN: ${sa.pin || 'Auto-generate'}${sa.allocatedGuests ? ` [Quota: ${sa.allocatedGuests} guests]` : ''}`).join('\n')
+  : '  None added (Couple directly handles all invite codes & guest lists)'}
+
+==============================================
 KEY DESIGN & FUNCTIONAL REQUIREMENTS:
 ==============================================
 1. Luxury Hero Section: High-fashion typography, countdown timer to the wedding date, and wedding hashtag.
@@ -361,7 +395,8 @@ KEY DESIGN & FUNCTIONAL REQUIREMENTS:
 4. RSVP Form / Modal: Seamless attendance confirmation adhering to the RSVP rules and deadline.
 5. Gift Registry: 1-click copy-to-clipboard for bank details and links to external wishlists.
 6. Ambient Music Player: Floating or fixed player playing "${data.backgroundSong || 'romantic background instrumental'}" with toggle controls.
-7. Mobile-First Luxury: Seamless responsiveness for iOS and Android devices with smooth, polished Framer Motion transitions.`;
+7. Mobile-First Luxury: Seamless responsiveness for iOS and Android devices with smooth, polished Framer Motion transitions.
+8. Role-Based Admin & Guest List Portal: Master admin logins with dedicated PINs for bride and groom, plus isolated sub-admin views where each sub-admin can only view their designated guest list and generate invite codes.`;
 };
 
 const WeddingPortal: React.FC = () => {
@@ -432,6 +467,34 @@ const WeddingPortal: React.FC = () => {
   const handleDomainNameChange = (val: string) => {
     const clean = val.toLowerCase().replace(/[^a-z0-9-]/g, '');
     setFormData(prev => ({ ...prev, domainName: clean }));
+  };
+
+  const handleAddSubAdmin = () => {
+    const newSubAdmin: SubAdminMember = {
+      id: Math.random().toString(36).substring(2, 9),
+      name: '',
+      role: 'Mother of the Bride',
+      pin: Math.floor(1000 + Math.random() * 9000).toString(),
+      allocatedGuests: ''
+    };
+    setFormData(prev => ({
+      ...prev,
+      subAdmins: [...(prev.subAdmins || []), newSubAdmin]
+    }));
+  };
+
+  const handleUpdateSubAdmin = (id: string, field: keyof SubAdminMember, value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      subAdmins: (prev.subAdmins || []).map(sa => (sa.id === id ? { ...sa, [field]: value } : sa))
+    }));
+  };
+
+  const handleRemoveSubAdmin = (id: string) => {
+    setFormData(prev => ({
+      ...prev,
+      subAdmins: (prev.subAdmins || []).filter(sa => sa.id !== id)
+    }));
   };
 
   const handleFileSelect = (category: 'hero' | 'story' | 'gallery', selectedFiles: FileList | null) => {
@@ -606,6 +669,10 @@ const WeddingPortal: React.FC = () => {
             partner2Name: groomDisplay,
             partner1Nickname: formData.brideNickname,
             partner2Nickname: formData.groomNickname,
+            brideAdminPin: formData.brideAdminPin,
+            groomAdminPin: formData.groomAdminPin,
+            subAdminsCount: (formData.subAdmins || []).length,
+            subAdminsSummary: (formData.subAdmins || []).map(sa => `${sa.name || 'Sub-Admin'} (${sa.role}): PIN ${sa.pin}`).join('; '),
             domainType: '.online (Included)',
             computedDomain: computedDomainPreview,
             driveFolderLink: formData.driveFolderLink || '',
@@ -967,6 +1034,281 @@ const WeddingPortal: React.FC = () => {
                           <div className="mt-2 text-xs text-neutral-600 dark:text-neutral-400 flex items-center gap-1.5 font-mono">
                             <Sparkles size={12} className="text-neutral-600 dark:text-neutral-400" />
                             <span>Preview: <strong className="text-neutral-900 dark:text-white">https://{computedDomainPreview}</strong></span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* SECTION 3: ADMIN & GUEST LIST ACCESS (MASTER & SUB-ADMINS) */}
+                    <div className="md:col-span-2 p-5 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950/80 border border-neutral-200 dark:border-neutral-800 space-y-5">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-200/80 dark:border-neutral-800/80 pb-3">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <Shield size={16} className="text-neutral-800 dark:text-neutral-200" />
+                            <h4 className="text-sm font-bold text-neutral-900 dark:text-white">Website Admin & Guest List Access</h4>
+                          </div>
+                          <p className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+                            Set personal 4-digit PINs for Master Admins and assign Sub-Admins who can generate invite codes and manage their own guests.
+                          </p>
+                        </div>
+                        <span className="self-start sm:self-auto text-[10px] font-semibold px-2.5 py-1 rounded-full bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 font-mono">
+                          Role-Based Access
+                        </span>
+                      </div>
+
+                      {/* 1. MASTER ADMINS (PRE-POPULATED) */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2.5">
+                          <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-neutral-700 dark:text-neutral-300">
+                            <Key size={14} />
+                            <span>Master Admins (Pre-Populated)</span>
+                          </div>
+                          <span className="text-[10px] text-neutral-500 font-mono">Full Dashboard & All Guests</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                          {/* Bride Admin */}
+                          <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-base">👰</span>
+                                <div>
+                                  <div className="text-xs font-bold text-neutral-900 dark:text-white">
+                                    {formData.brideFirstName.trim() || 'Bride'} (Master Admin)
+                                  </div>
+                                  <div className="text-[10px] text-neutral-500">Bride's Admin Login</div>
+                                </div>
+                              </div>
+                              <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                                Full Access
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="relative flex-1">
+                                <Lock size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                                <input
+                                  type="text"
+                                  name="brideAdminPin"
+                                  value={formData.brideAdminPin}
+                                  onChange={e => {
+                                    const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+                                    setFormData(prev => ({ ...prev, brideAdminPin: val }));
+                                  }}
+                                  placeholder="e.g. 2468"
+                                  maxLength={4}
+                                  inputMode="numeric"
+                                  pattern="[0-9]*"
+                                  className="w-full pl-8 pr-3 py-2 rounded-lg bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white text-xs font-mono tracking-widest"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const rand = Math.floor(1000 + Math.random() * 9000).toString();
+                                  setFormData(prev => ({ ...prev, brideAdminPin: rand }));
+                                }}
+                                className="px-2.5 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-[10px] font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors border border-neutral-200 dark:border-neutral-700 whitespace-nowrap"
+                                title="Generate Random PIN"
+                              >
+                                Auto PIN
+                              </button>
+                            </div>
+                          </div>
+
+                          {/* Groom Admin */}
+                          <div className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-2">
+                                <span className="text-base">🤵</span>
+                                <div>
+                                  <div className="text-xs font-bold text-neutral-900 dark:text-white">
+                                    {formData.groomFirstName.trim() || 'Groom'} (Master Admin)
+                                  </div>
+                                  <div className="text-[10px] text-neutral-500">Groom's Admin Login</div>
+                                </div>
+                              </div>
+                              <span className="text-[9px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                                Full Access
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <div className="relative flex-1">
+                                <Lock size={12} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
+                                <input
+                                  type="text"
+                                  name="groomAdminPin"
+                                  value={formData.groomAdminPin}
+                                  onChange={e => {
+                                    const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+                                    setFormData(prev => ({ ...prev, groomAdminPin: val }));
+                                  }}
+                                  placeholder="e.g. 1357"
+                                  maxLength={4}
+                                  inputMode="numeric"
+                                  pattern="[0-9]*"
+                                  className="w-full pl-8 pr-3 py-2 rounded-lg bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white text-xs font-mono tracking-widest"
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const rand = Math.floor(1000 + Math.random() * 9000).toString();
+                                  setFormData(prev => ({ ...prev, groomAdminPin: rand }));
+                                }}
+                                className="px-2.5 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-[10px] font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors border border-neutral-200 dark:border-neutral-700 whitespace-nowrap"
+                                title="Generate Random PIN"
+                              >
+                                Auto PIN
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 2. SUB-ADMINS (RESTRICTED TO OWN GUESTS & INVITE CODES) */}
+                      <div className="pt-2 border-t border-neutral-200/80 dark:border-neutral-800/80">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                          <div>
+                            <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-neutral-700 dark:text-neutral-300">
+                              <Users size={14} />
+                              <span>Sub-Admins (Scoped to Their Guests & Invite Codes)</span>
+                            </div>
+                            <p className="text-[11px] text-neutral-500 dark:text-neutral-400 mt-0.5">
+                              Add family members (e.g., Mom, Dad) or your planner. Their PIN gives them access only to generate invite codes and view their assigned guests.
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={handleAddSubAdmin}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900 hover:bg-neutral-800 dark:bg-white dark:hover:bg-neutral-100 text-white dark:text-neutral-900 text-xs font-medium transition-colors self-start sm:self-auto shrink-0 shadow-sm"
+                          >
+                            <Plus size={13} />
+                            <span>Add Sub-Admin</span>
+                          </button>
+                        </div>
+
+                        {/* Sub-Admins list */}
+                        {formData.subAdmins && formData.subAdmins.length > 0 ? (
+                          <div className="space-y-3">
+                            {formData.subAdmins.map((admin, index) => (
+                              <div
+                                key={admin.id || index}
+                                className="p-3.5 rounded-xl bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 space-y-3"
+                              >
+                                <div className="flex items-center justify-between gap-2">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-xs font-mono font-bold px-2 py-0.5 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                                      #{index + 1}
+                                    </span>
+                                    <span className="text-xs font-bold text-neutral-900 dark:text-white">
+                                      {admin.name.trim() || 'New Sub-Admin'}
+                                    </span>
+                                    <span className="text-[10px] text-neutral-500 hidden sm:inline">
+                                      • {admin.role}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-[9px] font-medium px-2 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 hidden sm:inline-block">
+                                      🔒 Own Guest List & Codes Only
+                                    </span>
+                                    <button
+                                      type="button"
+                                      onClick={() => handleRemoveSubAdmin(admin.id)}
+                                      className="p-1 rounded text-neutral-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
+                                      title="Remove Sub-Admin"
+                                    >
+                                      <Trash2 size={14} />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
+                                  <div className="sm:col-span-5">
+                                    <label className="block text-[10px] font-semibold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider mb-1">
+                                      Sub-Admin Name / Label *
+                                    </label>
+                                    <input
+                                      type="text"
+                                      value={admin.name}
+                                      onChange={e => handleUpdateSubAdmin(admin.id, 'name', e.target.value)}
+                                      placeholder="e.g. Mom (Bride's family)"
+                                      className="w-full px-3 py-2 rounded-lg bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white text-xs"
+                                    />
+                                  </div>
+
+                                  <div className="sm:col-span-4">
+                                    <label className="block text-[10px] font-semibold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider mb-1">
+                                      Role / Relationship
+                                    </label>
+                                    <select
+                                      value={admin.role}
+                                      onChange={e => handleUpdateSubAdmin(admin.id, 'role', e.target.value)}
+                                      className="w-full px-3 py-2 rounded-lg bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white focus:outline-none focus:border-neutral-900 dark:focus:border-white text-xs"
+                                    >
+                                      <option value="Mother of the Bride">Mother of the Bride</option>
+                                      <option value="Mother of the Groom">Mother of the Groom</option>
+                                      <option value="Father of the Bride">Father of the Bride</option>
+                                      <option value="Father of the Groom">Father of the Groom</option>
+                                      <option value="Wedding Planner / Coordinator">Wedding Planner / Coordinator</option>
+                                      <option value="Maid of Honor">Maid of Honor</option>
+                                      <option value="Best Man">Best Man</option>
+                                      <option value="Bridal Party / Usher">Bridal Party / Usher</option>
+                                      <option value="Family Representative">Family Representative</option>
+                                      <option value="Other">Other</option>
+                                    </select>
+                                  </div>
+
+                                  <div className="sm:col-span-3">
+                                    <label className="block text-[10px] font-semibold text-neutral-600 dark:text-neutral-400 uppercase tracking-wider mb-1">
+                                      4-Digit PIN *
+                                    </label>
+                                    <div className="flex items-center gap-1.5">
+                                      <div className="relative flex-1">
+                                        <Lock size={11} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-neutral-400" />
+                                        <input
+                                          type="text"
+                                          value={admin.pin}
+                                          onChange={e => {
+                                            const val = e.target.value.replace(/[^0-9]/g, '').slice(0, 4);
+                                            handleUpdateSubAdmin(admin.id, 'pin', val);
+                                          }}
+                                          placeholder="5821"
+                                          maxLength={4}
+                                          inputMode="numeric"
+                                          pattern="[0-9]*"
+                                          className="w-full pl-7 pr-2 py-2 rounded-lg bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white text-xs font-mono tracking-wider"
+                                        />
+                                      </div>
+                                      <button
+                                        type="button"
+                                        onClick={() => {
+                                          const rand = Math.floor(1000 + Math.random() * 9000).toString();
+                                          handleUpdateSubAdmin(admin.id, 'pin', rand);
+                                        }}
+                                        className="px-2 py-2 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-[10px] font-medium text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors border border-neutral-200 dark:border-neutral-700 whitespace-nowrap"
+                                        title="Generate Random PIN"
+                                      >
+                                        Auto
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="text-[10px] text-neutral-500 dark:text-neutral-400 flex items-center gap-1.5 pt-1 border-t border-neutral-100 dark:border-neutral-800/60">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                  <span>Restricted access: Can only view their designated guest list and generate invite codes for them.</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="p-4 rounded-xl border border-dashed border-neutral-300 dark:border-neutral-800 text-center space-y-1">
+                            <p className="text-xs text-neutral-600 dark:text-neutral-400">
+                              No sub-admins added yet (Optional).
+                            </p>
+                            <p className="text-[11px] text-neutral-500">
+                              Click <strong>"+ Add Sub-Admin"</strong> if you'd like parents, coordinators, or bridal party members to have their own PIN to generate invite codes.
+                            </p>
                           </div>
                         )}
                       </div>
@@ -2982,6 +3324,34 @@ const WeddingPortal: React.FC = () => {
                       <div className="text-neutral-600 dark:text-neutral-400">Hashtag: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.hashtag || 'None'}</span></div>
                       <div className="text-neutral-600 dark:text-neutral-400 font-mono">
                         Domain: <span className="text-neutral-900 dark:text-white font-bold">{computedDomainPreview}</span> (Included Free)
+                      </div>
+                    </div>
+
+                    <div className="p-4 rounded-2xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
+                      <div className="text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider text-[11px]">Admin & Guest List Access</div>
+                      <div className="space-y-1.5 text-neutral-700 dark:text-neutral-300">
+                        <div>
+                          • <span className="font-semibold text-neutral-900 dark:text-white">👰 {brideDisplay}:</span> {formData.brideAdminPin ? <span className="font-mono text-neutral-800 dark:text-neutral-200 font-bold">PIN {formData.brideAdminPin}</span> : <span className="text-neutral-400 italic">(Auto-assigned PIN)</span>} <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">(Master Admin)</span>
+                        </div>
+                        <div>
+                          • <span className="font-semibold text-neutral-900 dark:text-white">🤵 {groomDisplay}:</span> {formData.groomAdminPin ? <span className="font-mono text-neutral-800 dark:text-neutral-200 font-bold">PIN {formData.groomAdminPin}</span> : <span className="text-neutral-400 italic">(Auto-assigned PIN)</span>} <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-mono">(Master Admin)</span>
+                        </div>
+                        {formData.subAdmins && formData.subAdmins.length > 0 ? (
+                          <div className="pt-1.5 border-t border-neutral-200 dark:border-neutral-800 space-y-1">
+                            <div className="text-[11px] font-semibold text-neutral-900 dark:text-white">
+                              Sub-Admins ({formData.subAdmins.length}):
+                            </div>
+                            {formData.subAdmins.map((sa, idx) => (
+                              <div key={sa.id || idx} className="text-[11px] text-neutral-600 dark:text-neutral-400 pl-2">
+                                • <strong className="text-neutral-900 dark:text-white">{sa.name || 'Sub-Admin'}</strong> ({sa.role}): {sa.pin ? <span className="font-mono font-medium text-neutral-800 dark:text-neutral-200">PIN {sa.pin}</span> : <span className="italic">Auto-assigned</span>}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-[11px] text-neutral-500 italic pt-1">
+                            • No sub-admins added (Couple handles all invite codes)
+                          </div>
+                        )}
                       </div>
                     </div>
 
