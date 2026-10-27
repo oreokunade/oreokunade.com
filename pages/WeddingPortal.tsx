@@ -36,7 +36,7 @@ interface UploadItem {
   id: string;
   file: File;
   previewUrl: string;
-  category: 'hero' | 'story' | 'gallery';
+  category: 'logo' | 'hero' | 'story' | 'gallery';
   name: string;
   size: number;
 }
@@ -45,6 +45,7 @@ export interface SubAdminMember {
   id: string;
   name: string;
   role: string;
+  customRole?: string;
   pin: string;
   allocatedGuests?: string;
 }
@@ -85,6 +86,9 @@ interface WeddingFormData {
   traditionalDressCode: string;
   colorPalette: string;
   paletteNotes: string;
+  customColor1: string;
+  customColor2: string;
+  customColor3: string;
   dressCode: string;
   ceremonyVenue: string;
   ceremonyAddress: string;
@@ -155,6 +159,9 @@ const INITIAL_FORM_DATA: WeddingFormData = {
   traditionalDressCode: '',
   colorPalette: 'Emerald & Champagne Gold',
   paletteNotes: '#0B4F3A, #D4AF37, #FAF7F2',
+  customColor1: '#2D1B4E',
+  customColor2: '#D4AF37',
+  customColor3: '#FAF7F2',
   dressCode: 'Black Tie / Modern Luxury Traditional',
   ceremonyVenue: '',
   ceremonyAddress: '',
@@ -383,7 +390,10 @@ ${scheduleLines.join('\n')}
   * Groom: ${data.groomFirstName || 'Groom'} (PIN: ${data.groomAdminPin || 'Auto-generate'})
 - Sub-Admins (Scoped strictly to their assigned guest list & generating invite codes):
 ${data.subAdmins && data.subAdmins.length > 0
-  ? data.subAdmins.map((sa, idx) => `  ${idx + 1}. ${sa.name || 'Sub-Admin'} (${sa.role || 'Guest Lead'}) - PIN: ${sa.pin || 'Auto-generate'}${sa.allocatedGuests ? ` [Quota: ${sa.allocatedGuests} guests]` : ''}`).join('\n')
+  ? data.subAdmins.map((sa, idx) => {
+      const r = sa.role === 'Custom' && sa.customRole?.trim() ? `Custom (${sa.customRole.trim()})` : (sa.role || 'Guest Lead');
+      return `  ${idx + 1}. ${sa.name || 'Sub-Admin'} (${r}) - PIN: ${sa.pin || 'Auto-generate'}${sa.allocatedGuests ? ` [Quota: ${sa.allocatedGuests} guests]` : ''}`;
+    }).join('\n')
   : '  None added (Couple directly handles all invite codes & guest lists)'}
 
 ==============================================
@@ -455,6 +465,7 @@ const WeddingPortal: React.FC = () => {
   const [expandedPalette, setExpandedPalette] = useState<string | null>(null);
 
   // Input file references
+  const logoInputRef = useRef<HTMLInputElement>(null);
   const heroInputRef = useRef<HTMLInputElement>(null);
   const storyInputRef = useRef<HTMLInputElement>(null);
   const galleryInputRef = useRef<HTMLInputElement>(null);
@@ -497,12 +508,12 @@ const WeddingPortal: React.FC = () => {
     }));
   };
 
-  const handleFileSelect = (category: 'hero' | 'story' | 'gallery', selectedFiles: FileList | null) => {
+  const handleFileSelect = (category: 'logo' | 'hero' | 'story' | 'gallery', selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
 
     const newItems: UploadItem[] = [];
     Array.from(selectedFiles).forEach(file => {
-      const isImage = file.type.startsWith('image/');
+      const isImage = file.type.startsWith('image/') || file.name.endsWith('.svg');
       const previewUrl = isImage ? URL.createObjectURL(file) : '';
 
       newItems.push({
@@ -515,8 +526,8 @@ const WeddingPortal: React.FC = () => {
       });
     });
 
-    if (category === 'hero') {
-      setFiles(prev => [...prev.filter(f => f.category !== 'hero'), ...newItems.slice(0, 1)]);
+    if (category === 'hero' || category === 'logo') {
+      setFiles(prev => [...prev.filter(f => f.category !== category), ...newItems.slice(0, 1)]);
     } else {
       setFiles(prev => [...prev, ...newItems]);
     }
@@ -550,20 +561,38 @@ const WeddingPortal: React.FC = () => {
 
   // Current active palette preset for live hero preview
   const currentPalettePreset = useMemo(() => {
+    if (formData.colorPalette === 'Custom 3 Colours') {
+      const c1 = formData.customColor1 || '#2D1B4E';
+      const c2 = formData.customColor2 || '#D4AF37';
+      const c3 = formData.customColor3 || '#FAF7F2';
+      return {
+        name: 'Custom 3 Colours',
+        hexes: [c1, c2, c3],
+        bg: c1,
+        textColor: c3,
+        accentColor: c2,
+        subtextColor: '#E5E7EB',
+        buttonBg: c2,
+        buttonText: c1
+      };
+    }
     const found = SUGGESTED_PALETTES.find(p => p.name === formData.colorPalette);
     if (found) return found;
     // Custom fallback
+    const c1 = formData.customColor1 || '#121212';
+    const c2 = formData.customColor2 || '#D4AF37';
+    const c3 = formData.customColor3 || '#FAF7F2';
     return {
       name: formData.colorPalette || 'Custom Palette',
-      hexes: ['#121212', '#D4AF37', '#FAF7F2'],
-      bg: '#141414',
-      textColor: '#FAF7F2',
-      accentColor: '#D4AF37',
-      subtextColor: '#C9D6CE',
-      buttonBg: '#D4AF37',
-      buttonText: '#121212'
+      hexes: [c1, c2, c3],
+      bg: c1,
+      textColor: c3,
+      accentColor: c2,
+      subtextColor: '#E5E7EB',
+      buttonBg: c2,
+      buttonText: c1
     };
-  }, [formData.colorPalette]);
+  }, [formData.colorPalette, formData.customColor1, formData.customColor2, formData.customColor3]);
 
   // Active hero background image
   const activeHeroPhotoUrl = useMemo(() => {
@@ -628,11 +657,12 @@ const WeddingPortal: React.FC = () => {
         for (let i = 0; i < totalFiles; i++) {
           const item = files[i];
           const targetFolderId =
+            item.category === 'logo' ? (subfolders.hero || folderId) :
             item.category === 'hero' ? subfolders.hero :
             item.category === 'story' ? subfolders.story :
             subfolders.gallery;
 
-          setProgressStatusText(`Uploading photo ${i + 1} of ${totalFiles}...`);
+          setProgressStatusText(`Uploading ${item.category === 'logo' ? 'wedding logo' : `photo ${i + 1} of ${totalFiles}`}...`);
           const base64Data = await fileToBase64(item.file);
 
           await fetch(DEFAULT_APPS_SCRIPT_URL, {
@@ -641,7 +671,7 @@ const WeddingPortal: React.FC = () => {
             body: JSON.stringify({
               action: 'uploadFile',
               folderId: targetFolderId,
-              filename: item.name,
+              filename: item.category === 'logo' ? `[WEDDING-LOGO] ${item.name}` : item.name,
               mimeType: item.file.type || 'image/jpeg',
               base64Data
             })
@@ -672,7 +702,11 @@ const WeddingPortal: React.FC = () => {
             brideAdminPin: formData.brideAdminPin,
             groomAdminPin: formData.groomAdminPin,
             subAdminsCount: (formData.subAdmins || []).length,
-            subAdminsSummary: (formData.subAdmins || []).map(sa => `${sa.name || 'Sub-Admin'} (${sa.role}): PIN ${sa.pin}`).join('; '),
+            subAdminsSummary: (formData.subAdmins || []).map(sa => {
+              const r = sa.role === 'Custom' && sa.customRole?.trim() ? `Custom: ${sa.customRole.trim()}` : sa.role;
+              return `${sa.name || 'Sub-Admin'} (${r}): PIN ${sa.pin}`;
+            }).join('; '),
+            hasWeddingLogo: logoPhotos.length > 0,
             domainType: '.online (Included)',
             computedDomain: computedDomainPreview,
             driveFolderLink: formData.driveFolderLink || '',
@@ -698,6 +732,7 @@ const WeddingPortal: React.FC = () => {
     }
   };
 
+  const logoPhotos = files.filter(f => f.category === 'logo');
   const heroPhotos = files.filter(f => f.category === 'hero');
   const storyPhotos = files.filter(f => f.category === 'story');
   const galleryPhotos = files.filter(f => f.category === 'gallery');
@@ -1056,12 +1091,12 @@ const WeddingPortal: React.FC = () => {
                         </span>
                       </div>
 
-                      {/* 1. MASTER ADMINS (PRE-POPULATED) */}
+                      {/* 1. MASTER ADMINS */}
                       <div>
                         <div className="flex items-center justify-between mb-2.5">
                           <div className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-neutral-700 dark:text-neutral-300">
                             <Key size={14} />
-                            <span>Master Admins (Pre-Populated)</span>
+                            <span>Master Admins</span>
                           </div>
                           <span className="text-[10px] text-neutral-500 font-mono">Full Dashboard & All Guests</span>
                         </div>
@@ -1204,7 +1239,7 @@ const WeddingPortal: React.FC = () => {
                                       {admin.name.trim() || 'New Sub-Admin'}
                                     </span>
                                     <span className="text-[10px] text-neutral-500 hidden sm:inline">
-                                      • {admin.role}
+                                      • {admin.role === 'Custom' && admin.customRole?.trim() ? admin.customRole.trim() : admin.role}
                                     </span>
                                   </div>
                                   <div className="flex items-center gap-2">
@@ -1254,8 +1289,17 @@ const WeddingPortal: React.FC = () => {
                                       <option value="Best Man">Best Man</option>
                                       <option value="Bridal Party / Usher">Bridal Party / Usher</option>
                                       <option value="Family Representative">Family Representative</option>
-                                      <option value="Other">Other</option>
+                                      <option value="Custom">Custom</option>
                                     </select>
+                                    {admin.role === 'Custom' && (
+                                      <input
+                                        type="text"
+                                        value={admin.customRole || ''}
+                                        onChange={e => handleUpdateSubAdmin(admin.id, 'customRole', e.target.value)}
+                                        placeholder="Specify custom role (e.g. Aunt, Sponsor)"
+                                        className="w-full mt-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 focus:outline-none focus:border-neutral-900 dark:focus:border-white text-xs"
+                                      />
+                                    )}
                                   </div>
 
                                   <div className="sm:col-span-3">
@@ -1561,6 +1605,52 @@ const WeddingPortal: React.FC = () => {
                           </div>
                         );
                       })}
+
+                      {/* MOBILE: CUSTOM 3 COLOURS PALETTE */}
+                      <div
+                        className={`rounded-2xl border transition-all overflow-hidden ${
+                          formData.colorPalette === 'Custom 3 Colours'
+                            ? 'border-neutral-900 dark:border-white bg-white dark:bg-neutral-900 shadow-sm'
+                            : 'border-dashed border-neutral-300 dark:border-neutral-800 bg-white/70 dark:bg-neutral-900/40'
+                        }`}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData(prev => ({
+                              ...prev,
+                              colorPalette: 'Custom 3 Colours',
+                              paletteNotes: `${prev.customColor1 || '#2D1B4E'}, ${prev.customColor2 || '#D4AF37'}, ${prev.customColor3 || '#FAF7F2'}`
+                            }));
+                            setExpandedPalette(prev => (prev === 'Custom 3 Colours' ? null : 'Custom 3 Colours'));
+                          }}
+                          className="w-full p-4 flex items-center justify-between text-left"
+                        >
+                          <div className="flex flex-col gap-0.5">
+                            <div className="flex items-center gap-2">
+                              <Sparkles size={13} className="text-amber-500" />
+                              <span className="text-xs font-bold text-neutral-900 dark:text-neutral-100">Custom 3 Colours</span>
+                              {formData.colorPalette === 'Custom 3 Colours' && (
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold">
+                                  Active
+                                </span>
+                              )}
+                            </div>
+                            <span className="text-[10px] text-neutral-500">Pick your own 3 custom wedding colours</span>
+                          </div>
+
+                          <div className="flex items-center gap-3">
+                            <div className="flex gap-1.5 shrink-0">
+                              <span className="w-4 h-4 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor1 || '#2D1B4E' }} />
+                              <span className="w-4 h-4 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor2 || '#D4AF37' }} />
+                              <span className="w-4 h-4 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor3 || '#FAF7F2' }} />
+                            </div>
+                            <div className="p-1 rounded-full bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+                              {expandedPalette === 'Custom 3 Colours' ? <ChevronUp size={15} /> : <ChevronDown size={15} />}
+                            </div>
+                          </div>
+                        </button>
+                      </div>
                     </div>
 
                     {/* DESKTOP VIEW PALETTES GRID */}
@@ -1594,7 +1684,232 @@ const WeddingPortal: React.FC = () => {
                           </div>
                         </button>
                       ))}
+
+                      {/* 6TH CARD: CUSTOM 3 COLOURS */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFormData(prev => ({
+                            ...prev,
+                            colorPalette: 'Custom 3 Colours',
+                            paletteNotes: `${prev.customColor1 || '#2D1B4E'}, ${prev.customColor2 || '#D4AF37'}, ${prev.customColor3 || '#FAF7F2'}`
+                          }));
+                        }}
+                        className={`p-3.5 rounded-xl text-left border transition-all flex items-center justify-between ${
+                          formData.colorPalette === 'Custom 3 Colours'
+                            ? 'border-neutral-900 dark:border-white bg-white dark:bg-neutral-800 shadow-sm ring-1 ring-neutral-900/10 dark:ring-white/20'
+                            : 'border-dashed border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600 bg-white/60 dark:bg-neutral-900/40'
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <Sparkles size={13} className="text-amber-500 shrink-0" />
+                          <span className="text-xs font-semibold text-neutral-900 dark:text-neutral-100">Custom 3 Colours</span>
+                        </div>
+                        <div className="flex gap-1.5 shrink-0 ml-2">
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/20 shadow-xs"
+                            style={{ backgroundColor: formData.customColor1 || '#2D1B4E' }}
+                          />
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/20 shadow-xs"
+                            style={{ backgroundColor: formData.customColor2 || '#D4AF37' }}
+                          />
+                          <span
+                            className="w-4 h-4 rounded-full border border-black/20 shadow-xs"
+                            style={{ backgroundColor: formData.customColor3 || '#FAF7F2' }}
+                          />
+                        </div>
+                      </button>
                     </div>
+
+                    {/* INTERACTIVE CUSTOM 3-COLOUR PICKER PANEL */}
+                    {(formData.colorPalette === 'Custom 3 Colours' || expandedPalette === 'Custom 3 Colours') && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-6 p-4 sm:p-5 rounded-2xl bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 shadow-sm space-y-4"
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-neutral-200 dark:border-neutral-800 pb-3">
+                          <div className="flex items-center gap-2">
+                            <Palette size={16} className="text-neutral-800 dark:text-neutral-200" />
+                            <div>
+                              <h4 className="text-xs font-bold text-neutral-900 dark:text-white uppercase tracking-wider">
+                                Custom Three Wedding Colours
+                              </h4>
+                              <p className="text-[11px] text-neutral-500">
+                                Click any colour circle to open the visual colour wheel or type your exact hex codes.
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-1.5 self-start sm:self-auto">
+                            <span className="w-3.5 h-3.5 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor1 }} />
+                            <span className="w-3.5 h-3.5 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor2 }} />
+                            <span className="w-3.5 h-3.5 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor3 }} />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                          {/* Colour 1: Primary */}
+                          <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <label className="text-[11px] font-semibold text-neutral-700 dark:text-neutral-300">
+                                Colour 1 (Primary / Theme)
+                              </label>
+                              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                                Dominant
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2.5">
+                              <label className="relative cursor-pointer shrink-0 group">
+                                <input
+                                  type="color"
+                                  value={formData.customColor1 || '#2D1B4E'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      customColor1: val,
+                                      colorPalette: 'Custom 3 Colours',
+                                      paletteNotes: `${val}, ${prev.customColor2 || '#D4AF37'}, ${prev.customColor3 || '#FAF7F2'}`
+                                    }));
+                                  }}
+                                  className="sr-only"
+                                />
+                                <div
+                                  className="w-10 h-10 rounded-xl border-2 border-white dark:border-neutral-800 shadow-sm transition-transform group-hover:scale-105"
+                                  style={{ backgroundColor: formData.customColor1 || '#2D1B4E' }}
+                                  title="Click to pick Colour 1"
+                                />
+                              </label>
+                              <div className="flex-1">
+                                <input
+                                  type="text"
+                                  value={formData.customColor1 || '#2D1B4E'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      customColor1: val,
+                                      colorPalette: 'Custom 3 Colours',
+                                      paletteNotes: `${val}, ${prev.customColor2 || '#D4AF37'}, ${prev.customColor3 || '#FAF7F2'}`
+                                    }));
+                                  }}
+                                  placeholder="#2D1B4E"
+                                  maxLength={7}
+                                  className="w-full px-3 py-2 text-xs font-mono rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white uppercase focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Colour 2: Accent */}
+                          <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <label className="text-[11px] font-semibold text-neutral-700 dark:text-neutral-300">
+                                Colour 2 (Accent / Metallic)
+                              </label>
+                              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                                Buttons & Highlights
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2.5">
+                              <label className="relative cursor-pointer shrink-0 group">
+                                <input
+                                  type="color"
+                                  value={formData.customColor2 || '#D4AF37'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      customColor2: val,
+                                      colorPalette: 'Custom 3 Colours',
+                                      paletteNotes: `${prev.customColor1 || '#2D1B4E'}, ${val}, ${prev.customColor3 || '#FAF7F2'}`
+                                    }));
+                                  }}
+                                  className="sr-only"
+                                />
+                                <div
+                                  className="w-10 h-10 rounded-xl border-2 border-white dark:border-neutral-800 shadow-sm transition-transform group-hover:scale-105"
+                                  style={{ backgroundColor: formData.customColor2 || '#D4AF37' }}
+                                  title="Click to pick Colour 2"
+                                />
+                              </label>
+                              <div className="flex-1">
+                                <input
+                                  type="text"
+                                  value={formData.customColor2 || '#D4AF37'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      customColor2: val,
+                                      colorPalette: 'Custom 3 Colours',
+                                      paletteNotes: `${prev.customColor1 || '#2D1B4E'}, ${val}, ${prev.customColor3 || '#FAF7F2'}`
+                                    }));
+                                  }}
+                                  placeholder="#D4AF37"
+                                  maxLength={7}
+                                  className="w-full px-3 py-2 text-xs font-mono rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white uppercase focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Colour 3: Neutral */}
+                          <div className="p-3 rounded-xl bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
+                            <div className="flex items-center justify-between">
+                              <label className="text-[11px] font-semibold text-neutral-700 dark:text-neutral-300">
+                                Colour 3 (Light / Neutral)
+                              </label>
+                              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400">
+                                Text & Background
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-2.5">
+                              <label className="relative cursor-pointer shrink-0 group">
+                                <input
+                                  type="color"
+                                  value={formData.customColor3 || '#FAF7F2'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      customColor3: val,
+                                      colorPalette: 'Custom 3 Colours',
+                                      paletteNotes: `${prev.customColor1 || '#2D1B4E'}, ${prev.customColor2 || '#D4AF37'}, ${val}`
+                                    }));
+                                  }}
+                                  className="sr-only"
+                                />
+                                <div
+                                  className="w-10 h-10 rounded-xl border-2 border-white dark:border-neutral-800 shadow-sm transition-transform group-hover:scale-105"
+                                  style={{ backgroundColor: formData.customColor3 || '#FAF7F2' }}
+                                  title="Click to pick Colour 3"
+                                />
+                              </label>
+                              <div className="flex-1">
+                                <input
+                                  type="text"
+                                  value={formData.customColor3 || '#FAF7F2'}
+                                  onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData(prev => ({
+                                      ...prev,
+                                      customColor3: val,
+                                      colorPalette: 'Custom 3 Colours',
+                                      paletteNotes: `${prev.customColor1 || '#2D1B4E'}, ${prev.customColor2 || '#D4AF37'}, ${val}`
+                                    }));
+                                  }}
+                                  placeholder="#FAF7F2"
+                                  maxLength={7}
+                                  className="w-full px-3 py-2 text-xs font-mono rounded-lg bg-white dark:bg-neutral-900 border border-neutral-300 dark:border-neutral-700 text-neutral-900 dark:text-white uppercase focus:outline-none focus:border-neutral-900 dark:focus:border-white"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
 
                     {/* LIVE HERO SECTION MOCKUP / PREVIEW (Desktop view) */}
                     <div className="mt-6 pt-5 border-t border-neutral-200 dark:border-neutral-800 hidden md:block">
@@ -3094,7 +3409,77 @@ const WeddingPortal: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* 1. Hero Cover Image */}
+                  {/* 1. Wedding Logo / Monogram Upload (Optional) */}
+                  <div className="p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <div className="text-sm font-bold text-neutral-900 dark:text-white flex items-center gap-2">
+                          <Sparkles size={16} className="text-amber-500" />
+                          <span>Wedding Logo / Monogram (Optional)</span>
+                        </div>
+                        <div className="text-xs text-neutral-500 dark:text-neutral-400">
+                          Upload your couple crest, wedding monogram, or initial logo (Transparent PNG, SVG, or high-res JPG).
+                        </div>
+                      </div>
+                      <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-neutral-200 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">
+                        {logoPhotos.length}/1 Selected
+                      </span>
+                    </div>
+
+                    <input
+                      type="file"
+                      ref={logoInputRef}
+                      accept="image/*,.svg"
+                      className="hidden"
+                      onChange={e => handleFileSelect('logo', e.target.files)}
+                    />
+
+                    {logoPhotos.length === 0 ? (
+                      <div
+                        onClick={() => logoInputRef.current?.click()}
+                        className="border-2 border-dashed border-neutral-300 dark:border-neutral-800 hover:border-neutral-500 rounded-xl p-6 text-center cursor-pointer transition-all hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 group"
+                      >
+                        <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-900 flex items-center justify-center mx-auto mb-2 text-neutral-500 dark:text-neutral-400 group-hover:scale-110 transition-all shadow-xs">
+                          <Upload size={18} />
+                        </div>
+                        <div className="text-sm font-semibold text-neutral-800 dark:text-neutral-200 mb-0.5">
+                          Click to upload your wedding monogram or logo
+                        </div>
+                        <div className="text-xs text-neutral-500">
+                          Transparent PNG or SVG recommended for website navbar & hero crest
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="relative group rounded-xl overflow-hidden border border-neutral-300 dark:border-neutral-700 max-w-sm bg-white dark:bg-neutral-900 p-4 flex items-center gap-4">
+                        <img
+                          src={logoPhotos[0].previewUrl}
+                          alt="Wedding Logo Preview"
+                          className="w-16 h-16 object-contain rounded-lg border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-950 p-1"
+                        />
+                        <div className="flex-1 min-w-0 text-xs">
+                          <div className="font-semibold text-neutral-900 dark:text-white truncate">
+                            {logoPhotos[0].name}
+                          </div>
+                          <div className="text-neutral-500 font-mono text-[11px]">
+                            {(logoPhotos[0].size / (1024 * 1024)).toFixed(2)} MB
+                          </div>
+                          <div className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1 font-medium">
+                            ✓ Ready for website branding
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(logoPhotos[0].id)}
+                          className="p-1.5 rounded-full bg-neutral-100 hover:bg-rose-100 dark:bg-neutral-800 dark:hover:bg-rose-950/60 text-neutral-500 hover:text-rose-600 transition-colors"
+                          title="Remove logo"
+                        >
+                          <X size={14} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* 2. Hero Cover Image */}
                   <div className="p-6 rounded-2xl bg-neutral-100/60 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800">
                     <div className="flex items-center justify-between mb-3">
                       <div>
@@ -3343,7 +3728,7 @@ const WeddingPortal: React.FC = () => {
                             </div>
                             {formData.subAdmins.map((sa, idx) => (
                               <div key={sa.id || idx} className="text-[11px] text-neutral-600 dark:text-neutral-400 pl-2">
-                                • <strong className="text-neutral-900 dark:text-white">{sa.name || 'Sub-Admin'}</strong> ({sa.role}): {sa.pin ? <span className="font-mono font-medium text-neutral-800 dark:text-neutral-200">PIN {sa.pin}</span> : <span className="italic">Auto-assigned</span>}
+                                • <strong className="text-neutral-900 dark:text-white">{sa.name || 'Sub-Admin'}</strong> ({sa.role === 'Custom' && sa.customRole?.trim() ? sa.customRole.trim() : sa.role}): {sa.pin ? <span className="font-mono font-medium text-neutral-800 dark:text-neutral-200">PIN {sa.pin}</span> : <span className="italic">Auto-assigned</span>}
                               </div>
                             ))}
                           </div>
@@ -3366,7 +3751,16 @@ const WeddingPortal: React.FC = () => {
                             {formData.weddingDate ? new Date(formData.weddingDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : 'No date set'}
                           </div>
                           <div className="text-neutral-600 dark:text-neutral-400">
-                            Palette: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.colorPalette}</span>
+                            Palette: {formData.colorPalette === 'Custom 3 Colours' ? (
+                              <span className="inline-flex items-center gap-1.5 ml-1">
+                                <span className="w-2.5 h-2.5 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor1 }} />
+                                <span className="w-2.5 h-2.5 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor2 }} />
+                                <span className="w-2.5 h-2.5 rounded-full border border-black/20" style={{ backgroundColor: formData.customColor3 }} />
+                                <span className="font-mono text-neutral-800 dark:text-neutral-200">Custom 3 Colours</span>
+                              </span>
+                            ) : (
+                              <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.colorPalette}</span>
+                            )}
                             {formData.dressCode && <> • Attire: <span className="text-neutral-900 dark:text-neutral-200 font-medium">{formData.dressCode}</span></>}
                           </div>
                           
@@ -3438,6 +3832,7 @@ const WeddingPortal: React.FC = () => {
                     <div className="p-4 rounded-2xl bg-neutral-100/70 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 space-y-2">
                       <div className="text-neutral-500 dark:text-neutral-400 font-bold uppercase tracking-wider text-[11px]">Photos ({files.length} Total)</div>
                       <div className="space-y-1 text-neutral-700 dark:text-neutral-300">
+                        <div>• Wedding Logo: {logoPhotos.length ? '1 Logo / Monogram attached' : 'None attached'}</div>
                         <div>• Hero Cover: {heroPhotos.length ? '1 Photo attached' : 'None attached'}</div>
                         <div>• Story Photos: {storyPhotos.length} Photos</div>
                         <div>• Gallery Collection: {galleryPhotos.length} Photos</div>
